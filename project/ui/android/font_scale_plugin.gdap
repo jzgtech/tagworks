@@ -1,0 +1,4 @@
+[config]
+name="AndroidFontScale"
+binary_type="local"
+binary="AndroidFontScalePlugin.jar"

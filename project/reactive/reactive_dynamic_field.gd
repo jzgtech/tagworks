@@ -3,20 +3,20 @@ extends Reactive
 
 enum SourceType { CONSTANT, OPC_TAG, OPC_TAG_ARRAY, SCRIPT }
 
-var source_type         : ReactiveInt
-var constant_value      : ReactiveVariant
-var tag_binding         : ReactiveOpcUaTagBinding
-var tag_array_binding   : ReactiveOpcUaTagArrayBinding
-var script_source       : ReactiveString
-var resolved            : ReactiveVariant
+var source_type          : ReactiveInt
+var constant_value       : ReactiveVariant
+var tag_binding          : ReactiveOpcUaTagBinding
+var tag_array_binding    : ReactiveOpcUaTagArrayBinding
+var script_source        : ReactiveString
+var resolved             : ReactiveVariant
 
-var _tag_value_ref      : ReactiveVariant = null
-var _array_tag_refs     : Array[ReactiveVariant] = []
-var _array_tag_callables: Array[Callable] = []
-var _context_provider   : Callable = Callable()
-var _is_deserializing   : bool = false
-var _is_vector_field    : bool = false
-var _vector_type        : int = TYPE_NIL
+var _tag_value_ref       : ReactiveVariant = null
+var _array_tag_refs      : Array[ReactiveVariant] = []
+var _array_tag_callables : Array[Callable] = []
+var _context_provider    : Callable = Callable()
+var _is_deserializing    : bool = false
+var _is_vector_field     : bool = false
+var _vector_type         : int = TYPE_NIL
 
 func _init(default_value: Variant = null, initial_owner: Reactive = null, label: String = "ReactiveDynamicField") -> void:
     super._init(initial_owner, label)
@@ -34,7 +34,7 @@ func _init(default_value: Variant = null, initial_owner: Reactive = null, label:
     source_type.connect_self_changed(func(_s: ReactiveInt) -> void: _rebind())
     constant_value.connect_self_changed(func(_c: ReactiveVariant) -> void: _rebind())
     tag_binding.connect_any_changed_self(func(_t: ReactiveOpcUaTagBinding) -> void: _rebind())
-    tag_array_binding.tag_bindings.connect_any_changed_self(func(_t) -> void: _rebind())
+    tag_array_binding.tag_bindings.connect_any_changed_self(func(_origin: ReactiveArray) -> void: _rebind())
     script_source.connect_self_changed(func(_s: ReactiveString) -> void: _rebind())
 
 func is_vector_field() -> bool:
@@ -115,11 +115,11 @@ func _unbind_tag() -> void:
 # ── Tag array binding: N heterogeneous tags → one Variant array ────────────
 
 func _bind_tag_array() -> void:
-    var bindings: Array = tag_array_binding.tag_bindings.value
+    var bindings : Array = tag_array_binding.tag_bindings.value
     _array_tag_refs.resize(bindings.size())
     _array_tag_callables.resize(bindings.size())
 
-    for i in bindings.size():
+    for i : int in bindings.size():
         var binding: ReactiveOpcUaTagBinding = bindings[i]
         var tag: ReactiveOpcUaTag = _resolve_tag_from_binding(binding)
         if tag == null:
@@ -164,13 +164,13 @@ func _assemble_array_vector() -> void:
     # expected to coerce per-element as needed.
     var out: Array = []
     out.resize(_array_tag_refs.size())
-    for i in _array_tag_refs.size():
+    for i : int in _array_tag_refs.size():
         var ref: ReactiveVariant = _array_tag_refs[i]
         out[i] = ref.value if ref != null else null
     resolved.value = out
 
 func _unbind_tag_array() -> void:
-    for i in _array_tag_refs.size():
+    for i : int in _array_tag_refs.size():
         var ref: ReactiveVariant = _array_tag_refs[i]
         var callable: Callable = _array_tag_callables[i] if i < _array_tag_callables.size() else Callable()
         if ref != null and callable.is_valid() and ref.reactive_changed.is_connected(callable):
@@ -204,29 +204,17 @@ func _normalize_vector(v: Variant) -> Variant:
 func _array_to_dict(v: Variant) -> Dictionary:
     var dict: Dictionary = {}
     var arr: Array = Array(v) if v != null else []
-    for i in arr.size():
+    for i : int in arr.size():
         dict[str(i)] = ReactiveVariantCodec.encode_variant(arr[i])
     return dict
 
 func _dict_to_array(d: Dictionary) -> Variant:
     var keys: Array = d.keys()
-    keys.sort_custom(func(a, b): return int(a) < int(b))
+    keys.sort_custom(func(a : Variant, b : Variant) -> bool: return int(a) < int(b))
 
     var arr: Array = []
-    for k in keys:
+    for k : Variant in keys:
         arr.append(ReactiveVariantCodec.decode_variant(d[k]))
-
-    match _vector_type:
-        TYPE_PACKED_FLOAT32_ARRAY: return PackedFloat32Array(arr)
-        TYPE_PACKED_FLOAT64_ARRAY: return PackedFloat64Array(arr)
-        TYPE_PACKED_INT32_ARRAY:   return PackedInt32Array(arr)
-        TYPE_PACKED_INT64_ARRAY:   return PackedInt64Array(arr)
-        TYPE_PACKED_STRING_ARRAY:  return PackedStringArray(arr)
-        TYPE_PACKED_COLOR_ARRAY:   return PackedColorArray(arr)
-        TYPE_PACKED_VECTOR2_ARRAY: return PackedVector2Array(arr)
-        TYPE_PACKED_VECTOR3_ARRAY: return PackedVector3Array(arr)
-        TYPE_PACKED_BYTE_ARRAY:    return PackedByteArray(arr)
-        _: return arr
 
     match _vector_type:
         TYPE_PACKED_FLOAT32_ARRAY: return PackedFloat32Array(arr)

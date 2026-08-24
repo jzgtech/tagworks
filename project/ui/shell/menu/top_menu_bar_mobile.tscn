@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bvmvbiyy06hhy"]
+
+[ext_resource type="Script" uid="uid://g3mqu8n8vm6n" path="res://ui/shell/menu/top_menu_bar_mobile.gd" id="1_8l0b3"]
+
+[node name="Container" type="HBoxContainer" unique_id=354118321]
+script = ExtResource("1_8l0b3")
+
+[node name="EditModeButton" type="Button" parent="." unique_id=2043507131]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+toggle_mode = true
+text = "✏️"
+
+[node name="MenuButton" type="MenuButton" parent="." unique_id=1188621164]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "☰"
+flat = false

@@ -132,14 +132,15 @@ func connect_to_server() -> bool:
 
 
 ## Idempotent: safe to call regardless of current connection state.
-func disconnect_from_server() -> void:
+func disconnect_from_server() -> bool:
     if not _is_connected():
-        return
+        return false
 
     for subscription: OpcUaSubscription in _subscriptions.values():
         subscription.delete(_client)
     _client.disconnect_server()
     config.set_disconnected()
+    return true
 
 
 ## Called by OpcUaManager when this connection's server has been removed

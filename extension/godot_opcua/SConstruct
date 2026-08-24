@@ -86,18 +86,25 @@ if env["platform"] == "android":
     cc  = os.path.join(toolchain_bin, "{}{}-clang".format(arch_triple, api_level))
     cxx = os.path.join(toolchain_bin, "{}{}-clang++".format(arch_triple, api_level))
 
-    if not os.path.isfile(cc) and not os.path.isfile(cc + ".cmd"):
-        cc  = os.path.join(toolchain_bin, "{}-clang".format(arch_triple))
-        cxx = os.path.join(toolchain_bin, "{}-clang++".format(arch_triple))
+    if env["platform"] == "android" and os.name == "nt":
+        if os.path.isfile(cc + ".cmd"):
+            cc += ".cmd"
+        if os.path.isfile(cxx + ".cmd"):
+            cxx += ".cmd"
 
-    env["CC"]     = cc
-    env["CXX"]    = cxx
-    env["LINK"]   = cxx
-    env["AR"]     = os.path.join(toolchain_bin, "llvm-ar")
-    env["RANLIB"] = os.path.join(toolchain_bin, "llvm-ranlib")
-    env["STRIP"]  = os.path.join(toolchain_bin, "llvm-strip")
+    env["CC"]      = cc
+    env["CXX"]     = cxx
+    env["LINK"]    = cxx
+    env["SHCC"]    = cc       # ← add this
+    env["SHCXX"]   = cxx      # ← add this
+    env["SHLINK"]  = cxx      # ← add this
+    env["AR"]      = os.path.join(toolchain_bin, "llvm-ar")
+    env["RANLIB"]  = os.path.join(toolchain_bin, "llvm-ranlib")
+    env["STRIP"]   = os.path.join(toolchain_bin, "llvm-strip")
     env.Append(CCFLAGS=["-fPIC"])
     env.Append(LINKFLAGS=["-Wl,--no-undefined"])
+    env.Append(LINKFLAGS=["-Wl,--no-gc-sections"])
+    env.Append(LINKFLAGS=["-Wl,-z,max-page-size=4096"])
 
 # ── Windows: disable pthreads + link WinSock ─────────────────────────────────
 if env["platform"] == "windows":
@@ -143,15 +150,39 @@ library  = env.SharedLibrary(lib_path, source=sources)
 Default(library)
 
 print("")
-print("┌─ GodotOpcUa v4 build ─────────────────────────────────────────────")
-print("│  platform  : {}".format(env["platform"]))
-print("│  target    : {}".format(env["target"]))
-print("│  arch      : {}".format(env.get("arch", "?")))
-print("│  source    : {}".format(script_dir))
-print("│  godot-cpp : {}".format(godot_cpp))
-print("│  output    : {}".format(lib_path))
+print("┌─ GodotOpcUa v3 build ─────────────────────────────────────────────")
+print("│  platform : {}".format(env["platform"]))
+print("│  target   : {}".format(env["target"]))
+print("│  arch     : {}".format(env.get("arch", "?")))
+print("│  output   : {}".format(lib_path))
+
 if env["platform"] == "android":
-    print("│  NDK       : {}".format(env.get("android_ndk_root", os.environ.get("ANDROID_NDK_ROOT", "?"))))
-    print("│  API lvl   : {}".format(env.get("android_api_level", "21")))
+    print("│")
+    print("│  NDK root : {}".format(
+        env.get("android_ndk_root",
+                os.environ.get("ANDROID_NDK_ROOT", "?"))))
+    print("│  API lvl  : {}".format(
+        env.get("android_api_level", "21")))
+    print("│")
+    print("│  CC       : {}".format(env.get("CC", "?")))
+    print("│  CXX      : {}".format(env.get("CXX", "?")))
+    print("│  LINK     : {}".format(env.get("LINK", "?")))
+    print("│  AR       : {}".format(env.get("AR", "?")))
+    print("│  RANLIB   : {}".format(env.get("RANLIB", "?")))
+    print("│  STRIP    : {}".format(env.get("STRIP", "?")))
+
+    cc = str(env.get("CC", ""))
+    cxx = str(env.get("CXX", ""))
+
+    print("│")
+    print("│  CC exists  : {}".format(os.path.exists(cc)))
+    print("│  CXX exists : {}".format(os.path.exists(cxx)))
+
+    if os.path.exists(cc):
+        print("│  CC size    : {} bytes".format(os.path.getsize(cc)))
+
+    if os.path.exists(cxx):
+        print("│  CXX size   : {} bytes".format(os.path.getsize(cxx)))
+
 print("└───────────────────────────────────────────────────────────────────")
 print("")

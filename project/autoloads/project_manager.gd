@@ -26,6 +26,7 @@ func _ready() -> void:
     IntentBus.save_project_requested.connect(_on_save_project_requested)
     IntentBus.save_project_as_requested.connect(_on_save_project_as_requested)
     IntentBus.open_project_requested.connect(_on_open_project_requested)
+    IntentBus.open_project_transfer_dialog_requested.connect(_on_open_project_transfer_dialog_requested)
     IntentBus.close_project_requested.connect(_on_close_project_requested)
     IntentBus.open_project_dialog_requested.connect(_on_open_project_dialog_requested)
     IntentBus.save_project_as_dialog_requested.connect(_on_save_project_as_dialog_requested)
@@ -109,6 +110,9 @@ func _on_open_project_dialog_requested() -> void:
             "file_selected": _on_open_dialog_selected
         }
     })
+
+func _on_open_project_transfer_dialog_requested() -> void:
+    WindowManager.open_window("transfer")
 
 
 func _on_save_project_as_dialog_requested() -> void:

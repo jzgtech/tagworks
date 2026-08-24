@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://b8r7a7chyq82k"]
+
+[ext_resource type="Script" uid="uid://bo42lb3wkha8t" path="res://scenes/dialogs/extension_manager/extension_card.gd" id="1_rmbr3"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_8xtq6"]
+size = Vector2(24, 24)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8xtq6"]
+font_size = 14
+
+[node name="ExtensionCard" type="HBoxContainer" unique_id=475185482]
+script = ExtResource("1_rmbr3")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1922027434]
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_8xtq6")
+stretch_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=245114860]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer" unique_id=416620350]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EXTENSION_NAME"
+
+[node name="DescriptionLabel" type="Label" parent="VBoxContainer" unique_id=1763515739]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EXTENSION_DETAILS"
+label_settings = SubResource("LabelSettings_8xtq6")

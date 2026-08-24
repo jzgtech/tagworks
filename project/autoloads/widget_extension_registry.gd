@@ -4,6 +4,7 @@ const SDK_API_VERSION: String  = "1"
 const EXTENSIONS_DIR: String   = "user://extensions/"
 
 signal extension_registered(descriptor: WidgetExtensionDescriptor)
+signal extension_registration_failed(error: String)
 
 func _ready() -> void:
     DirAccess.make_dir_recursive_absolute(EXTENSIONS_DIR)
@@ -79,6 +80,39 @@ func import_extension_zip(zip_path: String) -> WidgetExtensionDescriptor:
         return null
 
     _run_plugin_hook(manifest, install_dir)
+
+    return descriptor
+
+## Copies an external .zip into the managed extensions directory, then
+## imports and registers it. This ensures the source archive persists
+## across restarts so _ready() can rediscover it on next launch.
+func install_extension_from_path(source_path: String) -> WidgetExtensionDescriptor:
+    var dest_path: String = EXTENSIONS_DIR.path_join(source_path.get_file())
+
+    if ProjectSettings.globalize_path(source_path) != ProjectSettings.globalize_path(dest_path):
+        if FileAccess.file_exists(dest_path):
+            var msg: String = "A file named '%s' already exists in the extensions folder." \
+                % source_path.get_file()
+            push_error(msg)
+            extension_registration_failed.emit(msg, source_path)
+            return null
+
+        var err: Error = DirAccess.copy_absolute(source_path, dest_path)
+        if err != OK:
+            var msg: String = "Failed to copy extension archive (error %s)." % err
+            push_error(msg)
+            extension_registration_failed.emit(msg, source_path)
+            return null
+
+    var descriptor: WidgetExtensionDescriptor = import_extension_zip(dest_path)
+    if descriptor == null:
+        return null
+
+    if not _register_descriptor(descriptor):
+        var msg: String = "Extension '%s' could not be registered." % descriptor.id
+        push_error(msg)
+        extension_registration_failed.emit(msg, dest_path)
+        return null
 
     return descriptor
 

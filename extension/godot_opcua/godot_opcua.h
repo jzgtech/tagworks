@@ -113,7 +113,7 @@ public:
     /// processes incoming publish responses and fires _on_data_change for each
     /// changed tag.  Everything runs synchronously on the calling (main) thread.
     /// timeout_ms = 0 → non-blocking poll; 1 is a good default.
-    Error GodotOpcUa::iterate(int timeout_ms);
+    Error iterate(int timeout_ms);
 
     /// Re-create all server-side subscriptions and monitored items after a
     /// reconnect.  Call this from GDScript immediately after a successful

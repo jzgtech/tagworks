@@ -34,7 +34,7 @@ func _on_selected_widgets_changed(selected_widgets: ReactiveArray) -> void:
     else:
         property_changed.connect(_current_widget_node._on_property_changed)
 
-    _load_widget(_current_widget_node, _current_target)
+    _load_widget(_current_widget_node)
 
 #TODO: Update this to be more efficient!
 func get_widget_node(w: ReactiveWidget) -> BaseWidget:
@@ -58,8 +58,7 @@ func clear() -> void:
     for child: Node in _events.get_children():
         child.queue_free()
 
-
-func _load_widget(node: Node, widget: ReactiveWidget) -> void:
+func _load_widget(node: Node) -> void:
     for child: Node in _properties.get_children():
         child.queue_free()
     for child: Node in _events.get_children():

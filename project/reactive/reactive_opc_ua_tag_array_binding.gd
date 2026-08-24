@@ -25,13 +25,13 @@ func remove_tag(index: int) -> void:
 
 func serialize() -> Variant:
     var out: Array = []
-    for b in tag_bindings.value:
+    for b : ReactiveOpcUaTagBinding in tag_bindings.value:
         out.append((b as ReactiveOpcUaTagBinding).serialize())
     return out
 
 func deserialize(data: Variant) -> void:
     tag_bindings.value.clear()
-    for d in (data as Array):
+    for d : Dictionary in (data as Array):
         var b: ReactiveOpcUaTagBinding = ReactiveOpcUaTagBinding.new({}, tag_bindings, "0")
         b.deserialize(d)
         tag_bindings.value.append(b)

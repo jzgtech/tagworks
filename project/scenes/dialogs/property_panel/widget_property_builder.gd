@@ -122,7 +122,7 @@ func _build_field_row(
     var rebuild_body: Callable = func() -> void:
         if not is_instance_valid(body):
             return
-        for c in body.get_children():
+        for c : Node in body.get_children():
             c.queue_free()
         var factory: Callable = editor_factories.get(field.source_type.value, Callable())
         if factory.is_valid():
@@ -259,9 +259,9 @@ func _constant_array_editor_factory(field: Object) -> Callable:
 
         var rebuild: Callable
         rebuild = func() -> void:
-            for c in rows.get_children():
+            for c : Node in rows.get_children():
                 c.queue_free()
-            for i in arr.size():
+            for i : int in arr.size():
                 rows.add_child(_build_constant_array_row(arr, i, field, rebuild))
 
         var footer: HBoxContainer = HBoxContainer.new()
@@ -277,7 +277,7 @@ func _constant_array_editor_factory(field: Object) -> Callable:
         var fill_btn: Button = Button.new()
         fill_btn.text = "Set All Equal"
         fill_btn.pressed.connect(func() -> void:
-            for i in arr.size():
+            for i : int in arr.size():
                 arr[i] = 1.0
             field.constant_value.value = field.rebuild_typed_array(arr)
             rebuild.call()
@@ -374,7 +374,7 @@ func _build_tag_binding_editor(binding: ReactiveOpcUaTagBinding) -> Control:
     var subscription_select: OptionButton = OptionButton.new()
     var tag_select: OptionButton = OptionButton.new()
 
-    for o in [server_select, subscription_select, tag_select]:
+    for o : Control in [server_select, subscription_select, tag_select]:
         o.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
     var project: ReactiveProject = AppState.current_project
@@ -385,7 +385,7 @@ func _build_tag_binding_editor(binding: ReactiveOpcUaTagBinding) -> Control:
         if project == null:
             return
         var ids: Array = project.opc_ua_servers.value.keys()
-        for i in ids.size():
+        for i : int in ids.size():
             server_select.add_item(str(ids[i]), i)
             server_select.set_item_metadata(i + 1, ids[i])
         _select_option_by_metadata(server_select, binding.server_id.value)
@@ -402,7 +402,7 @@ func _build_tag_binding_editor(binding: ReactiveOpcUaTagBinding) -> Control:
         if server == null:
             return
         var ids: Array = server.subscriptions.value.keys()
-        for i in ids.size():
+        for i : int in ids.size():
             subscription_select.add_item(str(ids[i]), i)
             subscription_select.set_item_metadata(i + 1, ids[i])
         _select_option_by_metadata(subscription_select, binding.subscription_id.value)
@@ -419,7 +419,7 @@ func _build_tag_binding_editor(binding: ReactiveOpcUaTagBinding) -> Control:
         if subscription == null:
             return
         var ids: Array = subscription.tags.value.keys()
-        for i in ids.size():
+        for i : int in ids.size():
             tag_select.add_item(str(ids[i]), i)
             tag_select.set_item_metadata(i + 1, ids[i])
         _select_option_by_metadata(tag_select, binding.tag_id.value)
@@ -458,7 +458,7 @@ func _select_option_by_metadata(option: OptionButton, target: String) -> void:
     if target.is_empty():
         option.select(0)
         return
-    for i in option.item_count:
+    for i : int in option.item_count:
         if str(option.get_item_metadata(i)) == target:
             option.select(i)
             return
@@ -481,13 +481,12 @@ func _tag_array_editor_factory(field: ReactiveDynamicField) -> Callable:
             # was disconnected), silently no-op instead of crashing.
             if not is_instance_valid(rows):
                 return
-            for c in rows.get_children():
+            for c : Node in rows.get_children():
                 c.queue_free()
-            for i in binding.tag_bindings.value.size():
+            for i : int in binding.tag_bindings.value.size():
                 rows.add_child(_build_tag_array_row(binding, i, rebuild))
 
-        var on_tag_bindings_changed: Callable = func(_t) -> void:
-            rebuild.call()
+        var on_tag_bindings_changed: Callable = func(_origin: ReactiveArray) -> void: rebuild.call()
         binding.tag_bindings.connect_any_changed_self(on_tag_bindings_changed)
 
         # Ensure the listener above is disconnected the moment this row's

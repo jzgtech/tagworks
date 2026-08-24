@@ -150,7 +150,11 @@ func connect_server(server_id: String) -> void:
     if connection == null:
         push_warning("OpcUaManager: connect_server on unknown server '%s'." % server_id)
         return
-    connection.connect_to_server()
+    var ret: bool = connection.connect_to_server()
+    if ret:
+        LogManager.info("Connected to server: " + server_id, "OPC UA", {"silent": true})
+    if not ret:
+        LogManager.error("Unable to connect to server: " + server_id, "OPC UA")
 
 
 func disconnect_server(server_id: String) -> void:
@@ -158,4 +162,5 @@ func disconnect_server(server_id: String) -> void:
     if connection == null:
         push_warning("OpcUaManager: disconnect_server on unknown server '%s'." % server_id)
         return
-    connection.disconnect_from_server()
+    if connection.disconnect_from_server():
+        ToastManager.success("Disconnected from server: " + server_id, 5.0)

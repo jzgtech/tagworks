@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://rgkjg2r4vypn"]
+
+[ext_resource type="Script" uid="uid://dswy0dmg6mk1o" path="res://scenes/start_screen/start_screen.gd" id="1_nsrto"]
+[ext_resource type="PackedScene" uid="uid://cl7a71de6ssk0" path="res://scenes/main/recent_project_row.tscn" id="2_bb6cw"]
+
+[sub_resource type="Gradient" id="Gradient_58f5j"]
+offsets = PackedFloat32Array(0, 0.125, 1)
+colors = PackedColorArray(0.1764706, 0.1764706, 0.47058824, 1, 0.1764706, 0.1764706, 0.29411766, 1, 0.1764706, 0.1764706, 0.1764706, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 8
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bb6cw"]
+gradient = SubResource("Gradient_58f5j")
+width = 256
+height = 256
+fill = 2
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="FontVariation" id="FontVariation_58f5j"]
+variation_embolden = 0.75
+
+[sub_resource type="LabelSettings" id="LabelSettings_k6270"]
+font = SubResource("FontVariation_58f5j")
+font_size = 45
+font_color = Color(0, 0.3137255, 0.9019608, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_ehxit"]
+variation_embolden = 1.0
+
+[node name="StartScreenMobile" type="PanelContainer" unique_id=1515152957]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nsrto")
+recent_project_row_scene = ExtResource("2_bb6cw")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1567026708]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_bb6cw")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1294660120]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1400881566]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=828909957]
+unique_name_in_owner = true
+layout_mode = 2
+text = "TagWorks"
+label_settings = SubResource("LabelSettings_k6270")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1270557319]
+layout_mode = 2
+theme_override_constants/separation = 56
+alignment = 1
+
+[node name="NewProjectButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=517283086]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SPLASH_NEW_PROJECT"
+
+[node name="OpenProjectButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2003975001]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SPLASH_OPEN_PROJECT"
+
+[node name="RecentProjectsSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1893655401]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RecentProjectsSection" unique_id=1047827475]
+layout_mode = 2
+
+[node name="RecentProjectsLabel" type="Label" parent="MarginContainer/VBoxContainer/RecentProjectsSection/HBoxContainer" unique_id=187330191]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SPLASH_RECENT_PROJECTS"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/RecentProjectsSection" unique_id=500699289]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"RecentProjects"
+
+[node name="RecentProjectsList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/RecentProjectsSection/ScrollContainer" unique_id=1356555858]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1631689451]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=2082511932]
+layout_mode = 2
+
+[node name="RuntimeOnlyCheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=471003646]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+
+[node name="RuntimeOnlyLabel" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=2028170473]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+theme_override_colors/font_pressed_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+theme_override_colors/font_hover_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+text = "SPLASH_RUNTIME_ONLY"
+flat = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=638633016]
+layout_mode = 2
+
+[node name="LanguageOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1467801149]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=60090693]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VersionLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=2019843607]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SPLASH_VERSION"
+
+[node name="CloseButton" type="Button" parent="." unique_id=1530049362]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_ehxit")
+text = "✕"
+flat = true
+icon_alignment = 1

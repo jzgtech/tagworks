@@ -78,18 +78,18 @@ func _bind_script() -> void:
 # ── Array <-> Dictionary helpers ────────────────────────────────────────────
 
 func _array_to_dict(v: Variant) -> Dictionary:
-    var dict: Dictionary = {}
-    var arr: Array = Array(v) if v != null else []
-    for i in arr.size():
+    var dict : Dictionary = {}
+    var arr : Array = Array(v) if v != null else []
+    for i : int in arr.size():
         dict[str(i)] = ReactiveVariantCodec.encode_variant(arr[i])
     return dict
 
 func _dict_to_array(d: Dictionary) -> Variant:
     var keys: Array = d.keys()
-    keys.sort_custom(func(a, b): return int(a) < int(b))
+    keys.sort_custom(func(a : Variant, b : Variant) -> bool: return int(a) < int(b))
 
     var arr: Array = []
-    for k in keys:
+    for k : Variant in keys:
         arr.append(ReactiveVariantCodec.decode_variant(d[k]))
 
     match _vector_type:

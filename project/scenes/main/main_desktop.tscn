@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://chrkq14f3x3w0"]
+
+[ext_resource type="Theme" uid="uid://2pnop8nm7lxm" path="res://resources/base_theme.tres" id="1_ouso4"]
+[ext_resource type="Script" uid="uid://ddgc0oskbohlj" path="res://scenes/main/main_desktop.gd" id="2_blune"]
+[ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="3_th5th"]
+[ext_resource type="PackedScene" uid="uid://btna6ctqhs01q" path="res://ui/shell/menu/top_menu_bar_desktop.tscn" id="4_tnnqq"]
+[ext_resource type="PackedScene" uid="uid://bo0tkqp8g6tm3" path="res://scenes/dialogs/pages_panel/pages_panel.tscn" id="5_raeie"]
+[ext_resource type="Script" uid="uid://dwudljs54kucl" path="res://scenes/dialogs/pages_panel/canvas_container.gd" id="6_hxu8e"]
+[ext_resource type="PackedScene" uid="uid://cngi5xaoyrkxg" path="res://scenes/dialogs/widget_palette/widget_palette.tscn" id="7_nvumn"]
+[ext_resource type="PackedScene" uid="uid://dg1rxoysdt2ry" path="res://scenes/dialogs/property_panel/property_panel.tscn" id="8_ou6is"]
+
+[node name="MainDesktop" type="Control" unique_id=1699472879]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ouso4")
+script = ExtResource("2_blune")
+
+[node name="Background" type="Panel" parent="." unique_id=500542961]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeAreaContainer" type="MarginContainer" parent="." unique_id=596542933]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_th5th")
+
+[node name="RootLayout" type="VBoxContainer" parent="SafeAreaContainer" unique_id=974261623]
+layout_mode = 2
+
+[node name="MenuBar" parent="SafeAreaContainer/RootLayout" unique_id=1410388054 instance=ExtResource("4_tnnqq")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WorkArea" type="HSplitContainer" parent="SafeAreaContainer/RootLayout" unique_id=1534408628]
+layout_mode = 2
+size_flags_vertical = 3
+split_offsets = PackedInt32Array(250, -250)
+drag_nested_intersections = true
+split_offset = 250
+
+[node name="PageContainer" type="VSplitContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1090117370]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.4
+drag_nested_intersections = true
+
+[node name="PagesPanel" parent="SafeAreaContainer/RootLayout/WorkArea/PageContainer" unique_id=1118176807 instance=ExtResource("5_raeie")]
+layout_mode = 2
+
+[node name="CanvasContainer" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1430019445]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_horizontal = 3
+drag_to_rearrange_enabled = true
+script = ExtResource("6_hxu8e")
+
+[node name="InspectorContainer" type="VSplitContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1030319876]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+drag_nested_intersections = true
+
+[node name="WidgetPalette" parent="SafeAreaContainer/RootLayout/WorkArea/InspectorContainer" unique_id=232280490 instance=ExtResource("7_nvumn")]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="PropertyPanel" parent="SafeAreaContainer/RootLayout/WorkArea/InspectorContainer" unique_id=77828116 instance=ExtResource("8_ou6is")]
+layout_mode = 2
+size_flags_horizontal = 3
