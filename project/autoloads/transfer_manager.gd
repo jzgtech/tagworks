@@ -173,6 +173,7 @@ func _finalize_received_file() -> void:
 
     _client_state = ClientState.DONE
     LogManager.info("Project transfer completed", LOG_CATEGORY, {"target_path": target_path})
+    IntentBus.open_project_requested.emit(target_path)
     transfer_completed.emit(target_path)
     _cleanup()
 

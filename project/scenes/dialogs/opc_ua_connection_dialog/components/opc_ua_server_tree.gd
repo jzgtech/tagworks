@@ -39,11 +39,10 @@ var _servers_changed_callback: Callable = Callable()
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
-    columns                    = 2
-    column_titles_visible      = true
+    columns                    = 1
+    column_titles_visible      = false
     hide_root                  = true
     set_column_title(0, "Name")
-    set_column_title(1, "Info")
     set_column_expand(1, false)
     set_column_custom_minimum_width(1, 90)
 
@@ -167,13 +166,11 @@ func _rebuild() -> void:
     for cfg: ReactiveOpcUaServer in _servers_dict().values():
         var server_item: TreeItem = create_item(root)
         server_item.set_text(0, _status_prefix(cfg) + cfg.display_name.value)
-        server_item.set_text(1, "")
         server_item.set_metadata(0, { "type": "server", "server_id": cfg.id.value })
 
         for subscription: ReactiveOpcUaSubscription in cfg.subscriptions.values():
             var subscription_item: TreeItem = create_item(server_item)
             subscription_item.set_text(0, "  " + subscription.display_name.value)
-            subscription_item.set_text(1, "%d ms" % subscription.pub_interval_ms.value)
             subscription_item.set_metadata(0, {
                 "type":            "subscription",
                 "server_id":       cfg.id.value,
@@ -183,7 +180,6 @@ func _rebuild() -> void:
             for tag: ReactiveOpcUaTag in subscription.tags.values():
                 var tag_item: TreeItem = create_item(subscription_item)
                 tag_item.set_text(0, "    " + tag.display_name.value)
-                tag_item.set_text(1, tag.node_id.value)
                 tag_item.set_metadata(0, {
                     "type":            "tag",
                     "server_id":       cfg.id.value,

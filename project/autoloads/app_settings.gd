@@ -48,8 +48,8 @@ func set_locale(locale: String) -> void:
 func set_network_transfer_enabled(enabled: bool) -> void:
     network_transfer_enabled.value = enabled
 
-func set_device_name(name: String) -> void:
-    device_name.value = name
+func set_device_name(new_name: String) -> void:
+    device_name.value = new_name
 
 func set_require_pin_for_transfers(enabled: bool) -> void:
     require_pin_for_transfers.value = enabled

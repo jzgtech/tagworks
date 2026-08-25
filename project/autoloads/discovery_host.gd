@@ -33,7 +33,7 @@ func stop() -> void:
     set_process(false)
     _udp.close()
     _tcp_server.stop()
-    for peer in _active_connections:
+    for peer: StreamPeerTCP in _active_connections:
         peer.disconnect_from_host()
     _active_connections.clear()
 

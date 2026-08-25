@@ -44,7 +44,7 @@ func handle_file_action(id: int) -> void:
         FileAction.NEW: IntentBus.new_project_requested.emit()
         FileAction.OPEN: IntentBus.open_project_dialog_requested.emit()
         FileAction.TRANSFER: IntentBus.open_project_transfer_dialog_requested.emit()
-        FileAction.SAVE: IntentBus.save_project_as_requested.emit()
+        FileAction.SAVE: IntentBus.save_project_requested.emit()
         FileAction.SAVE_AS: IntentBus.save_project_as_dialog_requested.emit()
         FileAction.CLOSE: IntentBus.close_project_requested.emit()
         FileAction.EXIT: get_tree().quit()

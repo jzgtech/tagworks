@@ -25,17 +25,6 @@ const SERVER_MENU_FIXED_ITEM_COUNT: int = 1
 const CONNECT_ALL_ID: int = 1000
 const DISCONNECT_ALL_ID: int = 1001
 
-# ── State ─────────────────────────────────────────────────────────────────────
-
-## Tracks dynamically created server submenus keyed by server_id.
-## Enables clean teardown and rebuild when the server list changes.
-var _server_submenus: Dictionary = {}
-
-## Tracks per-server connection_status bindings keyed by server_id, so each
-## can be individually connected/disconnected as the server menu is rebuilt.
-## { server_id: { "cfg": ReactiveOpcUaServer, "callable": Callable } }
-var _status_bindings: Dictionary = {}
-
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:

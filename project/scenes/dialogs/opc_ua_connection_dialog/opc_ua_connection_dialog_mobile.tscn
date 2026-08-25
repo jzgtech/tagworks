@@ -16,12 +16,11 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBox" index="0" unique_id=778527002]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
+current_tab = 0
 tab_0/title = "Overview"
 tab_1/title = "Details"
 
 [node name="LeftSide" type="VBoxContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="1" unique_id=1183162989]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Overview"
@@ -55,6 +54,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="RightSide" type="VBoxContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="2" unique_id=682289139]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_name = "Details"

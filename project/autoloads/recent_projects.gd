@@ -9,7 +9,7 @@ func _ready() -> void:
     _load()
 
 func add(path: String, display_name: String) -> void:
-    entries = entries.filter(func(e): return e.file_path != path)
+    entries = entries.filter(func(e: Dictionary) -> bool: return e.file_path != path)
     entries.push_front({
         "file_path": path,
         "display_name": display_name,
@@ -20,11 +20,11 @@ func add(path: String, display_name: String) -> void:
     _save()
 
 func remove(path: String) -> void:
-    entries = entries.filter(func(e): return e.file_path != path)
+    entries = entries.filter(func(e: Dictionary) -> bool: return e.file_path != path)
     _save()
 
 func _save() -> void:
-    var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+    var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
     if file == null:
         push_warning("RecentProjects: failed to open '%s' for writing (error %s)." % [SAVE_PATH, FileAccess.get_open_error()])
         return
@@ -33,7 +33,7 @@ func _save() -> void:
 func _load() -> void:
     if not FileAccess.file_exists(SAVE_PATH):
         return
-    var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+    var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
     if file == null:
         push_warning("RecentProjects: failed to open '%s' for reading (error %s)." % [SAVE_PATH, FileAccess.get_open_error()])
         return

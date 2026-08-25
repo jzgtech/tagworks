@@ -70,7 +70,7 @@ script = ExtResource("6_hxu8e")
 
 [node name="InspectorContainer" type="VSplitContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1030319876]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 drag_nested_intersections = true
 
