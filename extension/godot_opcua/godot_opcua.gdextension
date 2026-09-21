@@ -29,5 +29,5 @@ android.debug.x86_64        = "res://bin/libgodot_opcua.android.template_debug.x
 android.release.x86_64      = "res://bin/libgodot_opcua.android.template_release.x86_64.so"
 
 ; ── macOS (uncomment and build with platform=macos when needed) ───────────────
-;macos.debug                 = "res://bin/libgodot_opcua.macos.template_debug.universal.framework"
-;macos.release               = "res://bin/libgodot_opcua.macos.template_release.universal.framework"
+;macos.debug                 = "res://bin/libgodot_opcua.macos.template_debug.universal.a"
+;macos.release               = "res://bin/libgodot_opcua.macos.template_release.universal.a"

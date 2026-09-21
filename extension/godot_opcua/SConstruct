@@ -25,6 +25,7 @@
 
 import os
 import sys
+import platform
 
 # ── Resolve paths relative to this SConstruct ─────────────────────────────────
 script_dir   = Dir(".").abspath                        # extension/godot_opcua/
@@ -129,6 +130,12 @@ else:
         "-Wno-unused-function",  "-Wno-missing-field-initializers",
         "-Wno-implicit-fallthrough", "-Wno-type-limits", "-Wno-pedantic",
     ])
+    
+    # --- ADD THIS LOGIC TO FIX THE SO_REUSEPORT ERROR ---
+    if platform.system() == "Darwin":  # macOS detected
+        ua_env.Append(CPPDEFINES=["_DARWIN_C_SOURCE"])
+    else:  # Linux fallback for old kernels
+        ua_env.Append(CPPDEFINES=[("SO_REUSEPORT", "SO_REUSEADDR")])
 
 open62541_obj = ua_env.SharedObject(
     os.path.join(script_dir, "open62541.c"))
