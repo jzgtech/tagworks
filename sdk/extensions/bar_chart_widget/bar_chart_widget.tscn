@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://d1qx1aoxnmecn"]
+
+[ext_resource type="Script" uid="uid://0x7ks5u315w0" path="res://extensions/bar_chart_widget/bar_chart_widget.gd" id="1_3smj3"]
+
+[node name="BarChartWidget" type="Control" unique_id=258470270]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_3smj3")

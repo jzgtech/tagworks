@@ -1,0 +1,11 @@
+{
+  "id": "com.vendor.button_widget",
+  "name": "Button",
+  "version": "1.0.0",
+  "api_version": "1",
+  "entry_scene": "button_widget.tscn",
+  "icon": "icon.svg",
+  "is_container": false,
+  "author": "Vendor Name",
+  "description": "A simple clickable button widget."
+}

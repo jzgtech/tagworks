@@ -57,12 +57,12 @@ visible = false
 layout_mode = 2
 text = "No server selected"
 
-[node name="SubscriptionDetailForm" parent="Panel/MarginContainer/VBox/HSplitContainer/RightSide" index="1" unique_id=56569965 instance=ExtResource("4_bwijl")]
+[node name="ServerDetailForm" parent="Panel/MarginContainer/VBox/HSplitContainer/RightSide" index="1" unique_id=1912633500 instance=ExtResource("5_po5p1")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ServerDetailForm" parent="Panel/MarginContainer/VBox/HSplitContainer/RightSide" index="2" unique_id=1912633500 instance=ExtResource("5_po5p1")]
+[node name="SubscriptionDetailForm" parent="Panel/MarginContainer/VBox/HSplitContainer/RightSide" index="2" unique_id=56569965 instance=ExtResource("4_bwijl")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

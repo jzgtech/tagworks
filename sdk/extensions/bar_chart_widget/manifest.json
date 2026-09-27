@@ -1,0 +1,11 @@
+{
+  "id": "com.vendor.bar_chart_widget",
+  "name": "Bar Chart",
+  "version": "1.0.0",
+  "api_version": "1",
+  "entry_scene": "bar_chart_widget.tscn",
+  "icon": "icon.svg",
+  "is_container": false,
+  "author": "Vendor Name",
+  "description": "A simple bar chart widget."
+}

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://quf0q7ws8qwp"]
+
+[ext_resource type="PackedScene" uid="uid://bjr3i23enoppx" path="res://extensions/button_widget/button_widget.tscn" id="2_i4qnp"]
+
+[sub_resource type="GDScript" id="GDScript_i4qnp"]
+script/source = "# sdk/preview_harness.gd
+extends Control
+
+@export var content_scene: PackedScene
+
+func _ready() -> void:
+    if content_scene == null:
+        return
+    var content: Control = content_scene.instantiate()
+    content.set_anchors_preset(Control.PRESET_FULL_RECT)
+    %ContentSlot.add_child(content)
+
+    if content.has_method(\"on_widget_ready\"):
+        content.call(\"on_widget_ready\", null)  # pass a mock ReactiveWidget if needed
+"
+
+[node name="PreviewHarness" type="Control" unique_id=1814672745]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_i4qnp")
+content_scene = ExtResource("2_i4qnp")
+
+[node name="ContentSlot" type="Control" parent="." unique_id=47517041]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

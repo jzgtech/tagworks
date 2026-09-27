@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bvi3o2365moo7"]
+
+[ext_resource type="Script" uid="uid://c3o6x0alau7p8" path="res://extensions/flatness_waterfall_widget/flatness_waterfall_widget.gd" id="1_ih2n5"]
+
+[node name="Control" type="Control" unique_id=456154543]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ih2n5")

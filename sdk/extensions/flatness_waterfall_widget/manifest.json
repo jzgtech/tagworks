@@ -1,0 +1,11 @@
+{
+  "id": "com.vendor.flatness_waterfall_widget",
+  "name": "Flatness Waterfall",
+  "version": "1.0.0",
+  "api_version": "1",
+  "entry_scene": "flatness_waterfall_widget.tscn",
+  "icon": "icon.svg",
+  "is_container": false,
+  "author": "Vendor Name",
+  "description": "A waterfall extension to the flatness display."
+}

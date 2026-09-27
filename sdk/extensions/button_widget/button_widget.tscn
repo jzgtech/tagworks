@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bjr3i23enoppx"]
+
+[ext_resource type="Script" uid="uid://c4co5yt6eoj46" path="res://extensions/button_widget/button_widget.gd" id="1_p5mwv"]
+
+[node name="Button" type="Button" unique_id=1300143304]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p5mwv")

@@ -48,9 +48,7 @@ func _ready() -> void:
 	_set_scaling()
 	get_tree().root.size_changed.connect(_on_root_size_changed)
 
-## Applies DPI-based UI scaling. Runs at startup and whenever the
-## display/resolution context changes (rotation, external monitor, etc.).
-func _set_scaling() -> void:
+func _get_scale_factor() -> float:
 	var current_screen: int = DisplayServer.window_get_current_screen()
 	var scale_factor: float = DisplayServer.screen_get_scale(current_screen)
 	
@@ -60,10 +58,15 @@ func _set_scaling() -> void:
 	
 	scale_factor = clampf(scale_factor, 1.0, 3.0)
 	
+	return scale_factor
+
+## Applies DPI-based UI scaling. Runs at startup and whenever the
+## display/resolution context changes (rotation, external monitor, etc.).
+func _set_scaling() -> void:
 	var root = get_tree().root
 	
 	# 1. Update the scale factor
-	root.content_scale_factor = scale_factor
+	root.content_scale_factor = _get_scale_factor()
 	
 	# 2. Prevent window clipping on desktop platforms
 	# If the window isn't maximized or fullscreen, we must ensure it isn't smaller 
@@ -74,8 +77,8 @@ func _set_scaling() -> void:
 		var base_width: int = ProjectSettings.get_setting("display/window/size/viewport_width")
 		var base_height: int = ProjectSettings.get_setting("display/window/size/viewport_height")
 		
-		var min_width: int = int(base_width * scale_factor)
-		var min_height: int = int(base_height * scale_factor)
+		var min_width: int = int(base_width * _get_scale_factor())
+		var min_height: int = int(base_height * _get_scale_factor())
 		
 		# Prevent the OS window from shrinking smaller than the required scaled size
 		DisplayServer.window_set_min_size(Vector2i(min_width, min_height))
@@ -187,6 +190,8 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 				window_instance.popup_centered(options.get("size", Vector2i(800, 600)))
 		elif window_instance is Control and _should_force_fullscreen():
 			_force_control_fullscreen(window_instance)
+
+	window_instance.content_scale_factor = _get_scale_factor()
 
 	return window_instance
 

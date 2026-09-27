@@ -30,4 +30,4 @@ android.release.x86_64      = "res://bin/libgodot_opcua.android.template_release
 
 ; ── macOS (uncomment and build with platform=macos when needed) ───────────────
 macos.debug                 = "res://bin/libgodot_opcua.macos.template_debug.universal.dylib"
-macos.release               = "res://bin/libgodot_opcua.macos.template_release.universal.dylib"
+macos.release               = "res://bin/libgodot_opcua.macos.template_debug.universal.dylib"
