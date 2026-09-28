@@ -20,8 +20,8 @@ const DEFAULT_PAGE_NAME: String = "New Page"
 const DEFAULT_ROOT_NAME: String = "Project"
 
 enum MenuAction {
-    ADD_PAGE,
-    DELETE_PAGE
+	ADD_PAGE,
+	DELETE_PAGE
 }
 
 # ─────────────────────────────────────────────
@@ -36,369 +36,364 @@ var _item_map  : Dictionary = {}
 # ─────────────────────────────────────────────
 
 func _ready() -> void:
-    _button_container.visible = not AppState.runtime_only.value
-    _setup_tree()
-    _connect_signals()
-    _update_button_states()
+	_button_container.visible = not AppState.runtime_only.value
+	_setup_tree()
+	_connect_signals()
+	_update_button_states()
 
 func _setup_tree() -> void:
-    _page_tree.hide_root        = true
-    _page_tree.allow_rmb_select = true
-    _page_tree.allow_reselect   = true
-    _page_tree.drop_mode_flags  = Tree.DROP_MODE_INBETWEEN | Tree.DROP_MODE_ON_ITEM
+	_page_tree.hide_root        = true
+	_page_tree.allow_rmb_select = true
+	_page_tree.allow_reselect   = true
+	_page_tree.drop_mode_flags  = Tree.DROP_MODE_INBETWEEN | Tree.DROP_MODE_ON_ITEM
 
-    _page_tree.set_drag_forwarding(
-        _get_drag_data,
-        _can_drop_data,
-        _drop_data
-    )
+	_page_tree.set_drag_forwarding(
+		_get_drag_data,
+		_can_drop_data,
+		_drop_data
+	)
 
 
 func _connect_signals() -> void:
-    _btn_add_page.pressed.connect(func() -> void:
-        _create_page("")
-    )
+	_btn_add_page.pressed.connect(func() -> void:
+		_create_page("")
+	)
 
-    _btn_delete.pressed.connect(func() -> void:
-        var page: ReactivePage = AppState.focused_page.value as ReactivePage
-        if page == null or page.page_id.value.is_empty():
-            return
-        _delete_page(page.page_id.value)
-    )
+	_btn_delete.pressed.connect(func() -> void:
+		var page: ReactivePage = AppState.focused_page.value as ReactivePage
+		if page == null or page.page_id.value.is_empty():
+			return
+		_delete_page(page.page_id.value)
+	)
 
-    _context_menu.id_pressed.connect(_on__context_menu_id_pressed)
-    _page_tree.item_mouse_selected.connect(
-        func(_mouse_position: Vector2, mouse_button_index: int) -> void:
-            _on_item_mouse_selected(mouse_button_index, false)
-    )
-    _page_tree.nothing_selected.connect(
-        func() -> void:
-            AppState.focused_page.value = null
-    )
-    _page_tree.item_activated.connect(
-        func() -> void:
-            _on_item_mouse_selected(MOUSE_BUTTON_LEFT, true)
-    )
-    _page_tree.item_edited.connect(_on_item_edited)
+	_context_menu.id_pressed.connect(_on__context_menu_id_pressed)
+	_page_tree.item_mouse_selected.connect(
+		func(_mouse_position: Vector2, mouse_button_index: int) -> void:
+			_on_item_mouse_selected(mouse_button_index, false)
+	)
+	_page_tree.nothing_selected.connect(
+		func() -> void:
+			AppState.focused_page.value = null
+	)
+	_page_tree.item_activated.connect(
+		func() -> void:
+			_on_item_mouse_selected(MOUSE_BUTTON_LEFT, true)
+	)
+	_page_tree.item_edited.connect(_on_item_edited)
 
-    AppState.current_project.pages.connect_self_changed(_on_page_hierarchy_changed)
-    _rebuild_tree()
-    AppState.active_page.connect_self_changed(_on_active_page_changed)
-    AppState.focused_page.connect_self_changed(
-        func(_origin: ReactiveVariant) -> void:
-            if _origin.value == null:
-                _page_tree.deselect_all()
-    )
+	AppState.current_project.pages.connect_any_changed_self(_on_page_hierarchy_changed)
+	_rebuild_tree()
+	AppState.active_page.connect_self_changed(_on_active_page_changed)
+	AppState.focused_page.connect_self_changed(
+		func(_origin: ReactiveVariant) -> void:
+			if _origin.value == null:
+				_page_tree.deselect_all()
+	)
 
 # ─────────────────────────────────────────────
 # Tree Building
 # ─────────────────────────────────────────────
 
 func _rebuild_tree() -> void:
-    _page_tree.clear()
-    _item_map.clear()
+	_page_tree.clear()
+	_item_map.clear()
 
-    if not AppState.current_project.is_loaded.value:
-        return
+	if not AppState.current_project.is_loaded.value:
+		return
 
-    _tree_root = _page_tree.create_item()
-    _tree_root.set_text(0, AppState.current_project.project_name.value)
-    _tree_root.set_selectable(0, true)
+	_tree_root = _page_tree.create_item()
+	_tree_root.set_text(0, AppState.current_project.project_name.value)
+	_tree_root.set_selectable(0, true)
 
-    _page_tree.hide_root = not AppState.runtime_only
+	_page_tree.hide_root = not AppState.runtime_only
 
 
-    for item: Variant in AppState.current_project.pages.values():
-        var page: ReactivePage = item as ReactivePage
-        if page != null:
-            _build_item(_tree_root, page)
+	for item: Variant in AppState.current_project.pages.values():
+		var page: ReactivePage = item as ReactivePage
+		if page != null:
+			_build_item(_tree_root, page)
 
-    _tree_root.set_collapsed(false)
+	_tree_root.set_collapsed(false)
 
 
 func _build_item(parent: TreeItem, page: ReactivePage) -> TreeItem:
-    var item: TreeItem = _create_item(parent, page)
-    for child_item: Variant in page.children.values():
-        var child: ReactivePage = child_item as ReactivePage
-        if child != null:
-            _build_item(item, child)
-    return item
+	var item: TreeItem = _create_item(parent, page)
+	for child_item: Variant in page.children.values():
+		var child: ReactivePage = child_item as ReactivePage
+		if child != null:
+			_build_item(item, child)
+	return item
 
 
 func _create_item(parent: TreeItem, page: ReactivePage) -> TreeItem:
-    var item: TreeItem = _page_tree.create_item(parent)
-    item.set_text(0, page.page_name.value)
-    item.set_metadata(0, page)
-    item.set_editable(0, false)
+	var item: TreeItem = _page_tree.create_item(parent)
+	item.set_text(0, page.page_name.value)
+	item.set_metadata(0, page)
+	item.set_editable(0, false)
 
-    _item_map[page.page_id.value] = item
-    return item
+	_item_map[page.page_id.value] = item
+	return item
 
 # ─────────────────────────────────────────────
 # Page Mutations
 # ─────────────────────────────────────────────
 
 func _create_page(page_name: String) -> void:
-    if not AppState.current_project.is_loaded.value:
-        push_warning("PagePanel: No active project.")
-        return
+	if not AppState.current_project.is_loaded.value:
+		push_warning("PagePanel: No active project.")
+		return
 
-    var project: ReactiveProject = AppState.current_project
+	var project: ReactiveProject = AppState.current_project
 
-    # Resolve a unique name
-    var resolved: String = page_name if not page_name.is_empty() else DEFAULT_PAGE_NAME
-    var offset: int = 1
-    while project.find_page_name(resolved) != null:
-        resolved = DEFAULT_PAGE_NAME + " " + str(offset)
-        offset  += 1
+	# Resolve a unique name
+	var resolved: String = page_name if not page_name.is_empty() else DEFAULT_PAGE_NAME
+	var offset: int = 1
+	while project.find_page_name(resolved) != null:
+		resolved = DEFAULT_PAGE_NAME + " " + str(offset)
+		offset  += 1
 
-    var focused: ReactivePage = AppState.focused_page.value as ReactivePage
+	var focused: ReactivePage = AppState.focused_page.value as ReactivePage
 
-    if focused != null and not focused.page_id.value.is_empty():
-        var new_page: ReactivePage = ReactivePage.create(resolved, focused.children)
-        focused.add_child_page(new_page)
-    else:
-        var new_page: ReactivePage = ReactivePage.create(resolved, AppState.current_project.pages)
-        project.add_page(new_page)
+	if focused != null and not focused.page_id.value.is_empty():
+		var new_page: ReactivePage = ReactivePage.create(resolved, focused.children)
+		focused.add_child_page(new_page)
+	else:
+		var new_page: ReactivePage = ReactivePage.create(resolved, AppState.current_project.pages)
+		project.add_page(new_page)
 
 
 func _delete_page(page_id: String) -> void:
-    if not AppState.current_project.is_loaded.value:
-        push_warning("PagePanel: No active project.")
-        return
+	if not AppState.current_project.is_loaded.value:
+		push_warning("PagePanel: No active project.")
+		return
 
-    var project: ReactiveProject = AppState.current_project
+	var project: ReactiveProject = AppState.current_project
 
-    if project.pages.values().size() == 1:
-        push_warning("PagePanel: Cannot delete the last remaining page.")
-        return
+	if project.pages.values().size() == 1:
+		push_warning("PagePanel: Cannot delete the last remaining page.")
+		return
 
-    var focused: ReactivePage = AppState.focused_page.value as ReactivePage
-    if focused != null and focused.page_id.value == page_id:
-        AppState.focused_page.value = null
+	var focused: ReactivePage = AppState.focused_page.value as ReactivePage
+	if focused != null and focused.page_id.value == page_id:
+		AppState.focused_page.value = null
 
-    var active: ReactivePage = AppState.active_page.value as ReactivePage
-    if active != null and active.page_id.value == page_id:
-        AppState.active_page.value = null
+	var active: ReactivePage = AppState.active_page.value as ReactivePage
+	if active != null and active.page_id.value == page_id:
+		AppState.active_page.value = null
 
-    project.remove_page(page_id)
+	project.remove_page(page_id)
 
 # ─────────────────────────────────────────────
 # Context Menu
 # ─────────────────────────────────────────────
 
 func _show__context_menu() -> void:
-    var selected: TreeItem = _page_tree.get_selected()
-    var has_page: bool = selected != null and selected != _tree_root
+	var selected: TreeItem = _page_tree.get_selected()
+	var has_page: bool = selected != null and selected != _tree_root
 
-    _context_menu.clear()
-    _context_menu.add_item("Add Page", MenuAction.ADD_PAGE)
-    _context_menu.add_separator()
-    _context_menu.add_item("Delete",   MenuAction.DELETE_PAGE)
-    _context_menu.set_item_disabled(
-        _context_menu.get_item_index(MenuAction.DELETE_PAGE),
-        not has_page
-    )
-    _context_menu.popup_on_parent(
-        Rect2(get_viewport().get_mouse_position(), Vector2.ZERO)
-    )
+	_context_menu.clear()
+	_context_menu.add_item("Add Page", MenuAction.ADD_PAGE)
+	_context_menu.add_separator()
+	_context_menu.add_item("Delete",   MenuAction.DELETE_PAGE)
+	_context_menu.set_item_disabled(
+		_context_menu.get_item_index(MenuAction.DELETE_PAGE),
+		not has_page
+	)
+	_context_menu.popup_on_parent(
+		Rect2(get_viewport().get_mouse_position(), Vector2.ZERO)
+	)
 
 
 func _on__context_menu_id_pressed(id: int) -> void:
-    match id:
-        MenuAction.ADD_PAGE:
-            _create_page("")
-        MenuAction.DELETE_PAGE:
-            var selected: TreeItem = _page_tree.get_selected()
-            if selected == null or selected == _tree_root:
-                return
-            var page: ReactivePage = selected.get_metadata(0) as ReactivePage
-            if page != null:
-                _delete_page(page.page_id.value)
+	match id:
+		MenuAction.ADD_PAGE:
+			_create_page("")
+		MenuAction.DELETE_PAGE:
+			var selected: TreeItem = _page_tree.get_selected()
+			if selected == null or selected == _tree_root:
+				return
+			var page: ReactivePage = selected.get_metadata(0) as ReactivePage
+			if page != null:
+				_delete_page(page.page_id.value)
 
 # ─────────────────────────────────────────────
 # Tree Interaction
 # ─────────────────────────────────────────────
 
 func _on_item_mouse_selected(mouse_button_index: int, double_clicked: bool) -> void:
-    match mouse_button_index:
-        MOUSE_BUTTON_LEFT:
-            var item: TreeItem = _page_tree.get_selected()
-            if item == null or item == _tree_root:
-                return
+	match mouse_button_index:
+		MOUSE_BUTTON_LEFT:
+			var item: TreeItem = _page_tree.get_selected()
+			if item == null or item == _tree_root:
+				return
 
-            var page: ReactivePage = item.get_metadata(0) as ReactivePage
-            if page == null:
-                return
+			var page: ReactivePage = item.get_metadata(0) as ReactivePage
+			if page == null:
+				return
 
-            if double_clicked:
-                AppState.active_page.value = page
-                return
+			if double_clicked:
+				AppState.active_page.value = page
+				return
 
-            if AppState.focused_page.value == page:
-                return
+			if AppState.focused_page.value == page:
+				return
 
-            AppState.focused_page.value = page
+			AppState.focused_page.value = page
 
-        MOUSE_BUTTON_RIGHT:
-            _show__context_menu()
+		MOUSE_BUTTON_RIGHT:
+			_show__context_menu()
 
 
 func _on_active_page_changed(active_page: ReactiveVariant) -> void:
-    _update_button_states()
+	_update_button_states()
 
-    if active_page.value == null:
-        return
+	if active_page.value == null:
+		return
 
-    var page_id: String = active_page.value.page_id.value if active_page.value.page_id else ""
+	var page_id: String = active_page.value.page_id.value if active_page.value.page_id else ""
 
-    if page_id.is_empty() or not _item_map.has(page_id):
-        return
+	if page_id.is_empty() or not _item_map.has(page_id):
+		return
 
-    _item_map[page_id].select(0)
+	_item_map[page_id].select(0)
 
 
 func _on_item_edited() -> void:
-    var item: TreeItem = _page_tree.get_selected()
-    if item == null or item == _tree_root:
-        return
+	var item: TreeItem = _page_tree.get_selected()
+	if item == null or item == _tree_root:
+		return
 
-    var page: ReactivePage = item.get_metadata(0) as ReactivePage
-    if page == null:
-        return
+	var page: ReactivePage = item.get_metadata(0) as ReactivePage
+	if page == null:
+		return
 
-    var new_name: String = item.get_text(0).strip_edges()
+	var new_name: String = item.get_text(0).strip_edges()
 
-    if new_name.is_empty():
-        item.set_text(0, page.page_name.value)
-        item.set_editable(0, false)
-        return
+	if new_name.is_empty():
+		item.set_text(0, page.page_name.value)
+		item.set_editable(0, false)
+		return
 
-    if new_name == page.page_name.value:
-        item.set_editable(0, false)
-        return
+	if new_name == page.page_name.value:
+		item.set_editable(0, false)
+		return
 
-    # Mutate reactive value directly — changed signal propagates automatically
-    page.page_name.value = new_name
-    item.set_editable(0, false)
+	# Mutate reactive value directly — changed signal propagates automatically
+	page.page_name.value = new_name
+	item.set_editable(0, false)
 
 
 func _update_button_states() -> void:
-    var selected: TreeItem = _page_tree.get_selected()
-    var has_page: bool     = selected != null and selected != _tree_root
-    _btn_delete.disabled = not has_page
+	var selected: TreeItem = _page_tree.get_selected()
+	var has_page: bool     = selected != null and selected != _tree_root
+	_btn_delete.disabled = not has_page
 
 # ─────────────────────────────────────────────
 # AppState Handlers
 # ─────────────────────────────────────────────
 ## Fires when the page hierarchy is structurally modified.
-func _on_page_hierarchy_changed(_pages: ReactiveArray) -> void:
-    if not AppState.current_project.is_loaded.value:
-        return
+func _on_page_hierarchy_changed(_pages: Reactive) -> void:
+	LogManager.debug("page hierarchy changed")
+	if not AppState.current_project.is_loaded.value:
+		return
 
-    var selected_id: String = _get_selected_page_id()
-    _rebuild_tree()
-    if not selected_id.is_empty():
-        _select_page_by_id(selected_id)
+	var selected_id: String = _get_selected_page_id()
+	_rebuild_tree()
+	if not selected_id.is_empty():
+		_select_page_by_id(selected_id)
 
 # ─────────────────────────────────────────────
 # Drag and Drop
 # ─────────────────────────────────────────────
 
 func _get_drag_data(_position: Vector2) -> Variant:
-    var selected: TreeItem = _page_tree.get_selected()
-    if selected == null or selected == _tree_root:
-        return null
+	var selected: TreeItem = _page_tree.get_selected()
+	if selected == null or selected == _tree_root:
+		return null
 
-    var page: ReactivePage = selected.get_metadata(0) as ReactivePage
-    if page == null:
-        return null
+	var page: ReactivePage = selected.get_metadata(0) as ReactivePage
+	if page == null:
+		return null
 
-    var preview: Label = Label.new()
-    preview.text  = page.page_name.value
-    _page_tree.set_drag_preview(preview)
+	var preview: Label = Label.new()
+	preview.text  = page.page_name.value
+	_page_tree.set_drag_preview(preview)
 
-    return { "page": page }
+	return { "page": page }
 
 
 func _can_drop_data(pos: Vector2, data: Variant) -> bool:
-    _page_tree.drop_mode_flags = Tree.DROP_MODE_ON_ITEM | Tree.DROP_MODE_INBETWEEN
+	_page_tree.drop_mode_flags = Tree.DROP_MODE_ON_ITEM | Tree.DROP_MODE_INBETWEEN
 
-    if not data is Dictionary or not data.has("page"):
-        return false
+	if not data is Dictionary or not data.has("page"):
+		return false
 
-    var dragged: ReactivePage = data["page"] as ReactivePage
-    if dragged == null:
-        return false
+	var dragged: ReactivePage = data["page"] as ReactivePage
+	if dragged == null:
+		return false
 
-    var target: TreeItem = _page_tree.get_item_at_position(pos)
-    if target == null:
-        return false
+	var target: TreeItem = _page_tree.get_item_at_position(pos)
+	if target == null:
+		return false
 
-    if target == _tree_root:
-        return true
+	if target == _tree_root:
+		return true
 
-    var target_page: ReactivePage = target.get_metadata(0) as ReactivePage
-    if target_page == null:
-        return false
+	var target_page: ReactivePage = target.get_metadata(0) as ReactivePage
+	if target_page == null:
+		return false
 
-    if target_page.page_id.value == dragged.page_id.value:
-        return false
+	if target_page.page_id.value == dragged.page_id.value:
+		return false
 
-    return not _is_descendant_of(target_page.page_id.value, dragged)
+	return not _is_descendant_of(target_page.page_id.value, dragged)
 
 
 func _drop_data(pos: Vector2, data: Variant) -> void:
-    var dragged: ReactivePage = data["page"] as ReactivePage
-    if dragged == null:
-        return
+	var dragged: ReactivePage = data["page"] as ReactivePage
+	if dragged == null:
+		return
 
-    var target_item: TreeItem = _page_tree.get_item_at_position(pos)
-    if target_item == null:
-        return
+	var target_item: TreeItem = _page_tree.get_item_at_position(pos)
+	if target_item == null:
+		return
 
-    var project: ReactiveProject = AppState.current_project
+	var project: ReactiveProject = AppState.current_project
 
-    if target_item == _tree_root:
-        # Move to top level — detach and re-append to project root
-        var page: ReactivePage = project._detach_recursive(
-            dragged.page_id.value,
-            project.pages
-        )
-        if page != null:
-            page.owner = null
-            project.pages.append(page)
-        return
+	if target_item == _tree_root:
+		#  Pass to the project model instead of mutating arrays locally
+		project.move_page(dragged.page_id.value, null, -100) 
+		return
 
-    var target_page: ReactivePage = target_item.get_metadata(0) as ReactivePage
-    if target_page == null:
-        return
+	var target_page: ReactivePage = target_item.get_metadata(0) as ReactivePage
+	if target_page == null:
+		return
 
-    var drop_mode: int = _page_tree.get_drop_section_at_position(pos)
-    project.move_page(dragged.page_id.value, target_page, drop_mode)
+	var drop_mode: int = _page_tree.get_drop_section_at_position(pos)
+	project.move_page(dragged.page_id.value, target_page, drop_mode)
 
 # ─────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────
 func _select_page_by_id(page_id: String) -> void:
-    if not _item_map.has(page_id):
-        return
-    _item_map[page_id].select(0)
+	if not _item_map.has(page_id):
+		return
+	_item_map[page_id].select(0)
 
 func _get_selected_page_id() -> String:
-    var selected: TreeItem = _page_tree.get_selected()
-    if selected == null or selected == _tree_root:
-        return ""
-    var page: ReactivePage = selected.get_metadata(0) as ReactivePage
-    return page.page_id.value if page != null else ""
+	var selected: TreeItem = _page_tree.get_selected()
+	if selected == null or selected == _tree_root:
+		return ""
+	var page: ReactivePage = selected.get_metadata(0) as ReactivePage
+	return page.page_id.value if page != null else ""
 
 func _is_descendant_of(candidate_id: String, root: ReactivePage) -> bool:
-    for item: Variant in root.children.values():
-        var child: ReactivePage = item as ReactivePage
-        if child == null:
-            continue
-        if child.page_id.value == candidate_id:
-            return true
-        if _is_descendant_of(candidate_id, child):
-            return true
-    return false
+	for item: Variant in root.children.values():
+		var child: ReactivePage = item as ReactivePage
+		if child == null:
+			continue
+		if child.page_id.value == candidate_id:
+			return true
+		if _is_descendant_of(candidate_id, child):
+			return true
+	return false

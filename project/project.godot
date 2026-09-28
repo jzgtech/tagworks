@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TagWorks"
-config/version="0.0.1"
+config/version="0.0.2"
 run/main_scene="uid://dcgh5l37a2nx2"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="TagWorks"
@@ -28,6 +28,7 @@ driver/driver="Dummy"
 
 [autoload]
 
+LogManager="*uid://c37t4sw6icwbe"
 SignalLogger="*uid://bdvrrb4qxle6u"
 IntentBus="*uid://cjix3rt8scmxg"
 AppState="*uid://bbum4fh6utg2j"
@@ -42,7 +43,6 @@ ReactiveWidgetFactory="*uid://cay55wsepjx2n"
 WidgetExtensionRegistry="*uid://b4ff3mgf2yis"
 WindowManager="*uid://bh8balwa2xnfd"
 ToastManager="*uid://bqcsu7pmixvon"
-LogManager="*uid://c37t4sw6icwbe"
 BreakpointManager="*uid://d2l4fm0fid8ef"
 MenuActions="*uid://bkpdr76avq65g"
 DiscoveryHost="*uid://c36ui6u7hy0nx"
@@ -68,7 +68,7 @@ window/ios/hide_status_bar=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/version_bumper/plugin.cfg")
 
 [file_customization]
 
@@ -101,3 +101,7 @@ locale/translations=PackedStringArray("res://translations/en.po", "res://transla
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[version_bumper]
+
+display_mode=0
