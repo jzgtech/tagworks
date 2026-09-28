@@ -37,6 +37,7 @@ grow_vertical = 2
 script = ExtResource("3_th5th")
 
 [node name="RootLayout" type="VBoxContainer" parent="SafeAreaContainer" unique_id=974261623]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MenuBar" parent="SafeAreaContainer/RootLayout" unique_id=1410388054 instance=ExtResource("4_tnnqq")]

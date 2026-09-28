@@ -55,8 +55,8 @@ gdscript/warnings/inferred_declaration=1
 
 [display]
 
-window/size/viewport_width=650
-window/size/viewport_height=500
+window/size/viewport_width=1200
+window/size/viewport_height=800
 window/size/resizable=false
 window/size/borderless=true
 window/size/transparent=true

@@ -22,6 +22,9 @@ msgstr "Ouvrir un projet"
 msgid "SPLASH_RECENT_PROJECTS"
 msgstr "Projets récents :"
 
+msgid "SPLASH_TRANSFER_PROJECT"
+msgstr "Transférer un projet"
+
 msgid "SPLASH_NO_RECENT"
 msgstr "Aucun projet récent pour le moment"
 

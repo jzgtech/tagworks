@@ -15,14 +15,17 @@ title = "File"
 
 [node name="EditPopup" type="PopupMenu" parent="MenuBar" unique_id=997081647]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Edit"
 
 [node name="ServerPopup" type="PopupMenu" parent="MenuBar" unique_id=360374929]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Server"
 
 [node name="EditModeButton" type="Button" parent="." unique_id=739937066]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 toggle_mode = true
 text = "Edit Mode"

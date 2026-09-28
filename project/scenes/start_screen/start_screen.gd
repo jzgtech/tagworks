@@ -10,6 +10,7 @@ const MAIN_MOBILE : String = "res://scenes/main/main_mobile.tscn"
 @onready var _recent_list               : VBoxContainer = %RecentProjectsList
 @onready var _new_project_button        : Button = %NewProjectButton
 @onready var _open_project_button       : Button = %OpenProjectButton
+@onready var _transfer_project_button   : Button = %TransferProjectButton
 @onready var _recent_projects_label     : Label = %RecentProjectsLabel
 @onready var _runtime_only_check_button : CheckButton = %RuntimeOnlyCheckButton
 @onready var _runtime_only_label        : Button = %RuntimeOnlyLabel
@@ -76,6 +77,7 @@ func _notification(what : int) -> void:
 		_title_label.text = tr("SPLASH_TITLE")
 		_new_project_button.text = tr("SPLASH_NEW_PROJECT")
 		_open_project_button.text = tr("SPLASH_OPEN_PROJECT")
+		_transfer_project_button.text = tr("SPLASH_TRANSFER_PROJECT")
 		_recent_projects_label.text = tr("SPLASH_RECENT_PROJECTS")
 		_runtime_only_label.text = tr("SPLASH_RUNTIME_ONLY")
 		_version_label.text = tr("Version {version}").format({"version" = ProjectSettings.get_setting("application/config/version", "")})

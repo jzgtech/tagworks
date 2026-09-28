@@ -27,11 +27,11 @@ metadata/_snap_enabled = true
 metadata/_snap_count = 4
 
 [sub_resource type="FontVariation" id="FontVariation_58f5j"]
-variation_embolden = 0.75
+variation_embolden = 0.7
 
 [sub_resource type="LabelSettings" id="LabelSettings_fxvbf"]
 font = SubResource("FontVariation_58f5j")
-font_size = 45
+font_size = 50
 font_color = Color(0, 0.3137255, 0.9019608, 1)
 
 [sub_resource type="FontVariation" id="FontVariation_wsj8e"]
@@ -39,9 +39,15 @@ variation_embolden = 1.0
 
 [node name="StartScreenDesktop" type="PanelContainer" unique_id=550712082]
 clip_children = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -325.0
+offset_top = -275.0
+offset_right = 325.0
+offset_bottom = 275.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8bt6j")
@@ -97,7 +103,8 @@ text = "SPLASH_OPEN_PROJECT"
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=151690271]
 layout_mode = 2
 
-[node name="OpenProjectButton2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=1196565153]
+[node name="TransferProjectButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=1196565153]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "SPLASH_TRANSFER_PROJECT"

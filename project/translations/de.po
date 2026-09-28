@@ -22,6 +22,9 @@ msgstr "Projekt öffnen"
 msgid "SPLASH_RECENT_PROJECTS"
 msgstr "Zuletzt verwendete Projekte:"
 
+msgid "SPLASH_TRANSFER_PROJECT"
+msgstr "Projekt übertragen"
+
 msgid "SPLASH_NO_RECENT"
 msgstr "Noch keine kürzlich verwendeten Projekte"
 

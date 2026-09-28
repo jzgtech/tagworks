@@ -4,6 +4,7 @@ extends Control
 # ── Child references ──────────────────────────────────────────────────────────
 
 @onready var _menu_bar :  MenuBarDesktop   = %MenuBar
+@onready var _root_layout : VBoxContainer = %RootLayout
 
 @onready var page_container :            VSplitContainer       = %PageContainer
 @onready var canvas_container :          PageTabContainer      = %CanvasContainer
@@ -40,15 +41,27 @@ func _setup_window() -> void:
 	window.size = Vector2i(1024, 720)
 	window.move_to_center()
 
+	var global_menu_supported: bool = DisplayServer.has_feature(DisplayServer.FEATURE_GLOBAL_MENU)
+	var wants_global_menu: bool = _menu_bar.menu_bar.is_prefer_global_menu()
+	
+	if global_menu_supported and wants_global_menu:
+		_root_layout.add_theme_constant_override("separation", 0)
+
+
 func _connect_signals() -> void:
 	# ── System ────────────────────────────────────────────────────────────────
 	DisplayServer.set_system_theme_change_callback(_on_os_theme_changed)
 	_on_os_theme_changed()
 
-	# ── Server registry ────────────────────────────────────────────────────────
+	# ── Menu Bar ────────────────────────────────────────────────────────
 	AppState.current_project.opc_ua_servers.connect_self_changed(
 		func(_origin: Reactive) -> void:
 			_rebuild_server_menu()
+	)
+	
+	AppState.edit_mode.connect_self_changed(
+		func(_origin: Reactive) -> void:
+			_rebuild_edit_menu()
 	)
 
 	# ── AppState (named handlers so we can call them directly) ────────────────
@@ -69,7 +82,11 @@ func _connect_signals() -> void:
 func _sync_state() -> void:
 	_on_project_name_changed(AppState.current_project.project_name)
 	_update_ui_visibility()
+	_rebuild_edit_menu()
 	_rebuild_server_menu()
+
+func _rebuild_edit_menu() -> void:
+	MenuActions.rebuild_edit_menu(_menu_bar.edit_menu)
 
 func _rebuild_server_menu() -> void:
 	MenuActions.rebuild_server_menu(_menu_bar.server_menu)

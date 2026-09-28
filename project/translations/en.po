@@ -19,6 +19,9 @@ msgstr "New project"
 msgid "SPLASH_OPEN_PROJECT"
 msgstr "Open project"
 
+msgid "SPLASH_TRANSFER_PROJECT"
+msgstr "Transfer project"
+
 msgid "SPLASH_RECENT_PROJECTS"
 msgstr "Recent projects:"
 

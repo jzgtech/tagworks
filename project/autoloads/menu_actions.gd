@@ -1,7 +1,7 @@
 extends Node
 
 enum FileAction { NEW, OPEN, TRANSFER, SAVE, SAVE_AS, CLOSE, EXIT }
-enum EditAction { SETTINGS, EXTENSIONS }
+enum EditAction { SETTINGS, EXTENSIONS, EDIT_MODE }
 enum ServerAction { SETTINGS, CONNECT_ALL, DISCONNECT_ALL }
 
 # Data-driven menu structure both variants read from when building their UI.
@@ -20,14 +20,15 @@ const FILE_ITEMS: Array = [
 const EDIT_ITEMS: Array = [
 	{"label": "Settings", "id": EditAction.SETTINGS},
 	{"label": "Extension Manager", "id": EditAction.EXTENSIONS},
+	{"label": "Edit", "id": EditAction.EDIT_MODE}
 ]
 
 const SERVER_ITEMS: Array = [
 	{"label": "Connection Settings", "id": ServerAction.SETTINGS},
 ]
 
-## Number of static items in the server menu that precede the dynamic
-## server list. Used to avoid removing fixed entries during a rebuild.
+## Number of static items in the menu that precede any dynamic items
+## Used to avoid removing fixed entries during a rebuild.
 const SERVER_MENU_FIXED_ITEM_COUNT: int = 1
 
 ## Tracks dynamically created server submenus keyed by server_id.
@@ -59,6 +60,8 @@ func handle_edit_action(id: int) -> void:
 			WindowManager.open_window("extension_manager", {
 				"size": Vector2i(900, 720)
 			})
+		EditAction.EDIT_MODE:
+			AppState.edit_mode.value = not AppState.edit_mode.value
 
 func handle_server_action(id: int) -> void:
 	match id:
@@ -70,6 +73,22 @@ func handle_server_action(id: int) -> void:
 			IntentBus.connect_all_servers.emit()
 		ServerAction.DISCONNECT_ALL:
 			IntentBus.disconnect_all_servers.emit()
+
+## Updates the edit menu's toggle item text based on the current application edit mode state.
+## [param edit_menu] The PopupMenu instance containing the edit action item.
+func rebuild_edit_menu(edit_menu: PopupMenu) -> void:
+	var item_index: int = edit_menu.get_item_index(EditAction.EDIT_MODE)
+	
+	# If the item doesn't exist in the menu, get_item_index returns -1
+	if item_index == -1:
+		LogManager.critical("Edit Mode item not found in the provided PopupMenu.")
+		return
+
+	if AppState.edit_mode.value:
+		edit_menu.set_item_text(item_index, "Exit Edit Mode")
+	else:
+		edit_menu.set_item_text(item_index, "Enter Edit Mode")
+
 
 ## Tears down all dynamic server menu entries (and their status bindings)
 ## and rebuilds them from the current project's server list.
