@@ -63,6 +63,7 @@ func _on_mock_check_button_toggled(toggled_on: bool) -> void:
 	poll_interval_spin.editable = not toggled_on
 	reconnect_interval_spin.editable = not toggled_on
 	max_attempts_spin.editable = not toggled_on
+	_emit_edited()
 
 # ── Public API ─────────────────────────────────────────────────────────────
 
@@ -85,6 +86,7 @@ func load_config(cfg: ReactiveOpcUaServer) -> void:
 
 func commit_to(cfg: ReactiveOpcUaServer) -> void:
 	cfg.display_name.value           = display_name_edit.text.strip_edges()
+	cfg.is_mock.value                = mock_check_button.button_pressed
 	cfg.endpoint_url.value           = endpoint_edit.text.strip_edges()
 	cfg.security_policy.value        = security_policy_option.get_item_text(
 									 security_policy_option.selected)

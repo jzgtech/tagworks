@@ -107,7 +107,11 @@ func _rebuild_all() -> void:
 
 
 func _spawn_connection(cfg: ReactiveOpcUaServer) -> void:
-	var connection: OpcUaServer = OpcUaServer.new(cfg)
+	var connection: OpcUaServer = null
+	if cfg.is_mock.value:
+		connection = MockOpcUaServer.new(cfg)
+	else:
+		connection = OpcUaServer.new(cfg)
 	add_child(connection)
 
 	_connections[cfg.id.value] = connection
@@ -152,7 +156,7 @@ func connect_server(server_id: String) -> void:
 		return
 	var ret: bool = connection.connect_to_server()
 	if ret:
-		LogManager.info("Connected to server: " + server_id, "OPC UA", {"silent": true})
+		LogManager.info("Connected to server: " + server_id, "OPC UA")
 	if not ret:
 		LogManager.error("Unable to connect to server: " + server_id, "OPC UA")
 
@@ -163,4 +167,4 @@ func disconnect_server(server_id: String) -> void:
 		push_warning("OpcUaManager: disconnect_server on unknown server '%s'." % server_id)
 		return
 	if connection.disconnect_from_server():
-		ToastManager.success("Disconnected from server: " + server_id, 5.0)
+		LogManager.info("Disconnected from server: " + server_id)

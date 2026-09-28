@@ -11,10 +11,10 @@ var client: GodotOpcUa:
 	get: return _client
 
 func _init(cfg: ReactiveOpcUaServer) -> void:
-	_init_client() # <── Abstracted out so subclass can override
 	config = cfg
 	name = "OpcUaServerConnection_%s" % config.id.value
 	config.connect_self_changed(_on_config_changed)
+	_init_client() # <── Abstracted out so subclass can override
 	_rebuild_subscriptions_from_config()
 
 # Virtual method overridden by Mock
