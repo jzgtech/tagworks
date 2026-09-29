@@ -45,54 +45,54 @@ var last_error      : ReactiveString
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
-    current_project          = ReactiveProject.new(null, "app_state.current_project")
-    focused_page             = ReactiveVariant.new(null, null, "app_state.focused_page")
-    active_page              = ReactiveVariant.new(null, null, "app_state.active_page")
-    selected_widgets         = ReactiveArray.new([], null, "app_state.selected_widgets")
-    runtime_only             = ReactiveBool.new(false, null, "app_state.runtime_only")
-    edit_mode                = ReactiveBool.new(false, null, "app_state.edit_mode")
-    loaded_widget_extensions = ReactiveDictionary.new({}, null, "app_state.loaded_widget_extensions")
-    last_error               = ReactiveString.new("", null, "app_state.last_error")
+	current_project          = ReactiveProject.new(null, "app_state.current_project")
+	focused_page             = ReactiveVariant.new(null, null, "app_state.focused_page")
+	active_page              = ReactiveVariant.new(null, null, "app_state.active_page")
+	selected_widgets         = ReactiveArray.new([], null, "app_state.selected_widgets")
+	runtime_only             = ReactiveBool.new(false, null, "app_state.runtime_only")
+	edit_mode                = ReactiveBool.new(false, null, "app_state.edit_mode")
+	loaded_widget_extensions = ReactiveDictionary.new({}, null, "app_state.loaded_widget_extensions")
+	last_error               = ReactiveString.new("", null, "app_state.last_error")
 
-    active_page.connect_self_changed(
-        func(_active_page: ReactiveVariant) -> void:
-            edit_mode.value = false
-    )
+	active_page.connect_self_changed(
+		func(_active_page: ReactiveVariant) -> void:
+			edit_mode.value = false
+	)
 
-    current_project.is_loaded.connect_self_changed(
-        func(is_loaded: ReactiveBool) -> void:
-            if is_loaded.value:
-                active_page.value = AppState.current_project.get_default_page()
-    )
+	current_project.is_loaded.connect_self_changed(
+		func(is_loaded: ReactiveBool) -> void:
+			if is_loaded.value:
+				active_page.value = AppState.current_project.get_default_page()
+	)
 
 # ── Project Lifecycle ─────────────────────────────────────────────────────────
 
 ## Loads project data into the existing current_project instance in place.
 ## Returns false (and leaves current_project untouched) if payload is invalid.
 func load_project(payload: Dictionary) -> bool:
-    if not ReactiveProject.validate_payload(payload):
-        last_error.value = "Invalid project file."
-        return false
+	if not ReactiveProject.validate_payload(payload):
+		last_error.value = "Invalid project file."
+		return false
 
-    current_project.load_from_dict(payload)
-    _reset_selection_state()
-    current_project.is_loaded.value = true
-    return true
+	current_project.load_from_dict(payload)
+	_reset_selection_state()
+	current_project.is_loaded.value = true
+	return true
 
 ## Resets current_project to a fresh, empty project (e.g. "File > New").
 func new_project() -> void:
-    current_project.reset_to_default()
-    _reset_selection_state()
-    current_project.is_loaded.value = true
+	current_project.reset_to_default()
+	_reset_selection_state()
+	current_project.is_loaded.value = true
 
 ## Closes the current project, returning to the default empty state.
 func close_project() -> void:
-    current_project.reset_to_default()
-    _reset_selection_state()
-    current_project.is_loaded.value = false
+	current_project.reset_to_default()
+	_reset_selection_state()
+	current_project.is_loaded.value = false
 
 func _reset_selection_state() -> void:
-    focused_page.value    = null
-    active_page.value     = null
-    selected_widgets.clear()
-    edit_mode.value        = false
+	focused_page.value    = null
+	active_page.value     = null
+	selected_widgets.clear()
+	edit_mode.value        = false

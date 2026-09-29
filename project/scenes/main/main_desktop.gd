@@ -6,12 +6,10 @@ extends Control
 @onready var _menu_bar :  MenuBarDesktop   = %MenuBar
 @onready var _root_layout : VBoxContainer = %RootLayout
 
-@onready var page_container :            VSplitContainer       = %PageContainer
-@onready var canvas_container :          PageTabContainer      = %CanvasContainer
-@onready var inspector_container :       VSplitContainer       = %InspectorContainer
+@onready var top_side_container :    TabContainer = %TopSide
+@onready var bottom_side_container : TabContainer = %BottomSide
 
 var active_theme : Theme
-@onready var base_theme : Theme = preload("res://resources/base_theme.tres")
 @onready var dark_theme : Theme = preload("res://resources/dark_theme.tres")
 @onready var light_theme : Theme = preload("res://resources/light_theme.tres")
 
@@ -31,6 +29,9 @@ const DISCONNECT_ALL_ID: int = 1001
 func _ready() -> void:
 	_setup_window()
 	_connect_signals()
+	
+	# Force this window to 'resize' to ensure the scaling is recalculated.
+	get_tree().root.size_changed.emit()
 
 ## Restores normal window behavior after the borderless splash screen.
 func _setup_window() -> void:
@@ -106,36 +107,12 @@ func _update_ui_visibility(_origin: Reactive = null) -> void:
 	var is_loaded: bool = AppState.current_project.is_loaded.value
 
 	_menu_bar.visible = not runtime_only
-	inspector_container.visible = is_loaded and not runtime_only
-	page_container.visible = is_loaded
-	canvas_container.visible = is_loaded
+	top_side_container.visible = is_loaded
+	bottom_side_container.visible = is_loaded and not runtime_only
 
 # ── System ────────────────────────────────────────────────────────────────────
-
-func deep_merge_themes(base: Theme, modifier: Theme) -> Theme:
-	var result: Theme = base.duplicate(true)
-
-	for type_name: String in modifier.get_type_list():
-		for style_name: String in modifier.get_stylebox_list(type_name):
-			var mod_sb: StyleBox = modifier.get_stylebox(style_name, type_name)
-
-			if mod_sb is StyleBoxFlat and result.has_stylebox(style_name, type_name):
-				var base_sb: StyleBox = result.get_stylebox(style_name, type_name)
-				if base_sb is StyleBoxFlat:
-					base_sb.bg_color = mod_sb.bg_color
-					base_sb.border_color = mod_sb.border_color
-					base_sb.shadow_color = mod_sb.shadow_color
-			else:
-				result.set_stylebox(style_name, type_name, mod_sb)
-
-		for color_name: String in modifier.get_color_list(type_name):
-			result.set_color(color_name, type_name, modifier.get_color(color_name, type_name))
-
-	return result
-
 func _on_os_theme_changed() -> void:
-	active_theme = deep_merge_themes(base_theme, dark_theme if DisplayServer.is_dark_mode() else light_theme)
-	theme = active_theme
+	theme = dark_theme if DisplayServer.is_dark_mode() else light_theme
 
 # ── Edit Mode ─────────────────────────────────────────────────────────────────
 

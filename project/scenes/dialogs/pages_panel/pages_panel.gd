@@ -105,7 +105,7 @@ func _rebuild_tree() -> void:
 	_tree_root.set_text(0, AppState.current_project.project_name.value)
 	_tree_root.set_selectable(0, true)
 
-	_page_tree.hide_root = not AppState.runtime_only
+	_page_tree.hide_root = true
 
 
 	for item: Variant in AppState.current_project.pages.values():

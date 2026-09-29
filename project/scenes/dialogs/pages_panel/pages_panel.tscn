@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://bo0tkqp8g6tm3"]
 
 [ext_resource type="Script" uid="uid://cgqbbbt10o72e" path="res://scenes/dialogs/pages_panel/pages_panel.gd" id="1_jrqfq"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_rhg2w"]
+[ext_resource type="Script" uid="uid://6gv7wbdebvey" path="res://scenes/dialogs/pages_panel/page_tree.gd" id="3_gfkhq"]
 
 [node name="PagesPanel" type="PanelContainer" unique_id=1118176807]
 custom_minimum_size = Vector2(200, 350)
 offset_right = 200.0
 offset_bottom = 350.0
+theme = ExtResource("1_rhg2w")
 script = ExtResource("1_jrqfq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=853418761]
@@ -31,6 +34,7 @@ layout_mode = 2
 size_flags_vertical = 3
 allow_reselect = true
 allow_rmb_select = true
+script = ExtResource("3_gfkhq")
 
 [node name="PageContextMenu" type="PopupMenu" parent="." unique_id=809876066]
 unique_name_in_owner = true

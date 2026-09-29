@@ -35,7 +35,6 @@ AppState="*uid://bbum4fh6utg2j"
 AppSettings="*uid://b6n2e2ypxqaao"
 AppConfig="*uid://j7umd53r33nx"
 OpcUaManager="*uid://8phiu00ahgg7"
-LayoutManager="*uid://cjn5wtaokyg8r"
 RecentProjects="*uid://cf5q8hhp6qhwy"
 ProjectManager="*uid://cxcfp36bffx2p"
 ReactiveTypeRegistry="*uid://u4m6loh0vxlf"
@@ -68,7 +67,7 @@ window/ios/hide_status_bar=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/version_bumper/plugin.cfg")
+enabled=PackedStringArray("res://addons/theme_switcher/plugin.cfg", "res://addons/version_bumper/plugin.cfg")
 
 [file_customization]
 
@@ -86,7 +85,7 @@ folder_colors={
 
 [gui]
 
-theme/custom="uid://2pnop8nm7lxm"
+theme/custom="res://resources/dark_theme.tres"
 
 [internationalization]
 
