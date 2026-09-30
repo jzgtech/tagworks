@@ -66,7 +66,6 @@ func _connect_signals() -> void:
 	)
 
 	# ── AppState (named handlers so we can call them directly) ────────────────
-	AppState.current_project.project_name.connect_self_changed(_on_project_name_changed)
 
 	# UI visibility depends on BOTH runtime_only and is_loaded — a single
 	# handler keeps the combined rule consistent regardless of which one
@@ -81,7 +80,6 @@ func _connect_signals() -> void:
 	_sync_state()
 
 func _sync_state() -> void:
-	_on_project_name_changed(AppState.current_project.project_name)
 	_update_ui_visibility()
 	_rebuild_edit_menu()
 	_rebuild_server_menu()
@@ -91,9 +89,6 @@ func _rebuild_edit_menu() -> void:
 
 func _rebuild_server_menu() -> void:
 	MenuActions.rebuild_server_menu(_menu_bar.server_menu)
-
-func _on_project_name_changed(new_name: ReactiveString) -> void:
-	get_window().title = new_name.value
 
 ## Single source of truth for UI visibility. Reacts to changes in either
 ## runtime_only or is_loaded, since inspector visibility depends on both.

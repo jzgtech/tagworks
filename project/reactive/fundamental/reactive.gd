@@ -3,8 +3,8 @@ class_name Reactive
 extends Resource
 
 # ── Debug ─────────────────────────────────────────────────────────────────────
-const DEBUG_LOG: bool = false
-const DEBUG_PROPAGATE: bool = false
+const DEBUG_LOG: bool = true
+const DEBUG_PROPAGATE: bool = true
 
 var _label: String = ""
 

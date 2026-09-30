@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ci8ngwmyba4uy"]
 
-[ext_resource type="Theme" uid="uid://2pnop8nm7lxm" path="res://resources/base_theme.tres" id="1_krsav"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_l4mf0"]
 [ext_resource type="Script" uid="uid://c4dusk480lrnl" path="res://scenes/main/main_mobile.gd" id="2_krsav"]
 [ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="3_t7obh"]
 [ext_resource type="PackedScene" uid="uid://bo0tkqp8g6tm3" path="res://scenes/dialogs/pages_panel/pages_panel.tscn" id="4_51j5i"]
@@ -14,7 +14,9 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource("1_krsav")
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_l4mf0")
 script = ExtResource("2_krsav")
 
 [node name="Background" type="Panel" parent="." unique_id=1093160731]

@@ -125,7 +125,7 @@ text = "SPLASH_RECENT_PROJECTS"
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/RecentProjectsSection" unique_id=2088625140]
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"RecentProjects"
+theme_type_variation = &"RecentProjectsList"
 
 [node name="RecentProjectsList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/RecentProjectsSection/ScrollContainer" unique_id=987335300]
 unique_name_in_owner = true

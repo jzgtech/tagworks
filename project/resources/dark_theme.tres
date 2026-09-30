@@ -22,6 +22,17 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m8lx"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mij6w"]
 bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -41,6 +52,9 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ic263"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sql5f"]
+bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ituaa"]
 bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
@@ -68,13 +82,16 @@ MainDesktop/base_type = &"Panel"
 MainDesktop/styles/panel = SubResource("StyleBoxFlat_opt75")
 Panel/styles/panel = SubResource("StyleBoxFlat_ihqd5")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_5invh")
+RecentProjectsList/base_type = &"ScrollContainer"
+RecentProjectsList/styles/panel = SubResource("StyleBoxFlat_0m8lx")
 TabContainer/constants/side_margin = 8
 TabContainer/constants/tab_separation = 4
-TabContainer/styles/panel = SubResource("StyleBoxFlat_0m8lx")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_mij6w")
 TabContainer/styles/tab_disabled = SubResource("StyleBoxEmpty_ihqd5")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_ucq4j")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_ha1y0")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxEmpty_ic263")
+TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_sql5f")
 Tree/constants/v_separation = 0
 Tree/styles/panel = SubResource("StyleBoxFlat_ituaa")
 WidgetCanvas/base_type = &"Panel"

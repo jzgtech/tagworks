@@ -11,30 +11,46 @@ offset_bottom = 350.0
 theme = ExtResource("1_rhg2w")
 script = ExtResource("1_jrqfq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=853418761]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1551000501]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=853418761]
 layout_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=586066840]
+[node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=586066840]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="AddPageButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1654278091]
-unique_name_in_owner = true
+[node name="AddPageButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=1654278091]
 layout_mode = 2
 text = "Add"
 
-[node name="DeletePageButton" type="Button" parent="VBoxContainer/ButtonContainer" unique_id=1936198274]
+[node name="DeletePageButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=1936198274]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Delete"
 
-[node name="PageTree" type="Tree" parent="VBoxContainer" unique_id=737479759]
+[node name="PageTree" type="Tree" parent="MarginContainer/VBoxContainer" unique_id=737479759]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 allow_reselect = true
 allow_rmb_select = true
 script = ExtResource("3_gfkhq")
+
+[node name="AddPageButtonContainer" type="CenterContainer" parent="." unique_id=980302333]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddPageButton" type="Button" parent="AddPageButtonContainer" unique_id=236096273]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add page"
 
 [node name="PageContextMenu" type="PopupMenu" parent="." unique_id=809876066]
 unique_name_in_owner = true

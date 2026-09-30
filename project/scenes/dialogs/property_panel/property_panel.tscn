@@ -1,18 +1,36 @@
 [gd_scene format=3 uid="uid://dg1rxoysdt2ry"]
 
 [ext_resource type="Script" uid="uid://co5u5r4ul60yn" path="res://scenes/dialogs/property_panel/property_panel.gd" id="1_mysdf"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_uixjc"]
 
 [node name="PropertyPanel" type="PanelContainer" unique_id=2143371387]
 offset_right = 550.0
 offset_bottom = 650.0
+theme = ExtResource("1_uixjc")
 script = ExtResource("1_mysdf")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1803083427]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer" unique_id=5221977]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+
+[node name="Properties" type="VBoxContainer" parent="MarginContainer/TabContainer" unique_id=259132565]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Events" type="VBoxContainer" parent="MarginContainer/TabContainer" unique_id=779943512]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=341413711]
 layout_mode = 2
@@ -21,22 +39,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=5221977]
-unique_name_in_owner = true
-layout_mode = 2
-current_tab = 0
-
-[node name="Properties" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TabContainer" unique_id=259132565]
-unique_name_in_owner = true
-layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="Events" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/TabContainer" unique_id=779943512]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
 
 [node name="Control" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=919139980]
 visible = false

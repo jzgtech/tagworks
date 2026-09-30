@@ -63,6 +63,9 @@ func _ready() -> void:
 		func(is_loaded: ReactiveBool) -> void:
 			if is_loaded.value:
 				active_page.value = AppState.current_project.get_default_page()
+				DisplayServer.window_set_title(AppState.current_project.project_name.value + " - TagWorks")
+			else:
+				DisplayServer.window_set_title("TagWorks")
 	)
 
 # ── Project Lifecycle ─────────────────────────────────────────────────────────

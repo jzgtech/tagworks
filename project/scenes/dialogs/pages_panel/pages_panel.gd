@@ -6,10 +6,9 @@ extends Control
 # Child References
 # ─────────────────────────────────────────────
 
-@onready var _button_container : HBoxContainer = %ButtonContainer
+@onready var _add_page_button_container : CenterContainer = %AddPageButtonContainer
+@onready var _add_page_button           : Button        = %AddPageButton
 @onready var _page_tree        : Tree          = %PageTree
-@onready var _btn_add_page     : Button        = %AddPageButton
-@onready var _btn_delete       : Button        = %DeletePageButton
 @onready var _context_menu     : PopupMenu     = %PageContextMenu
 
 # ─────────────────────────────────────────────
@@ -36,10 +35,8 @@ var _item_map  : Dictionary = {}
 # ─────────────────────────────────────────────
 
 func _ready() -> void:
-	_button_container.visible = not AppState.runtime_only.value
 	_setup_tree()
 	_connect_signals()
-	_update_button_states()
 
 func _setup_tree() -> void:
 	_page_tree.hide_root        = true
@@ -55,22 +52,15 @@ func _setup_tree() -> void:
 
 
 func _connect_signals() -> void:
-	_btn_add_page.pressed.connect(func() -> void:
+	_add_page_button.pressed.connect(func() -> void:
 		_create_page("")
 	)
 
-	_btn_delete.pressed.connect(func() -> void:
-		var page: ReactivePage = AppState.focused_page.value as ReactivePage
-		if page == null or page.page_id.value.is_empty():
-			return
-		_delete_page(page.page_id.value)
-	)
-
-	_context_menu.id_pressed.connect(_on__context_menu_id_pressed)
-	_page_tree.item_mouse_selected.connect(
-		func(_mouse_position: Vector2, mouse_button_index: int) -> void:
-			_on_item_mouse_selected(mouse_button_index, false)
-	)
+	_context_menu.id_pressed.connect(_on_context_menu_id_pressed)
+	#_page_tree.item_mouse_selected.connect(
+	#	func(_mouse_position: Vector2, mouse_button_index: int) -> void:
+	#		_on_item_mouse_selected(mouse_button_index, false)
+	#)
 	_page_tree.nothing_selected.connect(
 		func() -> void:
 			AppState.focused_page.value = null
@@ -107,14 +97,16 @@ func _rebuild_tree() -> void:
 
 	_page_tree.hide_root = true
 
-
-	for item: Variant in AppState.current_project.pages.values():
-		var page: ReactivePage = item as ReactivePage
-		if page != null:
-			_build_item(_tree_root, page)
+	if AppState.current_project.pages.size() == 0:
+		_add_page_button_container.visible = true
+	else:
+		_add_page_button_container.visible = false
+		for item: Variant in AppState.current_project.pages.values():
+			var page: ReactivePage = item as ReactivePage
+			if page != null:
+				_build_item(_tree_root, page)
 
 	_tree_root.set_collapsed(false)
-
 
 func _build_item(parent: TreeItem, page: ReactivePage) -> TreeItem:
 	var item: TreeItem = _create_item(parent, page)
@@ -123,7 +115,6 @@ func _build_item(parent: TreeItem, page: ReactivePage) -> TreeItem:
 		if child != null:
 			_build_item(item, child)
 	return item
-
 
 func _create_item(parent: TreeItem, page: ReactivePage) -> TreeItem:
 	var item: TreeItem = _page_tree.create_item(parent)
@@ -152,14 +143,8 @@ func _create_page(page_name: String) -> void:
 		resolved = DEFAULT_PAGE_NAME + " " + str(offset)
 		offset  += 1
 
-	var focused: ReactivePage = AppState.focused_page.value as ReactivePage
-
-	if focused != null and not focused.page_id.value.is_empty():
-		var new_page: ReactivePage = ReactivePage.create(resolved, focused.children)
-		focused.add_child_page(new_page)
-	else:
-		var new_page: ReactivePage = ReactivePage.create(resolved, AppState.current_project.pages)
-		project.add_page(new_page)
+	var new_page: ReactivePage = ReactivePage.create(resolved, AppState.current_project.pages)
+	project.add_page(new_page)
 
 
 func _delete_page(page_id: String) -> void:
@@ -187,7 +172,7 @@ func _delete_page(page_id: String) -> void:
 # Context Menu
 # ─────────────────────────────────────────────
 
-func _show__context_menu() -> void:
+func _show_context_menu() -> void:
 	var selected: TreeItem = _page_tree.get_selected()
 	var has_page: bool = selected != null and selected != _tree_root
 
@@ -204,7 +189,7 @@ func _show__context_menu() -> void:
 	)
 
 
-func _on__context_menu_id_pressed(id: int) -> void:
+func _on_context_menu_id_pressed(id: int) -> void:
 	match id:
 		MenuAction.ADD_PAGE:
 			_create_page("")
@@ -241,12 +226,10 @@ func _on_item_mouse_selected(mouse_button_index: int, double_clicked: bool) -> v
 			AppState.focused_page.value = page
 
 		MOUSE_BUTTON_RIGHT:
-			_show__context_menu()
+			_show_context_menu()
 
 
 func _on_active_page_changed(active_page: ReactiveVariant) -> void:
-	_update_button_states()
-
 	if active_page.value == null:
 		return
 
@@ -282,12 +265,6 @@ func _on_item_edited() -> void:
 	page.page_name.value = new_name
 	item.set_editable(0, false)
 
-
-func _update_button_states() -> void:
-	var selected: TreeItem = _page_tree.get_selected()
-	var has_page: bool     = selected != null and selected != _tree_root
-	_btn_delete.disabled = not has_page
-
 # ─────────────────────────────────────────────
 # AppState Handlers
 # ─────────────────────────────────────────────
@@ -321,7 +298,6 @@ func _get_drag_data(_position: Vector2) -> Variant:
 
 	return { "page": page }
 
-
 func _can_drop_data(pos: Vector2, data: Variant) -> bool:
 	_page_tree.drop_mode_flags = Tree.DROP_MODE_ON_ITEM | Tree.DROP_MODE_INBETWEEN
 
@@ -347,7 +323,6 @@ func _can_drop_data(pos: Vector2, data: Variant) -> bool:
 		return false
 
 	return not _is_descendant_of(target_page.page_id.value, dragged)
-
 
 func _drop_data(pos: Vector2, data: Variant) -> void:
 	var dragged: ReactivePage = data["page"] as ReactivePage

@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://rgkjg2r4vypn"]
 
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_k6270"]
 [ext_resource type="Script" uid="uid://dswy0dmg6mk1o" path="res://scenes/start_screen/start_screen.gd" id="1_nsrto"]
 [ext_resource type="PackedScene" uid="uid://cl7a71de6ssk0" path="res://scenes/main/recent_project_row.tscn" id="2_bb6cw"]
 
@@ -36,6 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_k6270")
 script = ExtResource("1_nsrto")
 recent_project_row_scene = ExtResource("2_bb6cw")
 
@@ -62,9 +64,8 @@ label_settings = SubResource("LabelSettings_k6270")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1270557319]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1333648383]
 layout_mode = 2
-theme_override_constants/separation = 56
 alignment = 1
 
 [node name="NewProjectButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=517283086]
@@ -78,6 +79,12 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "SPLASH_OPEN_PROJECT"
+
+[node name="TransferProjectButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=985018368]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SPLASH_TRANSFER_PROJECT"
 
 [node name="RecentProjectsSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1893655401]
 unique_name_in_owner = true

@@ -147,7 +147,7 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 			window_instance.access = FileDialog.ACCESS_FILESYSTEM
 			window_instance.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 			window_instance.display_mode = FileDialog.DISPLAY_LIST
-			if OS.get_name() == "Android":
+			if OS.get_name() in ["Android", "iOS", "macOS"]:
 				window_instance.use_native_dialog = true
 		else:
 			var scene: PackedScene = _get_window_scene(window_key)

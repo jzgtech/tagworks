@@ -13,6 +13,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 func _gui_input(event: InputEvent) -> void:
+	if AppState.runtime_only.value:
+		return
 	if event is InputEventMouseMotion:
 		var mouse_pos: Vector2 = get_local_mouse_position()
 		var current_item: TreeItem = get_item_at_position(mouse_pos)
@@ -60,12 +62,23 @@ func _clear_all_hover_states() -> void:
 	hovered_item = null
 
 func _on_button_clicked(item: TreeItem, _column: int, id: int, mouse_button_idx: int) -> void:
+	var page: ReactivePage = item.get_metadata(0) as ReactivePage
 	if mouse_button_idx == MOUSE_BUTTON_LEFT:
 		if id == BUTTON_ID_ADD:
-			print("Adding child page to: ", item.get_text(0))
-			# (Your add child logic goes here)
+			var project: ReactiveProject = AppState.current_project
+
+			# Resolve a unique name
+			var resolved: String = "New Page"
+			var offset: int = 1
+			while project.find_page_name(resolved) != null:
+				resolved = "New Page" + " " + str(offset)
+				offset  += 1
+
+			if page != null and not page.page_id.value.is_empty():
+				var new_page: ReactivePage = ReactivePage.create(resolved, page.children)
+				page.add_child_page(new_page)
+			else:
+				var new_page: ReactivePage = ReactivePage.create(resolved, AppState.current_project.pages)
+				project.add_page(new_page)
 		elif id == BUTTON_ID_DELETE:
-			print("Deleting page: ", item.get_text(0))
-			if item == hovered_item:
-				hovered_item = null
-			item.free()
+			AppState.current_project.remove_page(page.page_id.value)

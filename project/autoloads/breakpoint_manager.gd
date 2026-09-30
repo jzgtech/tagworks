@@ -59,7 +59,7 @@ func _calc_breakpoint(width: float) -> Breakpoint:
 func _is_hardware_mobile() -> bool:
 	# Check the actual platform name first (most reliable)
 	var os_name: String = OS.get_name()
-	if os_name in ["Android", "iOS"]:
+	if os_name in ["Android", "iOS"] or OS.has_feature("force_mobile"):
 		return true
 	if os_name in ["macOS", "Windows", "Linux", "FreeBSD", "NetBSD"]:
 		return false

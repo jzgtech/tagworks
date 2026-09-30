@@ -57,10 +57,8 @@ func _on_tab_close_pressed(tab_index: int) -> void:
 	# Safely destroy the tab
 	tab_node.queue_free()
 
-
 func _on_pages_changed(_reactive: ReactiveArray) -> void:
 	_rebuild_tabs()
-
 
 func _on_active_page_changed(active_page: ReactiveVariant) -> void:
 	if active_page.value == null:
@@ -100,9 +98,9 @@ func _rebuild_tabs() -> void:
 			if not current_ids.has(page_id):
 				tab.queue_free()
 
-	for page_id: String in current_ids:
-		if _find_tab_by_page_id(page_id) == null:
-			_create_tab_for_page(current_ids[page_id] as ReactivePage)
+	#for page_id: String in current_ids:
+	#	if _find_tab_by_page_id(page_id) == null:
+	#		_create_tab_for_page(current_ids[page_id] as ReactivePage)
 
 
 func _create_tab_for_page(page: ReactivePage) -> void:
