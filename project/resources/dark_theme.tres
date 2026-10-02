@@ -63,18 +63,6 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_am47r"]
-bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.73333335, 0.73333335, 0.73333335, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [resource]
 CanvasContainer/base_type = &"TabContainer"
 CanvasContainer/styles/panel = SubResource("StyleBoxEmpty_6x1a3")
@@ -94,5 +82,3 @@ TabContainer/styles/tab_unselected = SubResource("StyleBoxEmpty_ic263")
 TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_sql5f")
 Tree/constants/v_separation = 0
 Tree/styles/panel = SubResource("StyleBoxFlat_ituaa")
-WidgetCanvas/base_type = &"Panel"
-WidgetCanvas/styles/panel = SubResource("StyleBoxFlat_am47r")

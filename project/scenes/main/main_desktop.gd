@@ -3,15 +3,19 @@ extends Control
 
 # ── Child references ──────────────────────────────────────────────────────────
 
-@onready var _menu_bar :  MenuBarDesktop   = %MenuBar
-@onready var _root_layout : VBoxContainer = %RootLayout
+@onready var _menu_bar    : MenuBarDesktop = %MenuBar
+@onready var _root_layout : VBoxContainer  = %RootLayout
+@onready var _mac_os_spacer: Control = %MacOSSpacer
 
-@onready var top_side_container :    TabContainer = %TopSide
-@onready var bottom_side_container : TabContainer = %BottomSide
+@onready var pages_panel   : PagePanel    = %PagesPanel
+@onready var tab_container : TabContainer = %TabContainer
 
 var active_theme : Theme
 @onready var dark_theme : Theme = preload("res://resources/dark_theme.tres")
 @onready var light_theme : Theme = preload("res://resources/light_theme.tres")
+
+var _dragging: bool = false
+var _drag_offset: Vector2i
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -33,21 +37,41 @@ func _ready() -> void:
 	# Force this window to 'resize' to ensure the scaling is recalculated.
 	get_tree().root.size_changed.emit()
 
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_dragging = true
+			_drag_offset = DisplayServer.mouse_get_position() - get_window().position
+		else:
+			_dragging = false
+
+func _process(_delta: float) -> void:
+	if _dragging:
+		get_window().position = DisplayServer.mouse_get_position() - _drag_offset
+
+	var current_mode: Window.Mode = get_window().mode
+	if current_mode == Window.MODE_FULLSCREEN or current_mode == Window.MODE_EXCLUSIVE_FULLSCREEN:
+		_mac_os_spacer.visible = false
+	else:
+		_mac_os_spacer.visible = true if BreakpointManager.is_running_on_macos_hardware() else false
+
 ## Restores normal window behavior after the borderless splash screen.
 func _setup_window() -> void:
 	var window: Window = get_window()
-	window.borderless = false
 	window.unresizable = false
 	window.min_size = Vector2i(800, 600)
 	window.size = Vector2i(1024, 720)
+	window.maximize_disabled = false
+	window.minimize_disabled = false
+	window.extend_to_title = true
+	window.borderless = false
 	window.move_to_center()
 
 	var global_menu_supported: bool = DisplayServer.has_feature(DisplayServer.FEATURE_GLOBAL_MENU)
 	var wants_global_menu: bool = _menu_bar.menu_bar.is_prefer_global_menu()
-	
+
 	if global_menu_supported and wants_global_menu:
 		_root_layout.add_theme_constant_override("separation", 0)
-
 
 func _connect_signals() -> void:
 	# ── System ────────────────────────────────────────────────────────────────
@@ -102,8 +126,8 @@ func _update_ui_visibility(_origin: Reactive = null) -> void:
 	var is_loaded: bool = AppState.current_project.is_loaded.value
 
 	_menu_bar.visible = not runtime_only
-	top_side_container.visible = is_loaded
-	bottom_side_container.visible = is_loaded and not runtime_only
+	pages_panel.visible = is_loaded
+	tab_container.visible = is_loaded and not runtime_only
 
 # ── System ────────────────────────────────────────────────────────────────────
 func _on_os_theme_changed() -> void:

@@ -44,7 +44,6 @@ func add_dynamic_field(prop: String, lbl: String, props: ReactiveDictionary) -> 
 
 	_build_field_row(lbl, field, factories, _panel._properties)
 
-
 func add_constant_color_field(prop: String, lbl: String, props: ReactiveDictionary) -> void:
 	_add_simple_constant_field(prop, lbl, props, _constant_color_editor_factory)
 
@@ -60,7 +59,6 @@ func add_constant_bool_field(prop: String, lbl: String, props: ReactiveDictionar
 func add_constant_array_field(prop: String, lbl: String, props: ReactiveDictionary) -> void:
 	_add_simple_constant_field(prop, lbl, props, _constant_array_editor_factory)
 
-
 ## Shared by every scalar/array constant field: only the value-editor
 ## factory differs, the CONSTANT + SCRIPT source wiring is identical.
 func _add_simple_constant_field(
@@ -75,7 +73,6 @@ func _add_simple_constant_field(
 		ReactiveConstantField.SourceType.SCRIPT: _script_editor_factory(field),
 	}
 	_build_field_row(lbl, field, factories, _panel._properties)
-
 
 func add_action_field(prop: String, lbl: String, props: ReactiveDictionary) -> void:
 	var action: ReactiveActionBinding = props.value[prop]

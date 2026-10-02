@@ -14,6 +14,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 630.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tnnqq")
@@ -53,20 +55,22 @@ drag_nested_intersections = true
 [node name="VSplitContainer" type="VSplitContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1048886370]
 layout_mode = 2
 
-[node name="TopSide" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=659601462]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 0)
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=1510942659]
 layout_mode = 2
-current_tab = 0
-tab_0/title = "Pages"
 
-[node name="PagesPanel" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/TopSide" unique_id=1118176807 instance=ExtResource("5_raeie")]
+[node name="MacOSSpacer" type="Control" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/VBoxContainer" unique_id=190727102]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PagesPanel" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/VBoxContainer" unique_id=1118176807 instance=ExtResource("5_raeie")]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-metadata/_tab_index = 0
-metadata/_tab_name = "Pages"
 
-[node name="BottomSide" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=280056489]
+[node name="TabContainer" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=280056489]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
@@ -74,13 +78,13 @@ current_tab = 0
 tab_0/title = "Widgets"
 tab_1/title = "Properties"
 
-[node name="WidgetPalette" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/BottomSide" unique_id=1623453158 instance=ExtResource("7_nvumn")]
+[node name="WidgetPalette" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/TabContainer" unique_id=1623453158 instance=ExtResource("7_nvumn")]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Widgets"
 
-[node name="PropertyPanel" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/BottomSide" unique_id=2143371387 instance=ExtResource("8_ou6is")]
+[node name="PropertyPanel" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/TabContainer" unique_id=2143371387 instance=ExtResource("8_ou6is")]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3

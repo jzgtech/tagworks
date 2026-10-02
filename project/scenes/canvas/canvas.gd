@@ -37,6 +37,14 @@ func _ready() -> void:
 	for widget: ReactiveWidget in data.widgets.value:
 		_restore_node(self, widget)
 
+	resized.connect(
+		func() -> void:
+			var mat: ShaderMaterial = material as ShaderMaterial
+			if mat:
+				# Pass the panel's real global control size straight to the shader
+				mat.set_shader_parameter("panel_size", size)
+	)
+
 ## Instantiates and initialises a single widget from its backing ReactiveWidget,
 ## then recurses into container children.
 func _restore_node(parent: Control, reactive_widget: ReactiveWidget) -> void:
@@ -272,6 +280,14 @@ func _select_target(target: Node, additive: bool = false) -> void:
 func _on_edit_mode_changed(edit_mode: ReactiveBool) -> void:
 	if not edit_mode.value:
 		_deselect_all()
+
+	var mat: ShaderMaterial = material as ShaderMaterial
+	if mat:
+		var target_fade: float = 1.0 if edit_mode.value else 0.0
+		var tween: Tween = create_tween()
+		tween.tween_property(mat, "shader_parameter/edit_mode_fade", target_fade, 0.25)\
+			.set_trans(Tween.TRANS_CUBIC)\
+			.set_ease(Tween.EASE_OUT)
 
 # ── Widget Spawning ───────────────────────────────────────────────────────────
 

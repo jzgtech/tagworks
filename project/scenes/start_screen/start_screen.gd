@@ -5,6 +5,7 @@ const MAIN_MOBILE : String = "res://scenes/main/main_mobile.tscn"
 
 @export var recent_project_row_scene: PackedScene
 
+@onready var _texture_rect              : TextureRect = %TextureRect
 @onready var _close_button              : Button = %CloseButton
 @onready var _title_label               : Label = %TitleLabel
 @onready var _recent_list               : VBoxContainer = %RecentProjectsList
@@ -25,6 +26,11 @@ var _drag_offset: Vector2i
 var _project_operation_pending: bool = false
 
 func _ready() -> void:
+	if BreakpointManager.is_running_on_macos_hardware():
+		var texture: GradientTexture2D = _texture_rect.texture as GradientTexture2D
+		texture.fill_from = Vector2(0.0, 0.0)
+		_close_button.visible = false
+
 	_close_button.pressed.connect(func() -> void: get_tree().quit(0))
 	_new_project_button.pressed.connect(_on_new_project_pressed)
 	_open_project_button.pressed.connect(_on_open_project_pressed)

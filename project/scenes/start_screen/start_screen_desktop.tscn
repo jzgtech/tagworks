@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://kk1oivxbhmqy"]
 
 [ext_resource type="Script" uid="uid://dswy0dmg6mk1o" path="res://scenes/start_screen/start_screen.gd" id="1_anl67"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_we26q"]
 [ext_resource type="PackedScene" uid="uid://cl7a71de6ssk0" path="res://scenes/main/recent_project_row.tscn" id="2_we26q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8bt6j"]
@@ -39,22 +40,18 @@ variation_embolden = 1.0
 
 [node name="StartScreenDesktop" type="PanelContainer" unique_id=550712082]
 clip_children = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -325.0
-offset_top = -275.0
-offset_right = 325.0
-offset_bottom = 275.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_we26q")
 theme_override_styles/panel = SubResource("StyleBoxFlat_8bt6j")
 script = ExtResource("1_anl67")
 recent_project_row_scene = ExtResource("2_we26q")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2052123361]
+unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("GradientTexture2D_nkrfi")
 

@@ -7,5 +7,16 @@
   "icon": "icon.svg",
   "is_container": false,
   "author": "Vendor Name",
-  "description": "A simple bar chart widget."
+  "description": "A simple bar chart widget.",
+  
+  "properties": [
+    {"id": "value", "name": "Value", "type": "dynamic", "default": ""},
+    {"id": "min_value", "name": "Minimum", "type": "float", "default": 0.0},
+    {"id": "max_value", "name": "Maximum", "type": "float", "default": 100.0},
+    {"id": "bar_color", "name": "Bar Color", "type": "color", "default": "#3b82f6"},
+    {"id": "show_extremes", "name": "Show Min/Max Labels", "type": "bool", "default": true}
+  ],
+  "events": [
+    {"id": "on_bar_clicked", "name": "On Bar Clicked", "description": "Triggers when a user clicks a bar."}
+  ]
 }

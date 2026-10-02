@@ -15,7 +15,7 @@ func _init_client() -> void:
 
 func _process_iteration() -> void:
 	# Use time-based tracking to sample a continuous, smooth noise wave over time
-	var current_time: float = Time.get_ticks_msec() * 0.05
+	var current_time: float = Time.get_ticks_msec() * 0.001
 	
 	for subscription: ReactiveOpcUaSubscription in config.subscriptions.values():
 		for tag: ReactiveOpcUaTag in subscription.tags.values():

@@ -63,7 +63,7 @@ func _get_scale_factor() -> float:
 ## Applies DPI-based UI scaling. Runs at startup and whenever the
 ## display/resolution context changes (rotation, external monitor, etc.).
 func _set_scaling() -> void:
-	var root = get_tree().root
+	var root: Node = get_tree().root
 	
 	# 1. Update the scale factor
 	root.content_scale_factor = _get_scale_factor()
@@ -71,7 +71,7 @@ func _set_scaling() -> void:
 	# 2. Prevent window clipping on desktop platforms
 	# If the window isn't maximized or fullscreen, we must ensure it isn't smaller 
 	# than the base design resolution multiplied by our new scale factor.
-	var mode = DisplayServer.window_get_mode()
+	var mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
 	if mode == DisplayServer.WINDOW_MODE_WINDOWED:
 		# Replace these with your project's actual base design resolution widths/heights
 		var base_width: int = ProjectSettings.get_setting("display/window/size/viewport_width")
@@ -84,7 +84,7 @@ func _set_scaling() -> void:
 		DisplayServer.window_set_min_size(Vector2i(min_width, min_height))
 		
 		# If the current window size is now too small, expand it to match
-		var current_size = DisplayServer.window_get_size()
+		var current_size: Vector2i = DisplayServer.window_get_size()
 		if current_size.x < min_width or current_size.y < min_height:
 			DisplayServer.window_set_size(Vector2i(min_width, min_height))
 

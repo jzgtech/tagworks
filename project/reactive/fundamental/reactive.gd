@@ -4,7 +4,7 @@ extends Resource
 
 # ── Debug ─────────────────────────────────────────────────────────────────────
 const DEBUG_LOG: bool = true
-const DEBUG_PROPAGATE: bool = true
+const DEBUG_PROPAGATE: bool = false
 
 var _label: String = ""
 

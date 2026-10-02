@@ -1,11 +1,28 @@
 [gd_scene format=3 uid="uid://bslxag80uy0pi"]
 
 [ext_resource type="Script" uid="uid://dhcttkq3x2jo6" path="res://scenes/canvas/canvas.gd" id="1_gasuo"]
+[ext_resource type="Shader" uid="uid://b2iunuwsip6r8" path="res://scenes/canvas/canvas.gdshader" id="1_ggg0y"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="2_faxtj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ggg0y"]
+shader = ExtResource("1_ggg0y")
+shader_parameter/panel_size = Vector2(600, 600)
+shader_parameter/base_bg_color = Color(0.08, 0.09, 0.11, 1)
+shader_parameter/edit_bg_color = Color(0.039215688, 0.11764706, 0.23529412, 1)
+shader_parameter/grid_color = Color(0.15, 0.35, 0.65, 0.35)
+shader_parameter/view_border_color = Color(0.77254903, 0.77254903, 0.77254903, 1)
+shader_parameter/edit_border_color = Color(1, 0.6509804, 0, 1)
+shader_parameter/border_thickness = 2.0
+shader_parameter/corner_radius = 10.000000475
+shader_parameter/grid_size = Vector2(20, 20)
+shader_parameter/line_thickness = 1.0
+shader_parameter/edit_mode_fade = 0.0
 
 [node name="Canvas" type="Panel" unique_id=1037499837]
+material = SubResource("ShaderMaterial_ggg0y")
 custom_minimum_size = Vector2(600, 600)
 offset_right = 600.0
 offset_bottom = 600.0
 mouse_filter = 1
-theme_type_variation = &"WidgetCanvas"
+theme = ExtResource("2_faxtj")
 script = ExtResource("1_gasuo")

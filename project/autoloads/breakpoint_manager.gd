@@ -81,6 +81,9 @@ func is_desktop() -> bool:
 
 
 # Hardware states: Tells you if the code is executing on an actual mobile device architecture
+func is_running_on_macos_hardware() -> bool:
+	return OS.get_name() == "macOS"
+
 func is_running_on_mobile_hardware() -> bool:
 	return is_mobile_hardware
 
