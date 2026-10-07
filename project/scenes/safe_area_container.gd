@@ -1,9 +1,9 @@
 extends MarginContainer
 
-var margin_left: int   = 4
-var margin_top: int    = 4
-var margin_right: int  = 4
-var margin_bottom: int = 4
+var margin_left: int   = 8
+var margin_top: int    = 8
+var margin_right: int  = 8
+var margin_bottom: int = 8
 
 func _ready() -> void:
 	# 1. Check if the game is running on a PC platform

@@ -3,13 +3,6 @@ extends Node
 const SAVE_DIR     :String = "user://projects/"
 const FILE_VERSION :int    = 2
 
-const NODE_REGISTRY: Dictionary = {
-	"LabelWidget":        preload("res://widgets/label_widget/label_widget.tscn"),
-	"NumericFieldWidget": preload("res://widgets/numeric_field_widget/numeric_field_widget.tscn"),
-	"LivePlotWidget":     preload("res://widgets/live_plot_widget/live_plot_widget.tscn"),
-	"LedIndicatorWidget": preload("res://widgets/led_indicator_widget/led_indicator_widget.tscn"),
-}
-
 const PROJECT_FILE_FILTER: PackedStringArray = ["*.json ; Project Files"]
 
 var project: ReactiveProject = null
@@ -161,74 +154,6 @@ func _save(path: String) -> void:
 
 	AppState.current_project.file_path.value = path
 	RecentProjects.add(AppState.current_project.file_path.value, AppState.current_project.project_name.value)
-
-# ── Canvas Restore ────────────────────────────────────────────────────────────
-
-func _restore_all_canvases(pages: ReactiveArray) -> void:
-	for item: Variant in pages.values():
-		var page: ReactivePage = item as ReactivePage
-		if page == null:
-			continue
-		_restore_canvas(page)
-		_restore_all_canvases(page.children)
-
-
-func _restore_canvas(page: ReactivePage) -> void:
-	var host: Control = _find_host_for_page(page)
-	if host == null:
-		push_warning("ProjectManager: No widget host found for page '%s'." % page.page_id.value)
-		return
-
-	host.clear_all_widgets()
-
-	for item: Variant in page.canvas.widgets.values():
-		if item is Dictionary:
-			_restore_node(host, item)
-
-
-func _find_host_for_page(page: ReactivePage) -> Control:
-	var hosts: Array[Node] = get_tree().get_nodes_in_group("widget_host")
-	for node: Node in hosts:
-		var host: Control = node as Control
-		if host != null and host.get("page_id") == page.page_id.value:
-			return host
-	return null
-
-# ── Node Restore ──────────────────────────────────────────────────────────────
-
-func _restore_node(parent: Control, data: Dictionary) -> void:
-	var type: String = data.get("type", "")
-
-	if not NODE_REGISTRY.has(type):
-		push_error("ProjectManager: Unknown node type '%s'." % type)
-		return
-
-	var packed: PackedScene = load(NODE_REGISTRY[type]) as PackedScene
-	if packed == null:
-		push_error("ProjectManager: Failed to load scene for '%s'." % type)
-		return
-
-	var instance: Node = packed.instantiate()
-	if not instance is BaseWidget:
-		push_error("ProjectManager: Scene is not a BaseWidget for type '%s'." % type)
-		instance.queue_free()
-		return
-
-	parent.add_child(instance)
-
-	var widget: BaseWidget = instance as BaseWidget
-
-	if parent is BaseWidget and (parent as BaseWidget).is_container:
-		(parent as BaseWidget)._elevate_child(widget)
-
-	widget.deserialize(data)
-
-	if widget.is_container:
-		var drop_target: Control = widget.get_drop_target()
-		if drop_target != null:
-			for child_data: Variant in data.get("children", []):
-				if child_data is Dictionary:
-					_restore_node(drop_target, child_data)
 
 # ── Project Listing ───────────────────────────────────────────────────────────
 

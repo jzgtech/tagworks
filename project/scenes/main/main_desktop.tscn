@@ -5,17 +5,15 @@
 [ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="3_th5th"]
 [ext_resource type="PackedScene" uid="uid://btna6ctqhs01q" path="res://ui/shell/menu/top_menu_bar_desktop.tscn" id="4_tnnqq"]
 [ext_resource type="PackedScene" uid="uid://bo0tkqp8g6tm3" path="res://scenes/dialogs/pages_panel/pages_panel.tscn" id="5_raeie"]
-[ext_resource type="Script" uid="uid://dwudljs54kucl" path="res://scenes/dialogs/pages_panel/canvas_container.gd" id="6_hxu8e"]
 [ext_resource type="PackedScene" uid="uid://cngi5xaoyrkxg" path="res://scenes/dialogs/widget_palette/widget_palette.tscn" id="7_nvumn"]
 [ext_resource type="PackedScene" uid="uid://dg1rxoysdt2ry" path="res://scenes/dialogs/property_panel/property_panel.tscn" id="8_ou6is"]
+[ext_resource type="PackedScene" uid="uid://cf0qtpu8esxgh" path="res://scenes/canvas_container/canvas_container.tscn" id="8_tnnqq"]
 
 [node name="MainDesktop" type="Control" unique_id=1699472879]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 630.0
-offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tnnqq")
@@ -50,7 +48,9 @@ layout_mode = 2
 [node name="WorkArea" type="HSplitContainer" parent="SafeAreaContainer/RootLayout" unique_id=1534408628]
 layout_mode = 2
 size_flags_vertical = 3
+split_offsets = PackedInt32Array(350)
 drag_nested_intersections = true
+split_offset = 350
 
 [node name="VSplitContainer" type="VSplitContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1048886370]
 layout_mode = 2
@@ -91,11 +91,5 @@ size_flags_horizontal = 3
 metadata/_tab_index = 1
 metadata/_tab_name = "Properties"
 
-[node name="CanvasContainer" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=1430019445]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 400)
+[node name="CanvasContainer" parent="SafeAreaContainer/RootLayout/WorkArea" unique_id=383450145 instance=ExtResource("8_tnnqq")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"CanvasContainer"
-drag_to_rearrange_enabled = true
-script = ExtResource("6_hxu8e")

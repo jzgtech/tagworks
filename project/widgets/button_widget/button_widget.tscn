@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bjr3i23enoppx"]
+
+[ext_resource type="Script" uid="uid://c4co5yt6eoj46" path="res://widgets/button_widget/button_widget.gd" id="1_p5mwv"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_suf00"]
+
+[node name="Button" type="Button" unique_id=1300143304]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_suf00")
+script = ExtResource("1_p5mwv")

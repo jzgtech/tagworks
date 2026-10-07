@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://8n4h4lqbh2bu"]
 
-[ext_resource type="Script" uid="uid://begd34u1wupw7" path="res://widgets/plugin_widget_host.gd" id="1_sapg5"]
+[ext_resource type="Script" uid="uid://begd34u1wupw7" path="res://widget_sdk/plugin_widget_host.gd" id="1_sapg5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pysbo"]
 bg_color = Color(0.3764706, 0.3764706, 0.3764706, 1)

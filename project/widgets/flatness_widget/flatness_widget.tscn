@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b153y34faaa3p"]
+
+[ext_resource type="Script" uid="uid://dxu72tjtqoapb" path="res://extensions/flatness_widget/flatness_widget.gd" id="1_v26fe"]
+
+[node name="Control" type="Control" unique_id=456154543]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_v26fe")

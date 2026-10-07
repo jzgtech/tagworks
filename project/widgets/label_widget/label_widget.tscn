@@ -1,10 +1,6 @@
-[gd_scene format=3 uid="uid://dcy0pgg4mjk2r"]
+[gd_scene format=3 uid="uid://cu3nc6ru588ww"]
 
-[ext_resource type="PackedScene" uid="uid://8n4h4lqbh2bu" path="res://widgets/plugin_widget_host.tscn" id="1_x2h80"]
-[ext_resource type="Script" uid="uid://cpe7hcit157ty" path="res://widgets/label_widget/label_widget.gd" id="2_4d460"]
+[ext_resource type="Script" uid="uid://b7ej7i10cuwk8" path="res://extensions/label_widget/label_widget.gd" id="1_4s4fd"]
 
-[node name="BaseWidget" unique_id=954027860 instance=ExtResource("1_x2h80")]
-script = ExtResource("2_4d460")
-
-[node name="Label" type="Label" parent="MarginContainer/ContentSlot" parent_id_path=PackedInt32Array(227595631) index="0" unique_id=1667019848]
-layout_mode = 2
+[node name="LabelWidget" type="Label" unique_id=933299224]
+script = ExtResource("1_4s4fd")

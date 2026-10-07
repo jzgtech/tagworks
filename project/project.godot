@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TagWorks"
-config/version="0.0.5"
+config/version="0.0.6"
 run/main_scene="uid://dcgh5l37a2nx2"
 run/use_game_mode=false
 config/use_custom_user_dir=true
@@ -84,8 +84,9 @@ folder_colors={
 "res://tests/": "green",
 "res://translations/": "teal",
 "res://ui/toast/": "yellow",
-"res://widgets/": "purple",
-"res://widgets/components/": "teal"
+"res://widget_sdk/": "purple",
+"res://widget_sdk/components/": "teal",
+"res://widgets/": "purple"
 }
 
 [gui]
@@ -105,6 +106,8 @@ locale/translations=PackedStringArray("res://translations/en.po", "res://transla
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
 
 [version_bumper]
 

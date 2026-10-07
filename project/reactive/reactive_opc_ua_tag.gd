@@ -84,4 +84,4 @@ func to_data() -> Dictionary:
 func apply_runtime_update(new_value: Variant, new_quality: Variant, new_timestamp: float) -> void:
 	value.value = new_value
 	quality.value = new_quality
-	timestamp.value = new_timestamp
+	timestamp.value = int(new_timestamp)

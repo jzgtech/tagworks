@@ -46,20 +46,21 @@ func _build_entries() -> void:
 	_entries.clear()
 
 	for tag_cfg: ReactiveOpcUaTag in config.tags.values():
-		var node_id: OpcUaNodeId = OpcUaNodeId.parse(tag_cfg.node_id.value)
-		if node_id == null:
-			push_warning("OpcUaSubscription [%s]: could not parse node_id '%s' — skipping tag." % [subscription_id, tag_cfg.node_id.value])
-			continue
+		if not tag_cfg.node_id.value.is_empty():
+			var node_id: OpcUaNodeId = OpcUaNodeId.parse(tag_cfg.node_id.value)
+			if node_id == null:
+				push_warning("OpcUaSubscription [%s]: could not parse node_id '%s' — skipping tag." % [subscription_id, tag_cfg.node_id.value])
+				continue
 
-		var key: String = _key(node_id)
-		if _entries.has(key):
-			push_warning("OpcUaSubscription [%s]: duplicate tag key '%s' — skipping duplicate." % [subscription_id, key])
-			continue
+			var key: String = _key(node_id)
+			if _entries.has(key):
+				push_warning("OpcUaSubscription [%s]: duplicate tag key '%s' — skipping duplicate." % [subscription_id, key])
+				continue
 
-		var entry: SubscriptionEntry = SubscriptionEntry.new()
-		entry.node_id = node_id
-		entry.tag = tag_cfg
-		_entries[key] = entry
+			var entry: SubscriptionEntry = SubscriptionEntry.new()
+			entry.node_id = node_id
+			entry.tag = tag_cfg
+			_entries[key] = entry
 
 # ── Runtime state ───────────────────────────────────────────────────────────
 

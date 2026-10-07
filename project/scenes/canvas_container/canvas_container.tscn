@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cf0qtpu8esxgh"]
+
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_xdngr"]
+[ext_resource type="Script" uid="uid://dwudljs54kucl" path="res://scenes/canvas_container/canvas_container.gd" id="2_gle6t"]
+
+[node name="CanvasContainer" type="VBoxContainer" unique_id=383450145]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_xdngr")
+script = ExtResource("2_gle6t")
+
+[node name="TabBar" type="TabBar" parent="." unique_id=1342456148]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="PanelContainer" type="Control" parent="." unique_id=468278336]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 17
+size_flags_vertical = 19
+mouse_filter = 1

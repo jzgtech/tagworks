@@ -1,0 +1,11 @@
+{
+  "id": "com.vendor.label_widget",
+  "name": "Label",
+  "version": "1.0.0",
+  "api_version": "1",
+  "entry_scene": "label_widget.tscn",
+  "icon": "icon.svg",
+  "is_container": false,
+  "author": "Vendor Name",
+  "description": "A simple label widget."
+}
