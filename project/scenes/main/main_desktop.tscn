@@ -35,13 +35,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 script = ExtResource("3_th5th")
 
 [node name="RootLayout" type="VBoxContainer" parent="SafeAreaContainer" unique_id=974261623]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="MenuBar" parent="SafeAreaContainer/RootLayout" unique_id=1410388054 instance=ExtResource("4_tnnqq")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -58,6 +55,10 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=1510942659]
 layout_mode = 2
 
+[node name="MenuBar" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/VBoxContainer" unique_id=1410388054 instance=ExtResource("4_tnnqq")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="MacOSSpacer" type="Control" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/VBoxContainer" unique_id=190727102]
 unique_name_in_owner = true
 visible = false
@@ -69,11 +70,13 @@ mouse_filter = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="TabContainer" type="TabContainer" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer" unique_id=280056489]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 tab_0/title = "Widgets"
 tab_1/title = "Properties"
