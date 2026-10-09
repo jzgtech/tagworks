@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cu3nc6ru588ww"]
 
-[ext_resource type="Script" uid="uid://b7ej7i10cuwk8" path="res://extensions/label_widget/label_widget.gd" id="1_4s4fd"]
+[ext_resource type="Script" uid="uid://b7ej7i10cuwk8" path="res://widgets/label_widget/label_widget.gd" id="1_4s4fd"]
 
 [node name="LabelWidget" type="Label" unique_id=933299224]
 script = ExtResource("1_4s4fd")

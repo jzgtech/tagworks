@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://l17kpvsscli7"]
 
-[ext_resource type="Script" uid="uid://b58mksm8xmg2n" path="res://extensions/text_input_widget/text_input_widget.gd" id="1_07k1j"]
+[ext_resource type="Script" uid="uid://b58mksm8xmg2n" path="res://widgets/text_input_widget/text_input_widget.gd" id="1_07k1j"]
 
 [node name="TextInputWidget" type="LineEdit" unique_id=895530717]
 script = ExtResource("1_07k1j")

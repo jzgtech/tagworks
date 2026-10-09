@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://61wnvbeke0gs"]
+
+[node name="ThemePreview" type="Control" unique_id=1101409291]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=111263760]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabBar" type="TabBar" parent="GridContainer" unique_id=343212346]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+tab_count = 3
+tab_0/title = "Tab 1"
+tab_1/title = "Tab 2"
+tab_2/title = "Tab 3"
+
+[node name="TabContainer" type="TabContainer" parent="GridContainer" unique_id=538828674]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Tab 1" type="Control" parent="GridContainer/TabContainer" unique_id=598979370]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Tab 2" type="Control" parent="GridContainer/TabContainer" unique_id=1130682472]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Tab 3" type="Control" parent="GridContainer/TabContainer" unique_id=1065441825]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2

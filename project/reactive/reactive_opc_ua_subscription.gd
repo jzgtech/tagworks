@@ -52,6 +52,9 @@ func to_data() -> Dictionary:
 		"tags": result,
 	}
 
+func owner_as_server() -> ReactiveOpcUaServer:
+	return owner as ReactiveOpcUaServer
+
 ## --- Convenience accessors ---
 
 func get_tag(node_id: OpcUaNodeId) -> ReactiveOpcUaTag:

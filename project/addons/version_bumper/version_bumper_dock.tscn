@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c5qxq24b8y3p0"]
 
 [ext_resource type="Script" uid="uid://dg3b2vtjdjrjs" path="res://addons/version_bumper/version_bumper_dock.gd" id="1_a2b3c"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_hak8r"]
 
 [node name="VersionBumper" type="VBoxContainer" unique_id=587436649]
 anchors_preset = 15
@@ -8,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_hak8r")
 script = ExtResource("1_a2b3c")
 
 [node name="VersionLabel" type="Label" parent="." unique_id=1526836341]
@@ -21,12 +23,15 @@ alignment = 1
 
 [node name="MajorButton" type="Button" parent="Buttons" unique_id=1684563724]
 layout_mode = 2
+button_mask = 3
 text = "Major"
 
 [node name="MinorButton" type="Button" parent="Buttons" unique_id=200781758]
 layout_mode = 2
+button_mask = 3
 text = "Minor"
 
 [node name="PatchButton" type="Button" parent="Buttons" unique_id=1847947275]
 layout_mode = 2
+button_mask = 3
 text = "Patch"

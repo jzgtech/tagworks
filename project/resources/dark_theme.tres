@@ -32,6 +32,20 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2eqi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vord"]
+bg_color = Color(0.28627452, 0.28627452, 0.28627452, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f66m3"]
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2r26o"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mij6w"]
 bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 corner_radius_top_left = 6
@@ -72,6 +86,11 @@ Panel/styles/panel = SubResource("StyleBoxFlat_ihqd5")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_5invh")
 RecentProjectsList/base_type = &"ScrollContainer"
 RecentProjectsList/styles/panel = SubResource("StyleBoxFlat_0m8lx")
+TabBar/constants/tab_separation = 4
+TabBar/styles/tab_disabled = SubResource("StyleBoxEmpty_i2eqi")
+TabBar/styles/tab_hovered = SubResource("StyleBoxFlat_7vord")
+TabBar/styles/tab_selected = SubResource("StyleBoxFlat_f66m3")
+TabBar/styles/tab_unselected = SubResource("StyleBoxEmpty_2r26o")
 TabContainer/constants/side_margin = 8
 TabContainer/constants/tab_separation = 4
 TabContainer/styles/panel = SubResource("StyleBoxFlat_mij6w")

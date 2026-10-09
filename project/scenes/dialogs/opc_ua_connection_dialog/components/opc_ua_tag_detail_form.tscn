@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://cn0ls2tkehl34"]
 
 [ext_resource type="Script" uid="uid://cwt7illansfb1" path="res://scenes/dialogs/opc_ua_connection_dialog/components/opc_ua_tag_detail_form.gd" id="1_3l8t2"]
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_pkoq3"]
 
 [node name="OpcUaTagDetailForm" type="VBoxContainer" unique_id=1142122031]
+theme = ExtResource("1_pkoq3")
 script = ExtResource("1_3l8t2")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1212369982]
@@ -33,6 +35,25 @@ text = "Tag name:"
 
 [node name="TagNameEdit" type="LineEdit" parent="HBoxContainer2" unique_id=1438147581]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer_DataType" type="HBoxContainer" parent="." unique_id=394534853]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer_DataType" unique_id=4825060]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Data type:"
+
+[node name="DataTypeLabel" type="Label" parent="HBoxContainer_DataType" unique_id=1816185346]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DataTypeDropdown" type="OptionButton" parent="HBoxContainer_DataType" unique_id=1971167760]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 

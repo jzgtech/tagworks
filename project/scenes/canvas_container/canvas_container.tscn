@@ -18,6 +18,7 @@ script = ExtResource("2_gle6t")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 1
 
 [node name="PanelContainer" type="Control" parent="." unique_id=468278336]
 unique_name_in_owner = true

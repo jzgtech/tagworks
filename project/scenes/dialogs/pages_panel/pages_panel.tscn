@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://6gv7wbdebvey" path="res://scenes/dialogs/pages_panel/page_tree.gd" id="3_gfkhq"]
 
 [node name="PagesPanel" type="PanelContainer" unique_id=1118176807]
-custom_minimum_size = Vector2(200, 350)
 offset_right = 200.0
 offset_bottom = 350.0
 theme = ExtResource("1_rhg2w")

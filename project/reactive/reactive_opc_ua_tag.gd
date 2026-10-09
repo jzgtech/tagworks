@@ -13,6 +13,13 @@ enum TagType {
 	STRING,
 }
 
+const FRIENDLY_NAMES: Dictionary = {
+	TagType.BOOL: "Boolean (True/False)",
+	TagType.INT32: "Signed 32-bit Integer",
+	TagType.UINT32: "Unsigned 32-bit Integer",
+	TagType.FLOAT: "32-bit Float",
+}
+
 ## ── Persisted configuration ────────────────────────────────────────────────
 var id: ReactiveString
 var node_id: ReactiveString
@@ -34,47 +41,50 @@ var quality: ReactiveInt       # e.g. OPC UA StatusCode / Good-Uncertain-Bad
 var timestamp: ReactiveInt       # Unix time of last update, for staleness checks
 
 func _init(data: Dictionary = {}, initial_owner: Reactive = null, label: String = "ReactiveOpcUaTag") -> void:
-    super._init(initial_owner, label)
+	super._init(initial_owner, label)
 
-    id = ReactiveString.new("", self, "id")
-    node_id = ReactiveString.new("", self, "node_id")
-    display_name = ReactiveString.new("", self, "display_name")
-    is_active = ReactiveBool.new(true, self, "is_active")
-    sampling_ms = ReactiveFloat.new(0.0, self, "sampling_ms")
-    deadband = ReactiveFloat.new(0.0, self, "deadband")
-    tag_type = ReactiveInt.new(TagType.FLOAT, self, "tag_type")
+	id = ReactiveString.new("", self, "id")
+	node_id = ReactiveString.new("", self, "node_id")
+	display_name = ReactiveString.new("", self, "display_name")
+	is_active = ReactiveBool.new(true, self, "is_active")
+	sampling_ms = ReactiveFloat.new(0.0, self, "sampling_ms")
+	deadband = ReactiveFloat.new(0.0, self, "deadband")
+	tag_type = ReactiveInt.new(TagType.FLOAT, self, "tag_type")
 
-    # Runtime-only fields: constructed WITHOUT `self` as owner so they never
-    # bubble into this tag's (or any ancestor's) self_changed signal.
-    value = ReactiveVariant.new(null, null, "value")
-    quality = ReactiveInt.new(0, null, "quality")
-    timestamp = ReactiveInt.new(0, null, "timestamp")
+	# Runtime-only fields: constructed WITHOUT `self` as owner so they never
+	# bubble into this tag's (or any ancestor's) self_changed signal.
+	value = ReactiveVariant.new(null, null, "value")
+	quality = ReactiveInt.new(0, null, "quality")
+	timestamp = ReactiveInt.new(0, null, "timestamp")
 
-    if not data.is_empty():
-        from_data(data)
+	if not data.is_empty():
+		from_data(data)
 
 func _describe_value() -> String:
-    return ""
+	return ""
 
 func from_data(data: Dictionary) -> void:
-    id.value = data.get("id", "")
-    node_id.value = data.get("node_id", "")
-    display_name.value = data.get("display_name", "")
-    is_active.value = data.get("is_active", true)
-    sampling_ms.value = data.get("sampling_ms", 0.0)
-    deadband.value = data.get("deadband", 0.0)
-    tag_type.value = data.get("tag_type", TagType.FLOAT)
+	id.value = data.get("id", "")
+	node_id.value = data.get("node_id", "")
+	display_name.value = data.get("display_name", "")
+	is_active.value = data.get("is_active", true)
+	sampling_ms.value = data.get("sampling_ms", 0.0)
+	deadband.value = data.get("deadband", 0.0)
+	tag_type.value = data.get("tag_type", TagType.FLOAT)
 
 func to_data() -> Dictionary:
-    return {
-        "id": id.value,
-        "node_id": node_id.value,
-        "display_name": display_name.value,
-        "is_active": is_active.value,
-        "sampling_ms": sampling_ms.value,
-        "deadband": deadband.value,
-        "tag_type": tag_type.value,
-    }
+	return {
+		"id": id.value,
+		"node_id": node_id.value,
+		"display_name": display_name.value,
+		"is_active": is_active.value,
+		"sampling_ms": sampling_ms.value,
+		"deadband": deadband.value,
+		"tag_type": tag_type.value,
+	}
+
+func owner_as_subscription() -> ReactiveOpcUaSubscription:
+	return owner as ReactiveOpcUaSubscription
 
 ## ── Runtime update helper ──────────────────────────────────────────────────
 ## Called by OpcUaGroup.apply_update() on each poll cycle. Centralizing the
@@ -82,6 +92,6 @@ func to_data() -> Dictionary:
 ## individually) keeps the "what counts as a runtime update" logic in one
 ## place and makes it easy to add e.g. change-detection/deadband logic later.
 func apply_runtime_update(new_value: Variant, new_quality: Variant, new_timestamp: float) -> void:
-    value.value = new_value
-    quality.value = new_quality
-    timestamp.value = int(new_timestamp)
+	value.value = new_value
+	quality.value = new_quality
+	timestamp.value = int(new_timestamp)
