@@ -4,26 +4,29 @@ extends VBoxContainer
 signal edited
 signal browse_requested
 
-@onready var node_id_edit:           LineEdit     = %NodeIdEdit
-@onready var browse_tag_button:      Button       = %BrowseTagButton
-@onready var tag_name_edit:          LineEdit     = %TagNameEdit
-@onready var data_type_label:        Label        = %DataTypeLabel
-@onready var data_type_dropdown:     OptionButton = %DataTypeDropdown
-@onready var is_active_check:        CheckBox     = %IsActiveCheck
-@onready var sampling_spin:          SpinBox      = %SamplingSpin
-@onready var deadband_spin:          SpinBox      = %DeadbandSpin
+@onready var node_id_edit:              LineEdit      = %NodeIdEdit
+@onready var browse_tag_button:         Button        = %BrowseTagButton
+@onready var tag_name_edit:             LineEdit      = %TagNameEdit
+@onready var data_type_label:           Label         = %DataTypeLabel
+@onready var data_type_dropdown:        OptionButton  = %DataTypeDropdown
+@onready var is_active_check:           CheckBox      = %IsActiveCheck
+@onready var sampling_edit:             SpinBox       = %SamplingEdit
+@onready var deadband_edit:             SpinBox       = %DeadbandEdit
+
+@onready var simulated_range_container: HBoxContainer = %SimulatedRangeContainer
+@onready var simulated_range_min_edit:  SpinBox       = %SimulatedRangeMinEdit
+@onready var simulated_range_max_edit:  SpinBox       = %SimulatedRangeMaxEdit
 
 var _loading: bool = false
 
 func _ready() -> void:
 	# node_id is populated exclusively via Browse — read-only by design,
 	# consistent with the property-panel tag_edit pattern.
-	node_id_edit.editable = false
 	browse_tag_button.pressed.connect(_on_browse_tag_pressed)
 	tag_name_edit.focus_exited.connect(_emit_edited)
 	is_active_check.toggled.connect(_emit_edited.unbind(1))
-	sampling_spin.value_changed.connect(_emit_edited.unbind(1))
-	deadband_spin.value_changed.connect(_emit_edited.unbind(1))
+	sampling_edit.value_changed.connect(_emit_edited.unbind(1))
+	deadband_edit.value_changed.connect(_emit_edited.unbind(1))
 
 	data_type_dropdown.clear()
 	for enum_value: int in ReactiveOpcUaTag.TagType.values():
@@ -53,12 +56,14 @@ func load_config(tag: ReactiveOpcUaTag) -> void:
 	_loading = true
 	node_id_edit.text                = tag.node_id.value if tag.node_id.value != "" else "(none)"
 	tag_name_edit.text               = tag.display_name.value
-	if tag.owner_as_subscription().owner_as_server().is_mock:
+	if tag.owner_as_subscription().owner_as_server().is_mock.value:
 		data_type_label.hide()
 		data_type_dropdown.show()
+		browse_tag_button.hide()
+		simulated_range_container.show()
 	is_active_check.button_pressed   = tag.is_active.value
-	sampling_spin.value              = tag.sampling_ms.value
-	deadband_spin.value              = tag.deadband.value
+	sampling_edit.value              = tag.sampling_ms.value
+	deadband_edit.value              = tag.deadband.value
 	_loading = false
 
 func commit_to(tag: ReactiveOpcUaTag) -> void:
@@ -66,11 +71,13 @@ func commit_to(tag: ReactiveOpcUaTag) -> void:
 	# not directly editable in this form.
 	tag.node_id.value        = node_id_edit.text
 	tag.display_name.value   = tag_name_edit.text.strip_edges()
+	tag.tag_type.value       = data_type_dropdown.selected
 	tag.is_active.value      = is_active_check.button_pressed
-	tag.sampling_ms.value    = sampling_spin.value
-	tag.deadband.value       = deadband_spin.value
+	tag.sampling_ms.value    = sampling_edit.value
+	tag.deadband.value       = deadband_edit.value
 
 ## Called by the parent dialog's browse callback once a node is picked.
 func apply_picked_node_id(node_id: OpcUaNodeId) -> void:
 	node_id_edit.text = node_id.to_tag_name()
+	data_type_dropdown.select(node_id.numeric_id)
 	edited.emit()

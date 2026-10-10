@@ -28,6 +28,7 @@ var is_active: ReactiveBool
 var sampling_ms: ReactiveFloat
 var deadband: ReactiveFloat
 var tag_type: ReactiveInt          # stores a TagType enum value
+var simulated_range: ReactiveVariantCodec
 
 ## ── Runtime-only state ──────────────────────────────────────────────────────
 ## NOT persisted (excluded from to_data()/from_data()) and NOT propagated to
@@ -37,7 +38,7 @@ var tag_type: ReactiveInt          # stores a TagType enum value
 ## connect_self_changed() on the individual field, same as any other
 ## Reactive value.
 var value: ReactiveVariant
-var quality: ReactiveInt       # e.g. OPC UA StatusCode / Good-Uncertain-Bad
+var quality: ReactiveInt         # e.g. OPC UA StatusCode / Good-Uncertain-Bad
 var timestamp: ReactiveInt       # Unix time of last update, for staleness checks
 
 func _init(data: Dictionary = {}, initial_owner: Reactive = null, label: String = "ReactiveOpcUaTag") -> void:

@@ -115,7 +115,21 @@ func browse(
 	popup_centered(Vector2i(700, 500))
 
 	if server.is_mock.value:
-		pass
+		tree.clear()
+		selected_label.text = "Available mock server tags"
+
+		var invisible_root: TreeItem = tree.create_item()
+		for entry: int in ReactiveOpcUaTag.TagType.values():
+			var item: TreeItem = invisible_root.create_child()
+			if ReactiveOpcUaTag.FRIENDLY_NAMES.has(entry):
+				item.set_text(0, ReactiveOpcUaTag.FRIENDLY_NAMES.get(entry))
+				item.set_metadata(META_NODE_ID, "ns1|i=" + str(entry))
+				item.set_tooltip_text(0, ReactiveOpcUaTag.FRIENDLY_NAMES[entry])
+			else:
+				item.set_text(0, str(entry))
+				item.set_metadata(META_NODE_ID, str(entry))
+				item.set_tooltip_text(0, str(entry))
+			invisible_root.add_child(item)
 	else:
 		selected_label.text     = "Connecting…"
 		_connect_async(server)
@@ -345,18 +359,20 @@ func _on_item_selected() -> void:
 
 	selected_label.text     = node_id_str
 
-	var type: Dictionary = _client.read_node_data_type(node_id_str)
-	if not OpcUaManager.is_tag_supported(OpcUaManager.tag_type_from_ua_numeric(type["data_type"])):
-		confirm_button.disabled = true
-		selected_type.text = "Unsupported"
-	else:
+	if _last_server.is_mock.value:
 		confirm_button.disabled = false
-		selected_type.text = type["data_type_name"]
+	else:
+		var type: Dictionary = _client.read_node_data_type(node_id_str)
+		if not OpcUaManager.is_tag_supported(OpcUaManager.tag_type_from_ua_numeric(type["data_type"])):
+			confirm_button.disabled = true
+			selected_type.text = "Unsupported"
+		else:
+			confirm_button.disabled = false
+			selected_type.text = type["data_type_name"]
 
 func _on_item_activated() -> void:
 	if not confirm_button.disabled and confirm_button.visible:
 		_on_confirm()
-
 
 func _on_confirm() -> void:
 	var item: TreeItem = tree.get_selected()
@@ -371,18 +387,19 @@ func _on_confirm() -> void:
 	node_id_selected.emit(node_id)
 	_close()
 
-
 func _on_refresh_pressed() -> void:
 	if _client == null and _last_server != null:
-		# Acts as an implicit "Retry" when the initial connection failed.
-		selected_label.text     = "Connecting…"
-		confirm_button.disabled = true
-		refresh_button.disabled = true
-		_connect_async(_last_server)
-		return
+		if _last_server.is_mock.value:
+			pass
+		else:
+			# Acts as an implicit "Retry" when the initial connection failed.
+			selected_label.text     = "Connecting…"
+			confirm_button.disabled = true
+			refresh_button.disabled = true
+			_connect_async(_last_server)
+			return
 
 	_refresh()
-
 
 func _on_close_pressed() -> void:
 	_clear_pending_selection_callback()

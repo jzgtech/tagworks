@@ -41,7 +41,6 @@ func _ready() -> void:
 	_refresh_tree()
 	_set_panel(SelectionType.NONE)
 
-
 func _connect_signals() -> void:
 	add_server_button.pressed.connect(_on_add_server_pressed)
 	add_subscription_button.pressed.connect(_on_add_subscription_pressed)

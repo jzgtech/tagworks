@@ -11,7 +11,7 @@ script = ExtResource("1_3l8t2")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer" unique_id=1025119044]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Node ID:"
 
@@ -29,7 +29,7 @@ text = "Browse"
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer2" unique_id=1593398562]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Tag name:"
 
@@ -42,7 +42,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer_DataType" unique_id=4825060]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Data type:"
 
@@ -61,7 +61,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer3" unique_id=718145881]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Active:"
 
@@ -74,34 +74,45 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer4" unique_id=2004120041]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Sampling rate:"
 
-[node name="SamplingSpin" type="SpinBox" parent="HBoxContainer4" unique_id=1399421037]
+[node name="SamplingEdit" type="LineEdit" parent="HBoxContainer4" unique_id=1144626976]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-step = 10.0
-value = 100.0
-rounded = true
-allow_greater = true
-allow_lesser = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="." unique_id=589750766]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer5" unique_id=477797816]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Deadband"
 
-[node name="DeadbandSpin" type="SpinBox" parent="HBoxContainer5" unique_id=949363451]
+[node name="DeadbandEdit" type="LineEdit" parent="HBoxContainer5" unique_id=826270267]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-step = 10.0
-value = 100.0
-rounded = true
-allow_greater = true
-allow_lesser = true
+
+[node name="SimulatedRangeContainer" type="HBoxContainer" parent="." unique_id=1947827438]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SimulatedRangeContainer" unique_id=466642304]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Simulated range:"
+
+[node name="SimulatedRangeMinEdit" type="LineEdit" parent="SimulatedRangeContainer" unique_id=245235872]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "min"
+
+[node name="SimulatedRangeMaxEdit" type="LineEdit" parent="SimulatedRangeContainer" unique_id=1384316319]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "max"

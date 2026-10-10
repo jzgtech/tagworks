@@ -9,8 +9,6 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihqd5"]
 bg_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
