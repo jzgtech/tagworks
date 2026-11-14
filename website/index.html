@@ -1,183 +1,166 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2775.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPC-UA Studio | Real-Time Industrial Telemetry Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --surface: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Navigation */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+    .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; font-size: 0.95rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+
+    /* Buttons */
+    .btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; transition: 0.2s; }
+    .btn-primary { background: var(--accent); color: #0f172a; }
+    .btn-primary:hover { background: var(--accent-hover); color: #fff; }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); }
+
+    /* Hero Section */
+    .hero { text-align: center; padding: 5rem 0 4rem; }
+    .badge { display: inline-block; background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .hero h1 { font-size: 3rem; line-height: 1.15; max-width: 800px; margin: 0 auto 1.25rem; letter-spacing: -0.03em; }
+    .hero p { font-size: 1.2rem; color: var(--muted); max-width: 620px; margin: 0 auto 2rem; }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* Product Preview Box */
+    .preview-box { margin-top: 3.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .preview-placeholder { background: #0f172a; border: 1px dashed var(--border); border-radius: 0.5rem; height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); }
+
+    /* Features */
+    .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+    .section-title { text-align: center; font-size: 2rem; margin-bottom: 0.75rem; }
+    .section-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 3.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; }
+    .card h3 { margin-bottom: 0.75rem; font-size: 1.2rem; color: var(--accent); }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Pricing */
+    .price { font-size: 2.5rem; font-weight: 700; margin: 1rem 0; }
+    .price span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+    .feature-list { list-style: none; margin: 1.5rem 0 2rem; color: var(--muted); font-size: 0.95rem; }
+    .feature-list li { margin-bottom: 0.6rem; }
+    .feature-list li::before { content: "✓ "; color: var(--accent); font-weight: bold; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;OPC-UA Studio | Real-Time Industrial Telemetry Dashboard&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>:root {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--bg: #0b1120;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--surface: #1e293b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--border: #334155;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--text: #f8fafc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--muted: #94a3b8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--accent: #38bdf8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--accent-hover: #0284c7;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>* { box-sizing: border-box; margin: 0; padding: 0; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>a { text-decoration: none; color: inherit; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Navigation */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.logo span { color: var(--accent); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.nav-links { display: flex; gap: 2rem; align-items: center; font-size: 0.95rem; color: var(--muted); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.nav-links a:hover { color: var(--text); }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Buttons */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; transition: 0.2s; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.btn-primary { background: var(--accent); color: #0f172a; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.btn-primary:hover { background: var(--accent-hover); color: #fff; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.btn-outline { border: 1px solid var(--border); color: var(--text); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.btn-outline:hover { border-color: var(--accent); }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Hero Section */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hero { text-align: center; padding: 5rem 0 4rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.badge { display: inline-block; background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem; border: 1px solid rgba(56, 189, 248, 0.3); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hero h1 { font-size: 3rem; line-height: 1.15; max-width: 800px; margin: 0 auto 1.25rem; letter-spacing: -0.03em; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hero p { font-size: 1.2rem; color: var(--muted); max-width: 620px; margin: 0 auto 2rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Product Preview Box */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.preview-box { margin-top: 3.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.preview-placeholder { background: #0f172a; border: 1px dashed var(--border); border-radius: 0.5rem; height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Features */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.section { padding: 5rem 0; border-top: 1px solid var(--border); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.section-title { text-align: center; font-size: 2rem; margin-bottom: 0.75rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.section-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 3.5rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card h3 { margin-bottom: 0.75rem; font-size: 1.2rem; color: var(--accent); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card p { color: var(--muted); font-size: 0.95rem; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Pricing */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.price { font-size: 2.5rem; font-weight: 700; margin: 1rem 0; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.price span { font-size: 1rem; color: var(--muted); font-weight: 400; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.feature-list { list-style: none; margin: 1.5rem 0 2rem; color: var(--muted); font-size: 0.95rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.feature-list li { margin-bottom: 0.6rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.feature-list li::before { content: "✓ "; color: var(--accent); font-weight: bold; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>/* Footer */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>footer { border-top: 1px solid var(--border); padding: 2.5rem 0; text-align: center; color: var(--muted); font-size: 0.9rem; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;nav&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="logo"&gt;OPC-UA&lt;span&gt;Dashboard&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="nav-links"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;a href="#features"&gt;Features&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;a href="#pricing"&gt;Pricing&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;a href="#contact" class="btn btn-primary"&gt;Get Started&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section class="hero"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="badge"&gt;Zero-Config Industrial Monitoring&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h1&gt;Visualize Your OPC-UA PLC Data in Seconds&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p&gt;Connect to any OPC-UA server, browse address spaces effortlessly, and build real-time factory floor dashboards without complex SCADA overhead.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="hero-actions"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;a href="#pricing" class="btn btn-primary"&gt;Download Free Trial&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;a href="#features" class="btn btn-outline"&gt;Explore Features&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="preview-box"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="preview-placeholder"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;!-- Replace this div with &lt;img src="screenshot.png" alt="Dashboard Screenshot" style="width:100%; border-radius:0.5rem;"&gt; --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p&gt;&lt;strong&gt;[ Your Dashboard Screenshot Goes Here ]&lt;/strong&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p style="font-size: 0.85rem; margin-top: 0.5rem;"&gt;Save an image as &lt;code&gt;screenshot.png&lt;/code&gt; in &lt;code&gt;/var/www/html/&lt;/code&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section id="features" class="section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h2 class="section-title"&gt;Built for Automation Engineers&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p class="section-sub"&gt;Everything you need to commission, troubleshoot, and monitor industrial equipment.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-3"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;Instant Node Discovery&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p&gt;Browse complex OPC-UA node trees automatically and drag-and-drop tags directly onto live gauges and trend charts.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;High-Speed Polling&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p&gt;Sub-100ms subscription updates capture fast transient spikes on motors, valves, and PLC registers without dropping packets.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;Enterprise Security&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p&gt;Full support for X.509 certificates, Sign &amp;amp; Encrypt policies, and username/password authentication out of the box.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section id="pricing" class="section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h2 class="section-title"&gt;Simple, Transparent Licensing&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p class="section-sub"&gt;Start evaluating on your bench today or deploy across your entire plant floor.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-3"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;Community / Trial&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="price"&gt;$0 &lt;span&gt;/ forever&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;ul class="feature-list"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Up to 25 simultaneous OPC-UA tags&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Real-time gauges &amp;amp; trend charts&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;CSV data export&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;"&gt;Download Now&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card" style="border-color: var(--accent);"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;Pro Engineer&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="price"&gt;$199 &lt;span&gt;/ one-time&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;ul class="feature-list"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Unlimited OPC-UA tags &amp;amp; servers&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Tag read/write control widgets&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;X.509 certificate encryption&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;1 year of free updates&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;"&gt;Buy License&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3&gt;Plant Site License&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="price"&gt;$799 &lt;span&gt;/ one-time&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;ul class="feature-list"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Unlimited seats at one facility&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Custom branding &amp;amp; kiosk mode&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;li&gt;Priority email &amp;amp; phone support&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;"&gt;Contact Sales&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section id="contact" class="section" style="text-align: center;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h2 class="section-title"&gt;Ready to Deploy?&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p class="section-sub"&gt;Download the installer or reach out for custom licensing and volume quotes.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;a href="mailto:sales@://yourdomain.com" class="btn btn-primary"&gt;Email Sales Team&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;footer&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p&gt;&amp;copy; 2026 Your Company Name. All rights reserved.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+
+  <div class="container">
+    <nav>
+      <div class="logo">OPC-UA<span>Dashboard</span></div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="btn btn-primary">Get Started</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="badge">Zero-Config Industrial Monitoring</div>
+      <h1>Visualize Your OPC-UA PLC Data in Seconds</h1>
+      <p>Connect to any OPC-UA server, browse address spaces effortlessly, and build real-time factory floor dashboards without complex SCADA overhead.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary">Download Free Trial</a>
+        <a href="#features" class="btn btn-outline">Explore Features</a>
+      </div>
+
+      <div class="preview-box">
+        <div class="preview-placeholder">
+          <!-- Replace this div with <img src="screenshot.png" alt="Dashboard Screenshot" style="width:100%; border-radius:0.5rem;"> -->
+          <p><strong>[ Your Dashboard Screenshot Goes Here ]</strong></p>
+          <p style="font-size: 0.85rem; margin-top: 0.5rem;">Save an image as <code>screenshot.png</code> in <code>/var/www/html/</code></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2 class="section-title">Built for Automation Engineers</h2>
+      <p class="section-sub">Everything you need to commission, troubleshoot, and monitor industrial equipment.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Instant Node Discovery</h3>
+          <p>Browse complex OPC-UA node trees automatically and drag-and-drop tags directly onto live gauges and trend charts.</p>
+        </div>
+        <div class="card">
+          <h3>High-Speed Polling</h3>
+          <p>Sub-100ms subscription updates capture fast transient spikes on motors, valves, and PLC registers without dropping packets.</p>
+        </div>
+        <div class="card">
+          <h3>Enterprise Security</h3>
+          <p>Full support for X.509 certificates, Sign &amp; Encrypt policies, and username/password authentication out of the box.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2 class="section-title">Simple, Transparent Licensing</h2>
+      <p class="section-sub">Start evaluating on your bench today or deploy across your entire plant floor.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Community / Trial</h3>
+          <div class="price">$0 <span>/ forever</span></div>
+          <ul class="feature-list">
+            <li>Up to 25 simultaneous OPC-UA tags</li>
+            <li>Real-time gauges &amp; trend charts</li>
+            <li>CSV data export</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;">Download Now</a>
+        </div>
+        <div class="card" style="border-color: var(--accent);">
+          <h3>Pro Engineer</h3>
+          <div class="price">$199 <span>/ one-time</span></div>
+          <ul class="feature-list">
+            <li>Unlimited OPC-UA tags &amp; servers</li>
+            <li>Tag read/write control widgets</li>
+            <li>X.509 certificate encryption</li>
+            <li>1 year of free updates</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Buy License</a>
+        </div>
+        <div class="card">
+          <h3>Plant Site License</h3>
+          <div class="price">$799 <span>/ one-time</span></div>
+          <ul class="feature-list">
+            <li>Unlimited seats at one facility</li>
+            <li>Custom branding &amp; kiosk mode</li>
+            <li>Priority email &amp; phone support</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;">Contact Sales</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section" style="text-align: center;">
+      <h2 class="section-title">Ready to Deploy?</h2>
+      <p class="section-sub">Download the installer or reach out for custom licensing and volume quotes.</p>
+      <a href="mailto:sales@://yourdomain.com" class="btn btn-primary">Email Sales Team</a>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Your Company Name. All rights reserved.</p>
+    </footer>
+  </div>
+
 </body>
 </html>
