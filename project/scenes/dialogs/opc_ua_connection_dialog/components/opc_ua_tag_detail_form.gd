@@ -10,12 +10,12 @@ signal browse_requested
 @onready var data_type_label:           Label         = %DataTypeLabel
 @onready var data_type_dropdown:        OptionButton  = %DataTypeDropdown
 @onready var is_active_check:           CheckBox      = %IsActiveCheck
-@onready var sampling_edit:             SpinBox       = %SamplingEdit
-@onready var deadband_edit:             SpinBox       = %DeadbandEdit
+@onready var sampling_edit:             LineEdit      = %SamplingEdit
+@onready var deadband_edit:             LineEdit      = %DeadbandEdit
 
 @onready var simulated_range_container: HBoxContainer = %SimulatedRangeContainer
-@onready var simulated_range_min_edit:  SpinBox       = %SimulatedRangeMinEdit
-@onready var simulated_range_max_edit:  SpinBox       = %SimulatedRangeMaxEdit
+@onready var simulated_range_min_edit:  LineEdit      = %SimulatedRangeMinEdit
+@onready var simulated_range_max_edit:  LineEdit      = %SimulatedRangeMaxEdit
 
 var _loading: bool = false
 
@@ -25,8 +25,8 @@ func _ready() -> void:
 	browse_tag_button.pressed.connect(_on_browse_tag_pressed)
 	tag_name_edit.focus_exited.connect(_emit_edited)
 	is_active_check.toggled.connect(_emit_edited.unbind(1))
-	sampling_edit.value_changed.connect(_emit_edited.unbind(1))
-	deadband_edit.value_changed.connect(_emit_edited.unbind(1))
+	sampling_edit.text_changed.connect(_emit_edited.unbind(1))
+	deadband_edit.text_changed.connect(_emit_edited.unbind(1))
 
 	data_type_dropdown.clear()
 	for enum_value: int in ReactiveOpcUaTag.TagType.values():
@@ -62,8 +62,8 @@ func load_config(tag: ReactiveOpcUaTag) -> void:
 		browse_tag_button.hide()
 		simulated_range_container.show()
 	is_active_check.button_pressed   = tag.is_active.value
-	sampling_edit.value              = tag.sampling_ms.value
-	deadband_edit.value              = tag.deadband.value
+	sampling_edit.text              = str(tag.sampling_ms.value)
+	deadband_edit.text              = str(tag.deadband.value)
 	_loading = false
 
 func commit_to(tag: ReactiveOpcUaTag) -> void:
@@ -73,8 +73,8 @@ func commit_to(tag: ReactiveOpcUaTag) -> void:
 	tag.display_name.value   = tag_name_edit.text.strip_edges()
 	tag.tag_type.value       = data_type_dropdown.selected
 	tag.is_active.value      = is_active_check.button_pressed
-	tag.sampling_ms.value    = sampling_edit.value
-	tag.deadband.value       = deadband_edit.value
+	tag.sampling_ms.value    = float(sampling_edit.text)
+	tag.deadband.value       = float(deadband_edit.text)
 
 ## Called by the parent dialog's browse callback once a node is picked.
 func apply_picked_node_id(node_id: OpcUaNodeId) -> void:

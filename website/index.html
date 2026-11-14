@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OPC-UA Studio | Real-Time Industrial Telemetry Dashboard</title>
+  <title>TagWorks | Live OPC UA Telemetry</title>
   <style>
     :root {
-      --bg: #0b1120;
+      --bg: #0b1224;
       --surface: #1e293b;
       --border: #334155;
       --text: #f8fafc;
@@ -21,7 +21,7 @@
 
     /* Navigation */
     nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-    .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    .logo { font-size: 2.0rem; font-weight: 700; letter-spacing: -0.02em; }
     .logo span { color: var(--accent); }
     .nav-links { display: flex; gap: 2rem; align-items: center; font-size: 0.95rem; color: var(--muted); }
     .nav-links a:hover { color: var(--text); }
@@ -45,11 +45,32 @@
     .preview-placeholder { background: #0f172a; border: 1px dashed var(--border); border-radius: 0.5rem; height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); }
 
     /* Features */
-    .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+    .section { 
+      padding: 5rem 0; 
+      border-top: 1px solid var(--border); 
+      transition: background-image 0.3s ease, background-size 0.3s ease;
+    }
+    
     .section-title { text-align: center; font-size: 2rem; margin-bottom: 0.75rem; }
     .section-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 3.5rem; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; }
+    
+    /* Added transition smoothly animating borders and positions */
+    .card { 
+      background: var(--surface); 
+      border: 1px solid var(--border); 
+      border-radius: 0.75rem; 
+      padding: 2rem; 
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    /* Make cards feel like selectable, interactive engineering canvas widgets */
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    }
+
     .card h3 { margin-bottom: 0.75rem; font-size: 1.2rem; color: var(--accent); }
     .card p { color: var(--muted); font-size: 0.95rem; }
 
@@ -65,102 +86,87 @@
   </style>
 </head>
 <body>
-
   <div class="container">
     <nav>
-      <div class="logo">OPC-UA<span>Dashboard</span></div>
+      <div class="logo" style="display: flex; align-items: center; gap: 0.5rem; font-weight: bold;">
+        TagWorks <span class="nav-badge" style="background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: normal; color: var(--muted);">ALPHA</span>
+      </div>
       <div class="nav-links">
         <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact" class="btn btn-primary">Get Started</a>
+        <a href="#pricing">Alpha Release</a>
+        <a href="https://github.com" target="_blank" class="btn btn-primary">View on GitHub</a>
       </div>
     </nav>
-
-    <section class="hero">
-      <div class="badge">Zero-Config Industrial Monitoring</div>
-      <h1>Visualize Your OPC-UA PLC Data in Seconds</h1>
-      <p>Connect to any OPC-UA server, browse address spaces effortlessly, and build real-time factory floor dashboards without complex SCADA overhead.</p>
-      <div class="hero-actions">
-        <a href="#pricing" class="btn btn-primary">Download Free Trial</a>
-        <a href="#features" class="btn btn-outline">Explore Features</a>
-      </div>
-
-      <div class="preview-box">
-        <div class="preview-placeholder">
-          <!-- Replace this div with <img src="screenshot.png" alt="Dashboard Screenshot" style="width:100%; border-radius:0.5rem;"> -->
-          <p><strong>[ Your Dashboard Screenshot Goes Here ]</strong></p>
-          <p style="font-size: 0.85rem; margin-top: 0.5rem;">Save an image as <code>screenshot.png</code> in <code>/var/www/html/</code></p>
-        </div>
-      </div>
-    </section>
-
-    <section id="features" class="section">
-      <h2 class="section-title">Built for Automation Engineers</h2>
-      <p class="section-sub">Everything you need to commission, troubleshoot, and monitor industrial equipment.</p>
-      <div class="grid-3">
-        <div class="card">
-          <h3>Instant Node Discovery</h3>
-          <p>Browse complex OPC-UA node trees automatically and drag-and-drop tags directly onto live gauges and trend charts.</p>
-        </div>
-        <div class="card">
-          <h3>High-Speed Polling</h3>
-          <p>Sub-100ms subscription updates capture fast transient spikes on motors, valves, and PLC registers without dropping packets.</p>
-        </div>
-        <div class="card">
-          <h3>Enterprise Security</h3>
-          <p>Full support for X.509 certificates, Sign &amp; Encrypt policies, and username/password authentication out of the box.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="pricing" class="section">
-      <h2 class="section-title">Simple, Transparent Licensing</h2>
-      <p class="section-sub">Start evaluating on your bench today or deploy across your entire plant floor.</p>
-      <div class="grid-3">
-        <div class="card">
-          <h3>Community / Trial</h3>
-          <div class="price">$0 <span>/ forever</span></div>
-          <ul class="feature-list">
-            <li>Up to 25 simultaneous OPC-UA tags</li>
-            <li>Real-time gauges &amp; trend charts</li>
-            <li>CSV data export</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;">Download Now</a>
-        </div>
-        <div class="card" style="border-color: var(--accent);">
-          <h3>Pro Engineer</h3>
-          <div class="price">$199 <span>/ one-time</span></div>
-          <ul class="feature-list">
-            <li>Unlimited OPC-UA tags &amp; servers</li>
-            <li>Tag read/write control widgets</li>
-            <li>X.509 certificate encryption</li>
-            <li>1 year of free updates</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Buy License</a>
-        </div>
-        <div class="card">
-          <h3>Plant Site License</h3>
-          <div class="price">$799 <span>/ one-time</span></div>
-          <ul class="feature-list">
-            <li>Unlimited seats at one facility</li>
-            <li>Custom branding &amp; kiosk mode</li>
-            <li>Priority email &amp; phone support</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;">Contact Sales</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="section" style="text-align: center;">
-      <h2 class="section-title">Ready to Deploy?</h2>
-      <p class="section-sub">Download the installer or reach out for custom licensing and volume quotes.</p>
-      <a href="mailto:sales@://yourdomain.com" class="btn btn-primary">Email Sales Team</a>
-    </section>
-
-    <footer>
-      <p>&copy; 2026 Your Company Name. All rights reserved.</p>
-    </footer>
   </div>
+
+  <section class="hero">
+    <div class="badge">Zero-Config Industrial Monitoring</div>
+    <h1>Visualize Your OPC UA Data in Seconds</h1>
+    <p>Connect to any server, browse address spaces instantly, and build live factory dashboards - minus the overhead.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn btn-primary">Download Free Trial</a>
+      <a href="#features" class="btn btn-outline">Explore Features</a>
+    </div>
+
+    <div class="preview-box">
+      <div class="preview-placeholder">
+        <!-- Replace this div with <img src="screenshot.png" alt="Dashboard Screenshot" style="width:100%; border-radius:0.5rem;"> -->
+        <p><strong>[ Your Dashboard Screenshot Goes Here ]</strong></p>
+        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Save an image as <code>screenshot.png</code> in <code>/var/www/html/</code></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 class="section-title">Built for Automation Engineers</h2>
+    <p class="section-sub">Everything you need to commission, troubleshoot, and monitor industrial equipment right at the source.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Interactive Dynamic Canvas</h3>
+        <p>Drop flexible widgets onto a live canvas. Instantly configure visual properties, map custom event behaviors, and handle high-speed subscriptions without dropping packets.</p>
+      </div>
+      <div class="card">
+        <h3>Instant Node Discovery</h3>
+        <p>Browse complex OPC UA node trees effortlessly and bind live PLC tags directly to your responsive canvas widgets in seconds.</p>
+      </div>
+      <div class="card">
+        <h3>Mobile-Ready Diagnostics</h3>
+        <p>Bring your troubleshooting straight to the machine floor. Deploy identical, cross-platform dashboards to mobile devices without rewriting a line of code.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2 class="section-title">Open Alpha Phase</h2>
+    <p class="section-sub">TagWorks is currently in active development. Try it out on your test bench and help shape the future of OPC UA telemetry.</p>
+    <div class="grid-3" style="grid-template-columns: 1fr;">
+      <div class="card" style="max-width: 600px; margin: 0 auto; border-color: var(--accent); text-align: center;">
+        <div class="badge" style="background: var(--accent); color: #fff; display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1rem;">ALPHA 0.1.0</div>
+        <h3>Free &amp; Open Evaluation</h3>
+        <div class="price">$0 <span>/ during alpha</span></div>
+        <p style="margin: 1rem 0; color: var(--text-muted);">Download the latest pre-release binaries, build custom canvases, and test your PLC configurations. We want your feedback!</p>
+        <ul class="feature-list" style="display: inline-block; text-align: left; margin-bottom: 1.5rem;">
+          <li>Full access to the interactive widget canvas</li>
+          <li>No artificial tag or connection limits during testing</li>
+          <li>Cross-platform builds available (Desktop &amp; Mobile)</li>
+        </ul>
+        <a href="https://github.com" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; display: block;">View on GitHub / Download Alpha</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section" style="text-align: center;">
+    <h2 class="section-title">Help Shape TagWorks</h2>
+    <p class="section-sub">Encountered a bug on the factory floor or need a specific widget? Join our community and help build the ultimate OPC UA telemetry app.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+      <a href="https://github.com" target="_blank" class="btn btn-primary">Report an Issue</a>
+      <a href="https://github.com" target="_blank" class="btn btn-outline">Join the Discussion</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 JZG Technology Limited. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
