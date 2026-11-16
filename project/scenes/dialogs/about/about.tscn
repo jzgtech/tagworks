@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cqn7l1fp3wvy4"]
+
+[ext_resource type="PackedScene" uid="uid://ctuakifyo3wa3" path="res://scenes/dialogs/base_dialog.tscn" id="1_osf03"]
+[ext_resource type="Texture2D" uid="uid://dxy3mppjwsw77" path="res://resources/icon.svg" id="2_oa2cj"]
+
+[node name="About" unique_id=980154428 instance=ExtResource("1_osf03")]
+title = "About"
+size = Vector2i(450, 400)
+unresizable = true
+minimize_disabled = true
+maximize_disabled = true
+fullscreen_shortcut_enabled = true
+script = null
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=539922658]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel/MarginContainer/VBoxContainer" index="0" unique_id=749445311]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/CenterContainer" index="0" unique_id=98820453]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_oa2cj")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer" index="1" unique_id=903935463]
+layout_mode = 2
+size_flags_vertical = 3
+text = "TagWorks v0.1.0"

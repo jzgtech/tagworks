@@ -5,6 +5,10 @@ extends Node
 ## and mobile scene variants. BreakpointManager.is_mobile() determines
 ## which variant is instantiated at runtime.
 const WINDOW_SCENES : Dictionary = {
+	"about": {
+		"desktop": preload("res://scenes/dialogs/about/about.tscn"),
+		"mobile": preload("res://scenes/dialogs/about/about.tscn")
+	},
 	"settings": {
 		"desktop": preload("res://scenes/dialogs/settings/settings.tscn"),
 		"mobile": preload("res://scenes/dialogs/settings/settings.tscn")
@@ -47,6 +51,10 @@ var _dynamic_connections: Dictionary = {}
 func _ready() -> void:
 	_set_scaling()
 	get_tree().root.size_changed.connect(_on_root_size_changed)
+
+func _notification(message:int) -> void:
+	if message == NOTIFICATION_WM_ABOUT:
+		open_window("about")
 
 func _get_scale_factor() -> float:
 	var current_screen: int = DisplayServer.window_get_current_screen()
@@ -156,7 +164,7 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 				return null
 			window_instance = scene.instantiate()
 
-		get_tree().root.add_child(window_instance)
+		get_tree().root.add_child.call_deferred(window_instance)
 		active_windows[window_key] = window_instance
 
 		if window_instance.has_signal("close_requested"):
