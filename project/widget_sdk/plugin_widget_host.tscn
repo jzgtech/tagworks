@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://8n4h4lqbh2bu"]
 
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_6dtho"]
 [ext_resource type="Script" uid="uid://begd34u1wupw7" path="res://widget_sdk/plugin_widget_host.gd" id="1_sapg5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pysbo"]
@@ -10,10 +11,11 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 12
 
 [node name="PluginWidgetHost" type="PanelContainer" unique_id=954027860]
 custom_minimum_size = Vector2(10, 10)
@@ -21,6 +23,7 @@ offset_right = 10.0
 offset_bottom = 10.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = ExtResource("1_6dtho")
 theme_override_styles/panel = SubResource("StyleBoxFlat_pysbo")
 script = ExtResource("1_sapg5")
 

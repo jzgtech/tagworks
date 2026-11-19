@@ -1,6 +1,6 @@
 {
   "id": "com.vendor.text_input_widget",
-  "name": "Label",
+  "name": "Text Input",
   "version": "1.0.0",
   "api_version": "1",
   "entry_scene": "text_input_widget.tscn",
