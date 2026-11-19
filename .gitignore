@@ -3,3 +3,4 @@ export/
 .vscode
 .git
 test/.venv
+.DS_Store
