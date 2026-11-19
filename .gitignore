@@ -4,3 +4,5 @@ export/
 .git
 test/.venv
 .DS_Store
+.DS_Store
+website/.DS_Store
