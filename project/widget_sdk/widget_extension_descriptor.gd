@@ -6,40 +6,46 @@ var id: String
 var display_name: String
 var version: String
 var is_container: bool
+var author: String
+var description: String
 var icon: Texture2D
-var content_scene: PackedScene
 var install_path: String
-var host_scene: PackedScene
 
-## Holds the configuration schemas for properties parsed from the manifest
-var properties: Array[Dictionary] = []
-## Holds the event hooks exposed by this widget parsed from the manifest
-var events: Array[Dictionary] = []
+var backend_script: Script
+var content_scene: PackedScene
+var inspector_scene: PackedScene # Optional (null if widget has no inspector)
 
 func _init(manifest: Dictionary = {}) -> void:
 	if manifest.is_empty():
 		return
 	parse_manifest_data(manifest)
 
-## Helper method to populate this descriptor from your raw parsed manifest Dictionary
 func parse_manifest_data(manifest: Dictionary) -> void:
-	id = manifest.get("id", "")
-	display_name = manifest.get("name", "")
-	version = manifest.get("version", "1.0.0")
-	is_container = manifest.get("is_container", false)
-	
-	# Clear out existing arrays in case of re-initialization
-	properties.clear()
-	events.clear()
-	
-	# Safely extract and store properties schema arrays
-	if manifest.has("properties") and manifest["properties"] is Array:
-		for prop: Variant in manifest["properties"]:
-			if prop is Dictionary:
-				properties.append(prop)
-				
-	# Safely extract and store events schema arrays
-	if manifest.has("events") and manifest["events"] is Array:
-		for event: Variant in manifest["events"]:
-			if event is Dictionary:
-				events.append(event)
+	id = String(manifest.get("id", ""))
+	display_name = String(manifest.get("name", ""))
+	version = String(manifest.get("version", "1.0.0"))
+	is_container = bool(manifest.get("is_container", false))
+	author = String(manifest.get("author", ""))
+	description = String(manifest.get("description", ""))
+
+## Host-driven factory helpers
+func create_backend() -> ReactiveWidget:
+	if backend_script and backend_script.can_instantiate():
+		return backend_script.new() as ReactiveWidget
+	return null
+
+func create_content(backend: ReactiveWidget) -> Control:
+	if content_scene == null:
+		return null
+	var node: Control = content_scene.instantiate() as Control
+	if node and node.has_method("bind"):
+		node.bind(backend)
+	return node
+
+func create_inspector(backend: ReactiveWidget) -> Control:
+	if inspector_scene == null:
+		return null
+	var node: Control = inspector_scene.instantiate() as Control
+	if node and node.has_method("bind"):
+		node.bind(backend)
+	return node

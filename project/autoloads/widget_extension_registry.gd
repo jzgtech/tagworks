@@ -176,12 +176,14 @@ func install_extension_from_path(source_path: String) -> WidgetExtensionDescript
 	return descriptor
 
 func _validate_manifest(manifest: Dictionary) -> String:
-	for key: String in ["id", "name", "version", "api_version", "entry_scene"]:
+	for key: String in ["id", "name", "version", "api_version", "backend_script", "content_scene"]:
 		if not manifest.has(key) or String(manifest[key]).is_empty():
 			return "manifest.json missing required field '%s'." % key
+			
 	if String(manifest["api_version"]) != SDK_API_VERSION:
 		return "Incompatible api_version '%s' (host supports '%s')." \
 			% [manifest["api_version"], SDK_API_VERSION]
+			
 	return ""
 
 func _extract_all(reader: ZIPReader, install_dir: String) -> Error:
@@ -210,19 +212,54 @@ func _extract_all(reader: ZIPReader, install_dir: String) -> Error:
 	return OK
 
 func _build_descriptor(manifest: Dictionary, install_dir: String) -> WidgetExtensionDescriptor:
-	var scene_path: String = install_dir.path_join(String(manifest["entry_scene"]))
-	var content_scene: Resource = ResourceLoader.load(scene_path, "PackedScene")
-	if not (content_scene is PackedScene):
+	# 1. Load & probe backend_script
+	var script_path: String = install_dir.path_join(String(manifest["backend_script"]))
+	var backend_script: Script = ResourceLoader.load(script_path, "Script") as Script
+	if backend_script == null or not backend_script.can_instantiate():
 		return null
 
-	var probe: Node = (content_scene as PackedScene).instantiate()
-	var valid: bool = probe is Control
-	probe.queue_free()
-	if not valid:
+	var backend_probe: Variant = backend_script.new()
+	var valid_backend: bool = backend_probe is ReactiveWidget
+	if backend_probe is Node:
+		(backend_probe as Node).queue_free()
+	elif backend_probe != null and not (backend_probe is RefCounted):
+		backend_probe.free()
+	if not valid_backend:
 		return null
 
+	# 2. Load & probe content_scene (Required)
+	var content_path: String = install_dir.path_join(String(manifest["content_scene"]))
+	var content_scene: PackedScene = ResourceLoader.load(content_path, "PackedScene") as PackedScene
+	if content_scene == null:
+		return null
+
+	var content_probe: Node = content_scene.instantiate()
+	var valid_content: bool = content_probe is Control
+	content_probe.queue_free()
+	if not valid_content:
+		return null
+
+	# 3. Load & probe inspector_scene (Optional)
+	var inspector_scene: PackedScene = null
+	var inspector_rel: String = String(manifest.get("inspector_scene", ""))
+	if not inspector_rel.is_empty():
+		var inspector_path: String = install_dir.path_join(inspector_rel)
+		inspector_scene = ResourceLoader.load(inspector_path, "PackedScene") as PackedScene
+		if inspector_scene == null:
+			return null
+
+		var inspector_probe: Node = inspector_scene.instantiate()
+		var valid_inspector: bool = inspector_probe is Control
+		inspector_probe.queue_free()
+		if not valid_inspector:
+			return null
+
+	# 4. Assemble and return descriptor
 	var d: WidgetExtensionDescriptor = WidgetExtensionDescriptor.new(manifest)
+	d.install_path = install_dir
+	d.backend_script = backend_script
 	d.content_scene = content_scene
+	d.inspector_scene = inspector_scene
 	return d
 
 func _load_icon(install_dir: String, filename: String) -> Texture2D:
@@ -235,30 +272,36 @@ func _load_icon(install_dir: String, filename: String) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 func _run_plugin_hook(manifest: Dictionary, install_dir: String) -> void:
-	var plugin_script_name: String = manifest.get("plugin_script", "")
+	var plugin_script_name: String = String(manifest.get("plugin_script", ""))
 	if plugin_script_name.is_empty():
 		return
 
 	var script_path: String = install_dir.path_join(plugin_script_name)
-	var script: Script = ResourceLoader.load(script_path) as Script
-	if script == null:
-		LogManager.error("plugin.gd failed to load or compile at '%s'." % script_path)
+	var script: Script = ResourceLoader.load(script_path, "Script") as Script
+	if script == null or not script.can_instantiate():
+		LogManager.error("Plugin script failed to load or compile at '%s'." % script_path)
 		return
 
 	var raw_instance: Object = script.new()
 	if raw_instance == null:
-		LogManager.error("plugin.gd's script failed to instantiate at '%s'." % script_path)
+		LogManager.error("Plugin script failed to instantiate at '%s'." % script_path)
 		return
 
 	var instance: WidgetExtensionPlugin = raw_instance as WidgetExtensionPlugin
 	if instance == null:
-		LogManager.error(
-			"plugin.gd does not extend WidgetExtensionPlugin (got: %s)." \
-			% raw_instance.get_script().get_global_name() if raw_instance.get_script() else "unknown script"
-		)
+		var loaded_script: Script = raw_instance.get_script()
+		var script_id: String = "unknown script"
+		if loaded_script:
+			script_id = loaded_script.get_global_name() if not loaded_script.get_global_name().is_empty() else loaded_script.resource_path
+			
+		LogManager.error("Plugin script does not extend WidgetExtensionPlugin (got: %s)." % script_id)
+		
+		# Clean up if the author accidentally extended Node instead of RefCounted
+		if not (raw_instance is RefCounted):
+			raw_instance.free()
 		return
 
 	var context: WidgetExtensionContext = WidgetExtensionContext.new(
-		self, manifest["id"], install_dir
+		self, String(manifest["id"]), install_dir
 	)
 	instance.on_load(context)

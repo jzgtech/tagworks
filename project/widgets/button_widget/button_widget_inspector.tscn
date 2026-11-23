@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ckx8foi8ksgro"]
+
+[ext_resource type="Theme" uid="uid://be2f5ad1wm1f4" path="res://resources/dark_theme.tres" id="1_oyyi6"]
+[ext_resource type="Script" uid="uid://bat8jatwfgcir" path="res://widgets/button_widget/button_widget_inspector.gd" id="2_oyyi6"]
+
+[node name="Button" type="VBoxContainer" unique_id=1068530826]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_oyyi6")
+script = ExtResource("2_oyyi6")
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=94660733]
+layout_mode = 2
