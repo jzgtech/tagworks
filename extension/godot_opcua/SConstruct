@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # =============================================================================
-# SConstruct  (v4 — updated for extension/godot_opcua/ project structure)
+# SConstruct  (v5 — adds iOS support)
 #
 # Directory structure:
 #   tag-view/
@@ -14,13 +14,24 @@
 #   │       ├── godot_opcua.cpp
 #   │       └── register_types.cpp
 #   └── project/
-#       └── bin/                ← compiled .dll output
+#       └── bin/                ← compiled output
 #
 # Usage:
 #   scons                                         # Windows x86_64 debug
 #   scons target=template_release                 # Windows release
 #   scons platform=windows target=template_debug  # Windows debug (explicit)
 #   scons platform=android arch=arm64 target=template_debug android_api_level=21
+#
+#   # iOS (requires a macOS host with Xcode + command line tools)
+#   scons platform=ios arch=arm64 target=template_debug                      # device
+#   scons platform=ios arch=arm64 target=template_release                    # device
+#   scons platform=ios arch=arm64 ios_simulator=yes target=template_debug    # simulator (Apple silicon)
+#   scons platform=ios arch=x86_64 ios_simulator=yes target=template_debug  # simulator (Intel)
+#   scons platform=ios ios_min_version=13.0 ...                              # override min iOS version
+#
+# iOS output is a STATIC library (.a), which is what Godot's iOS exporter
+# expects. Combine device + simulator slices into an .xcframework afterwards
+# (see the note at the bottom of this file).
 # =============================================================================
 
 import os
@@ -40,6 +51,8 @@ if not os.path.isfile(os.path.join(godot_cpp, "SConstruct")):
     Exit(1)
 
 # ── Additional variables ──────────────────────────────────────────────────────
+# NOTE: iOS variables (ios_simulator, ios_min_version, IOS_TOOLCHAIN_PATH) are
+# already defined by godot-cpp's own SConstruct, so they are not redeclared here.
 opts = Variables([], ARGUMENTS)
 opts.Add("android_api_level", "Minimum Android API level", "21")
 opts.Add(PathVariable(
@@ -51,6 +64,12 @@ opts.Add(PathVariable(
 env = SConscript(os.path.join(godot_cpp, "SConstruct"))
 opts.Update(env)
 Help(opts.GenerateHelpText(env))
+
+# ── iOS host sanity check ─────────────────────────────────────────────────────
+if env["platform"] == "ios" and sys.platform != "darwin":
+    print("\nERROR: iOS builds require a macOS host with Xcode installed "
+          "(current host: {}).\n".format(sys.platform))
+    Exit(1)
 
 # ── Android NDK toolchain ─────────────────────────────────────────────────────
 if env["platform"] == "android":
@@ -96,9 +115,9 @@ if env["platform"] == "android":
     env["CC"]      = cc
     env["CXX"]     = cxx
     env["LINK"]    = cxx
-    env["SHCC"]    = cc       # ← add this
-    env["SHCXX"]   = cxx      # ← add this
-    env["SHLINK"]  = cxx      # ← add this
+    env["SHCC"]    = cc
+    env["SHCXX"]   = cxx
+    env["SHLINK"]  = cxx
     env["AR"]      = os.path.join(toolchain_bin, "llvm-ar")
     env["RANLIB"]  = os.path.join(toolchain_bin, "llvm-ranlib")
     env["STRIP"]   = os.path.join(toolchain_bin, "llvm-strip")
@@ -112,8 +131,8 @@ if env["platform"] == "windows":
     env.Append(CPPDEFINES=[("UA_MULTITHREADING", "0")])
     env.Append(LIBS=["ws2_32", "iphlpapi"])
 
-# ── Android: no pthreads needed either ───────────────────────────────────────
-if env["platform"] == "android":
+# ── Android / iOS: no pthreads needed either ─────────────────────────────────
+if env["platform"] in ("android", "ios"):
     env.Append(CPPDEFINES=[("UA_MULTITHREADING", "0")])
 
 # ── open62541 amalgamation ────────────────────────────────────────────────────
@@ -130,15 +149,22 @@ else:
         "-Wno-unused-function",  "-Wno-missing-field-initializers",
         "-Wno-implicit-fallthrough", "-Wno-type-limits", "-Wno-pedantic",
     ])
-    
-    # --- ADD THIS LOGIC TO FIX THE SO_REUSEPORT ERROR ---
-    if platform.system() == "Darwin":  # macOS detected
+
+    # SO_REUSEPORT handling. Key off the TARGET platform, not the host:
+    # an iOS or macOS target needs _DARWIN_C_SOURCE; a Linux/Android target
+    # falls back to SO_REUSEADDR for old kernels/bionic headers.
+    if env["platform"] in ("macos", "ios"):
         ua_env.Append(CPPDEFINES=["_DARWIN_C_SOURCE"])
-    else:  # Linux fallback for old kernels
+    else:
         ua_env.Append(CPPDEFINES=[("SO_REUSEPORT", "SO_REUSEADDR")])
 
-open62541_obj = ua_env.SharedObject(
-    os.path.join(script_dir, "open62541.c"))
+# iOS produces a static library, so build static objects there.
+if env["platform"] == "ios":
+    open62541_obj = ua_env.StaticObject(
+        os.path.join(script_dir, "open62541.c"))
+else:
+    open62541_obj = ua_env.SharedObject(
+        os.path.join(script_dir, "open62541.c"))
 
 # ── Extension sources ─────────────────────────────────────────────────────────
 sources = [
@@ -151,17 +177,33 @@ sources = [
 # ── Output to project/bin/ ────────────────────────────────────────────────────
 os.makedirs(project_bin, exist_ok=True)
 
-lib_name = "libgodot_opcua{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
-lib_path = os.path.join(project_bin, lib_name)
-library  = env.SharedLibrary(lib_path, source=sources)
+if env["platform"] == "ios":
+    # godot-cpp's env["suffix"] already contains ".ios.<target>.<arch>" and,
+    # for simulator builds, ".simulator" — so device and simulator slices get
+    # distinct file names and won't overwrite each other.
+    lib_name = "libgodot_opcua{}.a".format(env["suffix"])
+    lib_path = os.path.join(project_bin, lib_name)
+    library  = env.StaticLibrary(lib_path, source=sources)
+else:
+    lib_name = "libgodot_opcua{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
+    lib_path = os.path.join(project_bin, lib_name)
+    library  = env.SharedLibrary(lib_path, source=sources)
+
 Default(library)
 
 print("")
-print("┌─ GodotOpcUa v3 build ─────────────────────────────────────────────")
+print("┌─ GodotOpcUa v5 build ─────────────────────────────────────────────")
 print("│  platform : {}".format(env["platform"]))
 print("│  target   : {}".format(env["target"]))
 print("│  arch     : {}".format(env.get("arch", "?")))
 print("│  output   : {}".format(lib_path))
+
+if env["platform"] == "ios":
+    print("│")
+    print("│  simulator    : {}".format(env.get("ios_simulator", "?")))
+    print("│  min iOS ver  : {}".format(env.get("ios_min_version", "?")))
+    print("│  CC           : {}".format(env.get("CC", "?")))
+    print("│  CXX          : {}".format(env.get("CXX", "?")))
 
 if env["platform"] == "android":
     print("│")
@@ -193,3 +235,23 @@ if env["platform"] == "android":
 
 print("└───────────────────────────────────────────────────────────────────")
 print("")
+
+# =============================================================================
+# iOS packaging note
+# -----------------------------------------------------------------------------
+# After building the device and simulator slices, combine them:
+#
+#   xcodebuild -create-xcframework \
+#     -library project/bin/libgodot_opcua.ios.template_release.arm64.a \
+#     -library project/bin/libgodot_opcua.ios.template_release.arm64.simulator.a \
+#     -output  project/bin/godot_opcua.release.xcframework
+#
+# (If both simulator slices are arm64 + x86_64, lipo them into one fat .a first;
+#  xcframework allows only one library per platform variant.)
+#
+# Then reference it in your .gdextension file:
+#
+#   [libraries]
+#   ios.debug   = "res://bin/godot_opcua.debug.xcframework"
+#   ios.release = "res://bin/godot_opcua.release.xcframework"
+# =============================================================================
