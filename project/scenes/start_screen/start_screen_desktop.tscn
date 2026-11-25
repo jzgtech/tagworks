@@ -40,9 +40,11 @@ variation_embolden = 1.0
 
 [node name="StartScreenDesktop" type="PanelContainer" unique_id=550712082]
 clip_children = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -290.0
+offset_bottom = -250.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_we26q")

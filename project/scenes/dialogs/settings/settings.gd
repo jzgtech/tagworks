@@ -41,7 +41,6 @@ func _ready() -> void:
 			require_pin_switch.button_pressed = origin.value
 	)
 
-
 func _populate_locales() -> void:
 	locale_option.clear()
 	_locale_codes = TranslationServer.get_loaded_locales()

@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://cgttwub7bxcec"]
+
+[ext_resource type="PackedScene" uid="uid://ctuakifyo3wa3" path="res://scenes/dialogs/base_dialog.tscn" id="1_10o6e"]
+[ext_resource type="Script" uid="uid://dvikoma3e40vg" path="res://scenes/dialogs/settings/settings.gd" id="2_2c3w1"]
+
+[node name="BaseDialog" unique_id=980154428 instance=ExtResource("1_10o6e")]
+size = Vector2i(650, 450)
+script = ExtResource("2_2c3w1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=573963510]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer" index="0" unique_id=884494710]
+layout_mode = 2
+current_tab = 1
+
+[node name="General" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" index="1" unique_id=1402677706]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General" index="0" unique_id=1111936971]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer" index="0" unique_id=1545497748]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" index="0" unique_id=1729675065]
+layout_mode = 2
+text = "Language"
+
+[node name="LanguageOptionButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" index="1" unique_id=1457801692]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Network" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" index="2" unique_id=1636681747]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+metadata/_tab_index = 1
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network" index="0" unique_id=949183243]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="0" unique_id=1802978717]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="0" unique_id=1879327024]
+layout_mode = 2
+text = "Enable network transfer"
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="1" unique_id=118552394]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NetworkTransferCheckButton" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="2" unique_id=218134610]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="1" unique_id=1780178757]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="0" unique_id=1859855822]
+layout_mode = 2
+text = "Device name"
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="1" unique_id=910724391]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeviceNameLineEdit" type="LineEdit" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="2" unique_id=1313945003]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+placeholder_text = "TagWorks Host"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="2" unique_id=454242787]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="0" unique_id=279903642]
+layout_mode = 2
+text = "Require PIN for transfers"
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="1" unique_id=1599097201]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RequirePINCheckButton" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="2" unique_id=1198842477]
+unique_name_in_owner = true
+layout_mode = 2
+flat = true
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer" index="1" unique_id=1390514049]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" index="2" unique_id=524042230]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=744862749]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=89254549]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"

@@ -53,22 +53,16 @@ func handle_file_action(id: int) -> void:
 func handle_edit_action(id: int) -> void:
 	match id:
 		EditAction.SETTINGS:
-			WindowManager.open_window("settings", {
-				"size": Vector2i(900, 720)
-			})
+			WindowManager.open_window("settings")
 		EditAction.EXTENSIONS:
-			WindowManager.open_window("extension_manager", {
-				"size": Vector2i(900, 720)
-			})
+			WindowManager.open_window("extension_manager")
 		EditAction.EDIT_MODE:
 			AppState.edit_mode.value = not AppState.edit_mode.value
 
 func handle_server_action(id: int) -> void:
 	match id:
 		ServerAction.SETTINGS:
-			WindowManager.open_window("opc_ua_connection_dialog", {
-				"size": Vector2i(900, 720)
-			})
+			WindowManager.open_window("opc_ua_connection_dialog")
 		ServerAction.CONNECT_ALL:
 			IntentBus.connect_all_servers.emit()
 		ServerAction.DISCONNECT_ALL:

@@ -17,7 +17,6 @@ extends Window
 # ── Footer ────────────────────────────────────────────────────────────────────
 @onready var test_button:              Button        = %TestButton
 @onready var browse_button:            Button        = %BrowseButton
-@onready var status_button:            Button        = %StatusButton
 @onready var confirm_button:           Button        = %ConfirmButton
 @onready var close_button:             Button        = %CloseButton
 
@@ -133,7 +132,6 @@ func _set_panel(type: SelectionType) -> void:
 	var server_selected: bool = (type == SelectionType.SERVER)
 	test_button.visible       = server_selected
 	browse_button.visible     = server_selected
-	status_button.visible     = server_selected
 
 	confirm_button.disabled = not (_picker_active and type == SelectionType.TAG)
 

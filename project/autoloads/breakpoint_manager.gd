@@ -74,10 +74,10 @@ func _is_hardware_mobile() -> bool:
 
 # Dynamic states: Tells you if your UI layout context is behaving like a phone screen
 func is_mobile() -> bool:
-	return current_breakpoint == Breakpoint.Mobile
+	return current_breakpoint == Breakpoint.Mobile or OS.has_feature("force_mobile")
 
 func is_desktop() -> bool:
-	return current_breakpoint == Breakpoint.Desktop
+	return current_breakpoint == Breakpoint.Desktop and not OS.has_feature("force_mobile")
 
 
 # Hardware states: Tells you if the code is executing on an actual mobile device architecture

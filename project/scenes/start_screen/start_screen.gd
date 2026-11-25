@@ -26,7 +26,7 @@ var _drag_offset: Vector2i
 var _project_operation_pending: bool = false
 
 func _ready() -> void:
-	if BreakpointManager.is_running_on_macos_hardware():
+	if BreakpointManager.is_running_on_macos_hardware() and is_instance_valid(_texture_rect):
 		var texture: GradientTexture2D = _texture_rect.texture as GradientTexture2D
 		texture.fill_from = Vector2(0.0, 0.0)
 		_close_button.visible = false

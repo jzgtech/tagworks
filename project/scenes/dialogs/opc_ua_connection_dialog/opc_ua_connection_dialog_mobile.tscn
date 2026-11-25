@@ -13,10 +13,29 @@ script = ExtResource("2_vdtpp")
 [node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=1343120886]
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBox" index="0" unique_id=778527002]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBox" index="0" unique_id=2052530629]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox/HBoxContainer" index="0" unique_id=1413755498]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
+[node name="Control" type="Control" parent="Panel/MarginContainer/VBox/HBoxContainer" index="1" unique_id=2074776915]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ConfirmButton" type="Button" parent="Panel/MarginContainer/VBox/HBoxContainer" index="2" unique_id=1433666973]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Confirm"
+
+[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBox" index="1" unique_id=778527002]
 layout_mode = 2
 size_flags_vertical = 3
+tab_alignment = 1
 current_tab = 0
+tabs_position = 1
 tab_0/title = "Overview"
 tab_1/title = "Details"
 
@@ -53,9 +72,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RightSide" type="VBoxContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="2" unique_id=682289139]
+[node name="RightSide" type="MarginContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="2" unique_id=1968322441]
 visible = false
 layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 metadata/_tab_index = 1
 metadata/_tab_name = "Details"
 
@@ -79,37 +102,21 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Footer" type="VBoxContainer" parent="Panel/MarginContainer/VBox" index="1" unique_id=1246377404]
+[node name="Footer" type="HBoxContainer" parent="Panel/MarginContainer/VBox" index="2" unique_id=480038713]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="TestButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="0" unique_id=2068215555]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Test Connection"
 
 [node name="BrowseButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="1" unique_id=1421176533]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Browse Nodes"
-
-[node name="StatusButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="2" unique_id=1329445804]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Status"
-
-[node name="Spacer" type="Control" parent="Panel/MarginContainer/VBox/Footer" index="3" unique_id=64197257]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ConfirmButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="4" unique_id=1433666973]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Confirm"
-
-[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="5" unique_id=1413755498]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Close"
 
 [node name="ServerStatusTimer" type="Timer" parent="." index="1" unique_id=601891649]
 unique_name_in_owner = true

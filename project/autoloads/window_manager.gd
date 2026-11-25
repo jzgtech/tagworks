@@ -10,8 +10,8 @@ const WINDOW_SCENES : Dictionary = {
 		"mobile": preload("res://scenes/dialogs/about/about.tscn")
 	},
 	"settings": {
-		"desktop": preload("res://scenes/dialogs/settings/settings.tscn"),
-		"mobile": preload("res://scenes/dialogs/settings/settings.tscn")
+		"desktop": preload("res://scenes/dialogs/settings/settings_desktop.tscn"),
+		"mobile": preload("res://scenes/dialogs/settings/settings_mobile.tscn")
 	},
 	"script_editor": {
 		"desktop": preload("res://scenes/dialogs/script_editor/script_editor.tscn"),
@@ -144,12 +144,14 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 	var auto_popup: bool = options.get("auto_popup", true)
 
 	var window_instance: Node = null
+	var is_new_instance: bool = false
 
 	if not force_new and active_windows.has(window_key) and is_instance_valid(active_windows[window_key]):
 		window_instance = active_windows[window_key]
 		_bring_to_front(window_instance)
 		_clear_dynamic_connections(window_key)
 	else:
+		is_new_instance = true
 		if window_key == "filedialog":
 			window_instance = FileDialog.new()
 			window_instance.access = FileDialog.ACCESS_FILESYSTEM
@@ -185,23 +187,41 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 		else:
 			printerr("Signal not found on window '%s': %s" % [window_key, signal_name])
 
+	var scale_factor: float = _get_scale_factor()
+
+	if window_instance is Window:
+		window_instance.content_scale_factor = scale_factor
+		if is_new_instance and window_instance.min_size != Vector2i.ZERO:
+			window_instance.min_size = Vector2i(Vector2(window_instance.min_size) * scale_factor)
+
 	if auto_popup:
 		if window_instance is Window:
 			var is_native: bool = ("use_native_dialog" in window_instance) and window_instance.use_native_dialog
-			if is_native:
-				# Native dialogs are OS-rendered; just trigger the popup,
-				# sizing/positioning is handled by the platform itself.
-				window_instance.popup_centered(options.get("size", Vector2i(800, 600)))
-			elif _should_force_fullscreen():
-				_force_window_fullscreen(window_instance)
-			else:
-				window_instance.popup_centered(options.get("size", Vector2i(800, 600)))
-		elif window_instance is Control and _should_force_fullscreen():
-			_force_control_fullscreen(window_instance)
+			var base_size: Vector2i = options.get("size", window_instance.size if window_instance.size != Vector2i.ZERO else Vector2i(800, 600))
+			var scaled_size: Vector2i = Vector2i(Vector2(base_size) * scale_factor)
 
-	window_instance.content_scale_factor = _get_scale_factor()
+			# Defer the popup by one frame so it runs AFTER add_child.call_deferred finishes
+			var show_window :Callable = func() -> void:
+				if not is_instance_valid(window_instance):
+					return
+				if is_native:
+					window_instance.popup_centered(base_size)
+				elif _should_force_fullscreen():
+					_force_window_fullscreen(window_instance)
+				else:
+					window_instance.size = scaled_size
+					window_instance.popup_centered(scaled_size)
+
+			show_window.call_deferred()
+		elif window_instance is Control and _should_force_fullscreen():
+			_force_control_fullscreen.call_deferred(window_instance)
+	elif is_new_instance and window_instance is Window:
+		# If auto_popup is false, still scale the window's initial size so it's ready when shown
+		var base_size: Vector2i = options.get("size", window_instance.size)
+		window_instance.size = Vector2i(Vector2(base_size) * scale_factor)
 
 	return window_instance
+
 
 ## Determines whether windows should be forced to full screen:
 ## - Always true on Android/iOS
