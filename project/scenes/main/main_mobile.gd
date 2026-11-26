@@ -12,17 +12,7 @@ var active_theme : Theme
 # ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
-	_setup_window()
 	_connect_signals()
-
-## Restores normal window behavior after the borderless splash screen.
-func _setup_window() -> void:
-	var window: Window = get_window()
-	window.borderless = false
-	window.unresizable = false
-	window.min_size = Vector2i(800, 600)
-	window.size = Vector2i(1024, 720)
-	window.move_to_center()
 
 func _connect_signals() -> void:
 	# ── System ────────────────────────────────────────────────────────────────

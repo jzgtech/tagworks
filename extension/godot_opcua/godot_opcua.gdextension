@@ -1,6 +1,6 @@
 ; =============================================================================
-; godot_opcua.gdextension  (v3 — unchanged library names; new class OpcUaNodeId
-; is registered from the same shared library)
+; godot_opcua.gdextension  (v4 — iOS now loads the .xcframework produced by the
+; SConstruct; new class OpcUaNodeId is registered from the same library)
 ; =============================================================================
 
 [configuration]
@@ -28,10 +28,19 @@ android.release.arm64-v8a   = "res://bin/libgodot_opcua.android.template_release
 android.debug.x86_64        = "res://bin/libgodot_opcua.android.template_debug.x86_64.so"
 android.release.x86_64      = "res://bin/libgodot_opcua.android.template_release.x86_64.so"
 
-; ── iOS ───────────────────────────────────────────────────────────────────────
-ios.debug.arm64             = "res://bin/libgodot_opcua.ios.template_debug.arm64.a"
-ios.release.arm64           = "res://bin/libgodot_opcua.ios.template_release.arm64.a"
+; ── iOS (xcframework: device arm64 + simulator slices, built by the SConstruct) ──
+ios.debug                   = "res://bin/godot_opcua.ios.template_debug.xcframework"
+ios.release                 = "res://bin/godot_opcua.ios.template_release.xcframework"
 
 ; ── macOS (uncomment and build with platform=macos when needed) ───────────────
 ;macos.debug                 = "res://bin/libgodot_opcua.macos.template_debug.universal.a"
 ;macos.release               = "res://bin/libgodot_opcua.macos.template_release.universal.a"
+
+[dependencies]
+; The iOS key must match the [libraries] key above (ios.debug / ios.release).
+ios.debug = {
+    "res://bin/libgodot-cpp.ios.template_debug.arm64.a": ""
+}
+ios.release = {
+    "res://bin/libgodot-cpp.ios.template_release.arm64.a": ""
+}

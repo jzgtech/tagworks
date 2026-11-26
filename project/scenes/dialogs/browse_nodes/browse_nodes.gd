@@ -94,30 +94,24 @@ func _ready() -> void:
 ## (connected CONNECT_ONE_SHOT). If enable_selection is false, this behaves
 ## as a read-only browse/test session — no confirm button, no callback.
 func browse(
-	server:           ReactiveOpcUaServer,
-	on_selected:      Callable = Callable()
+	server: ReactiveOpcUaServer,
+	enable_selection: bool = false
 ) -> void:
+	if not is_node_ready():
+		await ready
+
 	_teardown_client()
 
-	_last_server           = server
-	confirm_button.visible = false
-
-	if on_selected.is_valid():
-		confirm_button.visible = true
-		node_id_selected.connect(on_selected, CONNECT_ONE_SHOT)
-
+	_last_server            = server
+	confirm_button.visible  = enable_selection
+	confirm_button.disabled = true
 	search_bar.text         = ""
 	selected_label.text     = ""
-	confirm_button.disabled = true
-	tree.clear()
 	refresh_button.disabled = true
-
-	popup_centered(Vector2i(700, 500))
+	tree.clear()
 
 	if server.is_mock.value:
-		tree.clear()
 		selected_label.text = "Available mock server tags"
-
 		var invisible_root: TreeItem = tree.create_item()
 		for entry: int in ReactiveOpcUaTag.TagType.values():
 			var item: TreeItem = invisible_root.create_child()
@@ -129,10 +123,10 @@ func browse(
 				item.set_text(0, str(entry))
 				item.set_metadata(META_NODE_ID, str(entry))
 				item.set_tooltip_text(0, str(entry))
-			invisible_root.add_child(item)
 	else:
-		selected_label.text     = "Connecting…"
+		selected_label.text = "Connecting…"
 		_connect_async(server)
+
 
 # =============================================================================
 # Connection handling

@@ -440,14 +440,21 @@ func _on_tag_browse_requested() -> void:
 # ── Shared browse helper ──────────────────────────────────────────────────────
 
 func _open_browser_for_server(server_id: String, on_picked: Callable = Callable()) -> void:
-	var server : ReactiveOpcUaServer = AppState.current_project.opc_ua_servers.get_entry(server_id)
+	var server: ReactiveOpcUaServer = AppState.current_project.opc_ua_servers.get_entry(server_id)
 	if server == null:
 		return
 
+	var has_callback: bool = on_picked.is_valid()
+	var callbacks: Dictionary = {}
+	if has_callback:
+		callbacks["node_id_selected"] = on_picked
+
 	var browse_nodes: Node = WindowManager.open_window("browse_nodes", {
-			"auto_popup": false
-		})
-	browse_nodes.browse(server, on_picked)
+		"size": Vector2i(700, 500),
+		"callbacks": callbacks
+	})
+	browse_nodes.browse(server, has_callback)
+
 
 # ── Form dirty tracking ───────────────────────────────────────────────────────
 

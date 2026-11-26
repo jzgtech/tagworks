@@ -29,14 +29,22 @@
 #   scons platform=ios arch=x86_64 ios_simulator=yes target=template_debug  # simulator (Intel)
 #   scons platform=ios ios_min_version=13.0 ...                              # override min iOS version
 #
+#   scons platform=ios arch=arm64 xcframework=no ...                        # skip xcframework packaging
+#
 # iOS output is a STATIC library (.a), which is what Godot's iOS exporter
-# expects. Combine device + simulator slices into an .xcframework afterwards
-# (see the note at the bottom of this file).
+# expects. After each iOS build, an .xcframework is assembled automatically
+# from whichever slices exist in project/bin/ (device arm64, simulator arm64,
+# simulator x86_64). Build each slice once; the xcframework grows as slices
+# appear. See the note at the bottom of this file.
 # =============================================================================
 
 import os
 import sys
+import shutil
+import subprocess
 import platform
+
+from SCons.Variables import BoolVariable
 
 # ── Resolve paths relative to this SConstruct ─────────────────────────────────
 script_dir   = Dir(".").abspath                        # extension/godot_opcua/
@@ -54,6 +62,10 @@ if not os.path.isfile(os.path.join(godot_cpp, "SConstruct")):
 # NOTE: iOS variables (ios_simulator, ios_min_version, IOS_TOOLCHAIN_PATH) are
 # already defined by godot-cpp's own SConstruct, so they are not redeclared here.
 opts = Variables([], ARGUMENTS)
+opts.Add(BoolVariable(
+    "xcframework",
+    "iOS only: assemble an .xcframework from available slices after building",
+    True))
 opts.Add("android_api_level", "Minimum Android API level", "21")
 opts.Add(PathVariable(
     "android_ndk_root",
@@ -184,6 +196,77 @@ if env["platform"] == "ios":
     lib_name = "libgodot_opcua{}.a".format(env["suffix"])
     lib_path = os.path.join(project_bin, lib_name)
     library  = env.StaticLibrary(lib_path, source=sources)
+
+    # ── Automatic .xcframework packaging ──────────────────────────────────────
+    # env["suffix"] looks like ".ios.template_release.arm64[.simulator]".
+    # Derive the sibling slice file names from it so every slice for the same
+    # target/flags is found regardless of which one this invocation built.
+    cur_suffix = env["suffix"]
+    core = cur_suffix[:-len(".simulator")] if cur_suffix.endswith(".simulator") else cur_suffix
+    cur_arch = env["arch"]
+    if not core.endswith("." + cur_arch):
+        print("\nERROR: unexpected iOS suffix '{}'; cannot derive xcframework "
+              "slice names.\n".format(cur_suffix))
+        Exit(1)
+    core_noarch = core[:-len("." + cur_arch)]
+
+    def slice_path(arch, simulator):
+        name = "libgodot_opcua{}.{}{}.a".format(
+            core_noarch, arch, ".simulator" if simulator else "")
+        return os.path.join(project_bin, name)
+
+    xcf_path = os.path.join(project_bin, "godot_opcua{}.xcframework".format(core_noarch))
+
+    def build_xcframework(target, source, env):
+        for tool in ("xcodebuild", "lipo"):
+            if shutil.which(tool) is None:
+                print("ERROR: '{}' not found. Install Xcode command line tools.".format(tool))
+                return 1
+
+        device_lib = slice_path("arm64", False)
+        sim_libs   = [p for p in (slice_path("arm64", True),
+                                  slice_path("x86_64", True)) if os.path.isfile(p)]
+
+        libraries = []
+        if os.path.isfile(device_lib):
+            libraries.append(device_lib)
+
+        # xcframework allows one library per platform variant, so merge the
+        # simulator architectures into a single fat archive when both exist.
+        if len(sim_libs) == 2:
+            fat = os.path.join(
+                project_bin, "libgodot_opcua{}.universal.simulator.a".format(core_noarch))
+            rc = subprocess.call(["lipo", "-create", "-output", fat] + sim_libs)
+            if rc != 0:
+                print("ERROR: lipo failed (exit {}).".format(rc))
+                return rc
+            libraries.append(fat)
+        elif len(sim_libs) == 1:
+            libraries.append(sim_libs[0])
+
+        if not libraries:
+            print("ERROR: no iOS slices found in {}.".format(project_bin))
+            return 1
+
+        # xcodebuild refuses to overwrite an existing xcframework.
+        if os.path.isdir(xcf_path):
+            shutil.rmtree(xcf_path)
+
+        cmd = ["xcodebuild", "-create-xcframework"]
+        for lib in libraries:
+            cmd += ["-library", lib]
+        cmd += ["-output", xcf_path]
+
+        print("Creating xcframework from:")
+        for lib in libraries:
+            print("  " + lib)
+        return subprocess.call(cmd)
+
+    if env.get("xcframework", True):
+        xcframework = env.Command(
+            Dir(xcf_path), library, Action(build_xcframework, "Creating $TARGET"))
+        AlwaysBuild(xcframework)   # sibling slices may have changed on disk
+        Default(xcframework)
 else:
     lib_name = "libgodot_opcua{}{}".format(env["suffix"], env["SHLIBSUFFIX"])
     lib_path = os.path.join(project_bin, lib_name)
@@ -202,6 +285,8 @@ if env["platform"] == "ios":
     print("│")
     print("│  simulator    : {}".format(env.get("ios_simulator", "?")))
     print("│  min iOS ver  : {}".format(env.get("ios_min_version", "?")))
+    print("│  xcframework  : {}".format(
+        xcf_path if env.get("xcframework", True) else "disabled"))
     print("│  CC           : {}".format(env.get("CC", "?")))
     print("│  CXX          : {}".format(env.get("CXX", "?")))
 
@@ -239,19 +324,20 @@ print("")
 # =============================================================================
 # iOS packaging note
 # -----------------------------------------------------------------------------
-# After building the device and simulator slices, combine them:
+# The .xcframework is built automatically after each iOS build (disable with
+# xcframework=no). A full device + simulator package needs three runs:
 #
-#   xcodebuild -create-xcframework \
-#     -library project/bin/libgodot_opcua.ios.template_release.arm64.a \
-#     -library project/bin/libgodot_opcua.ios.template_release.arm64.simulator.a \
-#     -output  project/bin/godot_opcua.release.xcframework
+#   scons platform=ios arch=arm64  target=template_release
+#   scons platform=ios arch=arm64  ios_simulator=yes target=template_release
+#   scons platform=ios arch=x86_64 ios_simulator=yes target=template_release  # optional
 #
-# (If both simulator slices are arm64 + x86_64, lipo them into one fat .a first;
-#  xcframework allows only one library per platform variant.)
+# Result: project/bin/godot_opcua.ios.template_release.xcframework
+# (re-created on every run from whichever slices are present; stale slices
+#  from earlier builds are included, so rebuild all slices after source changes).
 #
-# Then reference it in your .gdextension file:
+# Reference it in your .gdextension file:
 #
 #   [libraries]
-#   ios.debug   = "res://bin/godot_opcua.debug.xcframework"
-#   ios.release = "res://bin/godot_opcua.release.xcframework"
+#   ios.debug   = "res://bin/godot_opcua.ios.template_debug.xcframework"
+#   ios.release = "res://bin/godot_opcua.ios.template_release.xcframework"
 # =============================================================================

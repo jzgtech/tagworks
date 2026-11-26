@@ -4,13 +4,12 @@
 [ext_resource type="Script" uid="uid://c4dusk480lrnl" path="res://scenes/main/main_mobile.gd" id="2_krsav"]
 [ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="3_t7obh"]
 [ext_resource type="PackedScene" uid="uid://bo0tkqp8g6tm3" path="res://scenes/dialogs/pages_panel/pages_panel.tscn" id="4_51j5i"]
-[ext_resource type="Script" uid="uid://dwudljs54kucl" path="res://scenes/canvas_container/canvas_container.gd" id="5_156cg"]
+[ext_resource type="PackedScene" uid="uid://cf0qtpu8esxgh" path="res://scenes/canvas_container/canvas_container.tscn" id="5_l4mf0"]
 [ext_resource type="PackedScene" uid="uid://cngi5xaoyrkxg" path="res://scenes/dialogs/widget_palette/widget_palette.tscn" id="6_ntvbu"]
 [ext_resource type="PackedScene" uid="uid://dg1rxoysdt2ry" path="res://scenes/dialogs/property_panel/property_panel.tscn" id="7_rloah"]
 [ext_resource type="PackedScene" uid="uid://bvmvbiyy06hhy" path="res://ui/shell/menu/top_menu_bar_mobile.tscn" id="8_l4mf0"]
 
-[node name="MainMobile" type="Control" unique_id=1699472879]
-layout_mode = 3
+[node name="MainMobile" type="PanelContainer" unique_id=88494399]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,21 +18,8 @@ grow_vertical = 2
 theme = ExtResource("1_l4mf0")
 script = ExtResource("2_krsav")
 
-[node name="Background" type="Panel" parent="." unique_id=1093160731]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="SafeAreaContainer" type="MarginContainer" parent="." unique_id=596542933]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 script = ExtResource("3_t7obh")
 
 [node name="TabContainer" type="TabContainer" parent="SafeAreaContainer" unique_id=147206828]
@@ -56,13 +42,9 @@ metadata/_tab_name = "Project"
 [node name="PagesPanel" parent="SafeAreaContainer/TabContainer/PageContainer" unique_id=1118176807 instance=ExtResource("4_51j5i")]
 layout_mode = 2
 
-[node name="CanvasContainer" type="TabContainer" parent="SafeAreaContainer/TabContainer" unique_id=1430019445]
-unique_name_in_owner = true
+[node name="CanvasContainer" parent="SafeAreaContainer/TabContainer" unique_id=383450145 instance=ExtResource("5_l4mf0")]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 3
-drag_to_rearrange_enabled = true
-script = ExtResource("5_156cg")
 metadata/_tab_index = 1
 metadata/_tab_name = "Editor"
 

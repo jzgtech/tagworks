@@ -1,34 +1,57 @@
 [gd_scene format=3 uid="uid://c1blu6upj2eg"]
 
-[ext_resource type="PackedScene" uid="uid://ctuakifyo3wa3" path="res://scenes/dialogs/base_dialog.tscn" id="1_pgyf5"]
 [ext_resource type="Script" uid="uid://b2pf7xt4t2acn" path="res://scenes/dialogs/extension_manager/extension_manager.gd" id="2_0w5cv"]
+[ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="2_mjs6v"]
 
-[node name="ExtensionManager" unique_id=425608285 instance=ExtResource("1_pgyf5")]
+[node name="ExtensionManager" type="Window" unique_id=425608285]
+oversampling_override = 1.0
+initial_position = 2
+size = Vector2i(550, 450)
 script = ExtResource("2_0w5cv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=384644216]
+[node name="Panel" type="Panel" parent="." unique_id=1420481827]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeAreaContainer" type="MarginContainer" parent="Panel" unique_id=1803083427]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("2_mjs6v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/SafeAreaContainer" unique_id=384644216]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" index="0" unique_id=1657215680]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer" unique_id=1657215680]
 layout_mode = 2
 
-[node name="InstallButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1215938513]
+[node name="InstallButton" type="Button" parent="Panel/SafeAreaContainer/VBoxContainer/HBoxContainer" unique_id=1215938513]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Install extension"
 
-[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=2064681330]
+[node name="StatusLabel" type="Label" parent="Panel/SafeAreaContainer/VBoxContainer/HBoxContainer" unique_id=2064681330]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "STATUS_LABEL"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer" index="1" unique_id=717802304]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/SafeAreaContainer/VBoxContainer" unique_id=717802304]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"RecentProjects"
 
-[node name="ExtensionList" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=2333714]
+[node name="ExtensionList" type="VBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/ScrollContainer" unique_id=2333714]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
