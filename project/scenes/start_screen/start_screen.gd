@@ -31,7 +31,8 @@ func _ready() -> void:
 		texture.fill_from = Vector2(0.0, 0.0)
 		_close_button.visible = false
 
-	_close_button.pressed.connect(func() -> void: get_tree().quit(0))
+	if is_instance_valid(_close_button):
+		_close_button.pressed.connect(func() -> void: get_tree().quit(0))
 	_new_project_button.pressed.connect(_on_new_project_pressed)
 	_open_project_button.pressed.connect(_on_open_project_pressed)
 	_runtime_only_check_button.toggled.connect(func(toggled: bool) -> void: AppState.runtime_only.value = toggled)
@@ -86,7 +87,15 @@ func _notification(what : int) -> void:
 		_transfer_project_button.text = tr("SPLASH_TRANSFER_PROJECT")
 		_recent_projects_label.text = tr("SPLASH_RECENT_PROJECTS")
 		_runtime_only_label.text = tr("SPLASH_RUNTIME_ONLY")
-		_version_label.text = tr("Version {version}").format({"version" = ProjectSettings.get_setting("application/config/version", "")})
+
+		var version: String = ProjectSettings.get_setting("application/config/version", "")
+		if OS.is_debug_build():
+			version += "\nDEBUG"
+			_version_label.add_theme_color_override("font_color", Color.RED)
+
+		_version_label.text = tr("Version {version}").format({"version": version})
+
+
 		_refresh_recent_list()
 
 func _populate_language_options() -> void:

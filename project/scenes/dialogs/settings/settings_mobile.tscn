@@ -1,35 +1,57 @@
 [gd_scene format=3 uid="uid://cbeqaj44v271s"]
 
-[ext_resource type="PackedScene" uid="uid://ctuakifyo3wa3" path="res://scenes/dialogs/base_dialog.tscn" id="1_36g2k"]
+[ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="2_36g2k"]
 [ext_resource type="Script" uid="uid://dvikoma3e40vg" path="res://scenes/dialogs/settings/settings.gd" id="2_hkf04"]
 
-[node name="BaseDialog" unique_id=980154428 instance=ExtResource("1_36g2k")]
+[node name="BaseDialog" type="Window" unique_id=980154428]
+oversampling_override = 1.0
+initial_position = 2
 size = Vector2i(650, 450)
 script = ExtResource("2_hkf04")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=573963510]
+[node name="Panel" type="Panel" parent="." unique_id=1420481827]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeAreaContainer" type="MarginContainer" parent="Panel" unique_id=1803083427]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_36g2k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/SafeAreaContainer" unique_id=573963510]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" index="0" unique_id=2049665860]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer" unique_id=2049665860]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=917454720]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBoxContainer/HBoxContainer" unique_id=917454720]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=89254549]
+[node name="CloseButton" type="Button" parent="Panel/SafeAreaContainer/VBoxContainer/HBoxContainer" unique_id=89254549]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Close"
 
-[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBoxContainer" index="1" unique_id=884494710]
+[node name="TabContainer" type="TabContainer" parent="Panel/SafeAreaContainer/VBoxContainer" unique_id=884494710]
 layout_mode = 2
 size_flags_vertical = 3
 tab_alignment = 1
 current_tab = 1
 tabs_position = 1
 
-[node name="General" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" index="1" unique_id=1402677706]
+[node name="General" type="MarginContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer" unique_id=1402677706]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 4
@@ -38,26 +60,26 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 metadata/_tab_index = 0
 
-[node name="HBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General" index="0" unique_id=1111936971]
+[node name="HBoxContainer" type="VBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/General" unique_id=1111936971]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer" index="0" unique_id=1545497748]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/General/HBoxContainer" unique_id=1545497748]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" index="0" unique_id=1729675065]
+[node name="Label" type="Label" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" unique_id=1729675065]
 layout_mode = 2
 text = "Language"
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" index="1" unique_id=1349833433]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" unique_id=1349833433]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LanguageOptionButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" index="2" unique_id=1457801692]
+[node name="LanguageOptionButton" type="OptionButton" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/General/HBoxContainer/HBoxContainer" unique_id=1457801692]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
-[node name="Network" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer" index="2" unique_id=1636681747]
+[node name="Network" type="MarginContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer" unique_id=1636681747]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -65,53 +87,53 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 metadata/_tab_index = 1
 
-[node name="HBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network" index="0" unique_id=949183243]
+[node name="HBoxContainer" type="VBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network" unique_id=949183243]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="0" unique_id=1802978717]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer" unique_id=1802978717]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="0" unique_id=1879327024]
+[node name="Label" type="Label" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" unique_id=1879327024]
 layout_mode = 2
 text = "Enable network transfer"
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="1" unique_id=118552394]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" unique_id=118552394]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NetworkTransferCheckButton" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" index="2" unique_id=218134610]
+[node name="NetworkTransferCheckButton" type="CheckButton" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer" unique_id=218134610]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="1" unique_id=1780178757]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer" unique_id=1780178757]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="0" unique_id=1859855822]
+[node name="Label" type="Label" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" unique_id=1859855822]
 layout_mode = 2
 text = "Device name"
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="1" unique_id=910724391]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" unique_id=910724391]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DeviceNameLineEdit" type="LineEdit" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" index="2" unique_id=1313945003]
+[node name="DeviceNameLineEdit" type="LineEdit" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer2" unique_id=1313945003]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 placeholder_text = "TagWorks Host"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer" index="2" unique_id=454242787]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer" unique_id=454242787]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="0" unique_id=279903642]
+[node name="Label" type="Label" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" unique_id=279903642]
 layout_mode = 2
 text = "Require PIN for transfers"
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="1" unique_id=1599097201]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" unique_id=1599097201]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RequirePINCheckButton" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" index="2" unique_id=1198842477]
+[node name="RequirePINCheckButton" type="CheckButton" parent="Panel/SafeAreaContainer/VBoxContainer/TabContainer/Network/HBoxContainer/HBoxContainer3" unique_id=1198842477]
 unique_name_in_owner = true
 layout_mode = 2
 flat = true

@@ -57,6 +57,11 @@ func _notification(message:int) -> void:
 		open_window("about")
 
 func _get_scale_factor() -> float:
+	# On mobile, match the exact virtual-to-physical scale of the main game viewport
+	if BreakpointManager.is_mobile():
+		return get_tree().root.content_scale_factor
+
+	# On desktop, calculate physical DPI / OS display scale for separate OS windows
 	var current_screen: int = DisplayServer.window_get_current_screen()
 	var scale_factor: float = DisplayServer.screen_get_scale(current_screen)
 	
@@ -64,9 +69,8 @@ func _get_scale_factor() -> float:
 		var screen_dpi: int = DisplayServer.screen_get_dpi(current_screen)
 		scale_factor = maxf(scale_factor, screen_dpi / 96.0)
 	
-	scale_factor = clampf(scale_factor, 1.0, 3.0)
-	
-	return scale_factor
+	return clampf(scale_factor, 1.0, 3.0)
+
 
 ## Applies DPI-based UI scaling. Runs at startup and whenever the
 ## display/resolution context changes (rotation, external monitor, etc.).
@@ -190,9 +194,12 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 	var scale_factor: float = _get_scale_factor()
 
 	if window_instance is Window:
-		window_instance.content_scale_factor = scale_factor
-		if is_new_instance and window_instance.min_size != Vector2i.ZERO:
-			window_instance.min_size = Vector2i(Vector2(window_instance.min_size) * scale_factor)
+		if get_tree().root.is_embedding_subwindows():
+			window_instance.content_scale_factor = 1.0
+		else:
+			window_instance.content_scale_factor = scale_factor
+			if is_new_instance and window_instance.min_size != Vector2i.ZERO:
+				window_instance.min_size = Vector2i(Vector2(window_instance.min_size) * scale_factor)
 
 	if auto_popup:
 		if window_instance is Window:
@@ -227,8 +234,7 @@ func open_window(window_key: String, options: Dictionary = {}) -> Node:
 ## - Always true on Android/iOS
 ## - True when the current screen resolution is at/below the breakpoint
 func _should_force_fullscreen() -> bool:
-	var platform: String = OS.get_name()
-	if platform == "Android" or platform == "iOS":
+	if BreakpointManager.is_mobile():
 		return true
 
 	var screen_size: Vector2i = DisplayServer.screen_get_size()
@@ -238,9 +244,20 @@ func _should_force_fullscreen() -> bool:
 ## Works for both embedded subwindows (default project setting) and
 ## native subwindows, since it explicitly sets position/size after popup().
 func _force_window_fullscreen(window_instance: Window) -> void:
+	window_instance.min_size = Vector2i.ZERO
 	window_instance.unresizable = true
 	window_instance.borderless = true
 	window_instance.popup_centered_ratio(1.0)
+
+	var on_resize: Callable = _on_fullscreen_window_root_resized.bind(window_instance)
+	if not get_tree().root.size_changed.is_connected(on_resize):
+		get_tree().root.size_changed.connect(on_resize)
+
+func _on_fullscreen_window_root_resized(window_instance: Window) -> void:
+	if is_instance_valid(window_instance) and window_instance.visible:
+		window_instance.popup_centered_ratio(1.0)
+
+
 
 ## Forces a Control-based "window" to fill the current viewport.
 func _force_control_fullscreen(control: Control) -> void:
