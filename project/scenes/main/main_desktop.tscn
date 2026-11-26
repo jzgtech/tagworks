@@ -80,17 +80,17 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.8
-current_tab = 1
+current_tab = 0
 tab_0/title = "Widgets"
 tab_1/title = "Properties"
 
 [node name="WidgetPalette" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/TabContainer" unique_id=1623453158 instance=ExtResource("7_nvumn")]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Widgets"
 
 [node name="PropertyPanel" parent="SafeAreaContainer/RootLayout/WorkArea/VSplitContainer/TabContainer" unique_id=2143371387 instance=ExtResource("8_ou6is")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 metadata/_tab_index = 1

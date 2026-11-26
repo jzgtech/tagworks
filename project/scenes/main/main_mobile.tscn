@@ -70,9 +70,11 @@ layout_mode = 2
 [node name="MenuBar" parent="SafeAreaContainer/Control" unique_id=354118321 instance=ExtResource("8_l4mf0")]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -40.0
+offset_top = 8.0
+offset_right = -8.0
 offset_bottom = 40.0
 grow_horizontal = 0
