@@ -90,7 +90,7 @@ func _notification(what : int) -> void:
 
 		var version: String = ProjectSettings.get_setting("application/config/version", "")
 		if OS.is_debug_build():
-			version += "\nDEBUG"
+			version += " DEBUG"
 			_version_label.add_theme_color_override("font_color", Color.RED)
 
 		_version_label.text = tr("Version {version}").format({"version": version})
