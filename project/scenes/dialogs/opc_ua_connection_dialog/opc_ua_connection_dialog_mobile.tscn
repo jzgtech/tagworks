@@ -1,36 +1,64 @@
 [gd_scene format=3 uid="uid://dmlg5i5n4rxtw"]
 
-[ext_resource type="PackedScene" uid="uid://ctuakifyo3wa3" path="res://scenes/dialogs/base_dialog.tscn" id="1_e1spn"]
+[ext_resource type="Script" uid="uid://b5uyhhaq24c5j" path="res://scenes/safe_area_container.gd" id="2_bbpw6"]
 [ext_resource type="Script" uid="uid://by3pq3d71fv2d" path="res://scenes/dialogs/opc_ua_connection_dialog/opc_ua_connection_dialog.gd" id="2_vdtpp"]
 [ext_resource type="PackedScene" uid="uid://cndtww46vr4gu" path="res://scenes/dialogs/opc_ua_connection_dialog/components/opc_ua_server_tree.tscn" id="3_sffmb"]
 [ext_resource type="PackedScene" uid="uid://dtkkgm3jk4wns" path="res://scenes/dialogs/opc_ua_connection_dialog/components/opc_ua_group_detail_form.tscn" id="4_iro6b"]
 [ext_resource type="PackedScene" uid="uid://cua07jkkaxfta" path="res://scenes/dialogs/opc_ua_connection_dialog/components/opc_ua_server_detail_form.tscn" id="5_psehr"]
 [ext_resource type="PackedScene" uid="uid://cn0ls2tkehl34" path="res://scenes/dialogs/opc_ua_connection_dialog/components/opc_ua_tag_detail_form.tscn" id="6_psehr"]
 
-[node name="ConnectionDialog" unique_id=425608285 instance=ExtResource("1_e1spn")]
+[node name="ConnectionDialog" type="Window" unique_id=425608285]
+oversampling_override = 1.0
+initial_position = 2
+size = Vector2i(550, 450)
 script = ExtResource("2_vdtpp")
 
-[node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer" parent_id_path=PackedInt32Array(1803083427) index="0" unique_id=1343120886]
+[node name="ServerStatusTimer" type="Timer" parent="." unique_id=601891649]
+unique_name_in_owner = true
+wait_time = 2.0
+autostart = true
+
+[node name="Panel" type="Panel" parent="." unique_id=1420481827]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SafeAreaContainer" type="MarginContainer" parent="Panel" unique_id=1803083427]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_bbpw6")
+
+[node name="VBox" type="VBoxContainer" parent="Panel/SafeAreaContainer" unique_id=1343120886]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBox" index="0" unique_id=2052530629]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBox" unique_id=2052530629]
 layout_mode = 2
 
-[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox/HBoxContainer" index="0" unique_id=1413755498]
+[node name="CloseButton" type="Button" parent="Panel/SafeAreaContainer/VBox/HBoxContainer" unique_id=1413755498]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Close"
 
-[node name="Control" type="Control" parent="Panel/MarginContainer/VBox/HBoxContainer" index="1" unique_id=2074776915]
+[node name="Control" type="Control" parent="Panel/SafeAreaContainer/VBox/HBoxContainer" unique_id=2074776915]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConfirmButton" type="Button" parent="Panel/MarginContainer/VBox/HBoxContainer" index="2" unique_id=1433666973]
+[node name="ConfirmButton" type="Button" parent="Panel/SafeAreaContainer/VBox/HBoxContainer" unique_id=1433666973]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Confirm"
 
-[node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer/VBox" index="1" unique_id=778527002]
+[node name="TabContainer" type="TabContainer" parent="Panel/SafeAreaContainer/VBox" unique_id=778527002]
 layout_mode = 2
 size_flags_vertical = 3
 tab_alignment = 1
@@ -39,40 +67,41 @@ tabs_position = 1
 tab_0/title = "Overview"
 tab_1/title = "Details"
 
-[node name="LeftSide" type="VBoxContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="1" unique_id=1183162989]
+[node name="LeftSide" type="VBoxContainer" parent="Panel/SafeAreaContainer/VBox/TabContainer" unique_id=1183162989]
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Overview"
 
-[node name="HBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide" index="0" unique_id=1560778376]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide" unique_id=1560778376]
 layout_mode = 2
 
-[node name="AddServerButton" type="Button" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide/HBoxContainer" index="0" unique_id=41403215]
+[node name="AddServerButton" type="Button" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide/VBoxContainer" unique_id=41403215]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+ Server"
 
-[node name="AddSubscriptionButton" type="Button" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide/HBoxContainer" index="1" unique_id=1829999538]
+[node name="AddSubscriptionButton" type="Button" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide/VBoxContainer" unique_id=1829999538]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+ Subscription"
 
-[node name="AddTagButton" type="Button" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide/HBoxContainer" index="2" unique_id=285862953]
+[node name="AddTagButton" type="Button" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide/VBoxContainer" unique_id=285862953]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+ Tag"
 
-[node name="RemoveButton" type="Button" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide/HBoxContainer" index="3" unique_id=522511859]
+[node name="RemoveButton" type="Button" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide/VBoxContainer" unique_id=522511859]
 unique_name_in_owner = true
 layout_mode = 2
 text = "- Remove"
 
-[node name="ServerTree" parent="Panel/MarginContainer/VBox/TabContainer/LeftSide" index="1" unique_id=1618288988 instance=ExtResource("3_sffmb")]
+[node name="ServerTree" parent="Panel/SafeAreaContainer/VBox/TabContainer/LeftSide" unique_id=1618288988 instance=ExtResource("3_sffmb")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RightSide" type="MarginContainer" parent="Panel/MarginContainer/VBox/TabContainer" index="2" unique_id=1968322441]
+[node name="RightSide" type="MarginContainer" parent="Panel/SafeAreaContainer/VBox/TabContainer" unique_id=1968322441]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 4
@@ -82,43 +111,38 @@ theme_override_constants/margin_bottom = 4
 metadata/_tab_index = 1
 metadata/_tab_name = "Details"
 
-[node name="NoSelectionLabel" type="Label" parent="Panel/MarginContainer/VBox/TabContainer/RightSide" index="0" unique_id=708387221]
+[node name="NoSelectionLabel" type="Label" parent="Panel/SafeAreaContainer/VBox/TabContainer/RightSide" unique_id=708387221]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "No server selected"
 
-[node name="SubscriptionDetailForm" parent="Panel/MarginContainer/VBox/TabContainer/RightSide" index="1" unique_id=56569965 instance=ExtResource("4_iro6b")]
+[node name="SubscriptionDetailForm" parent="Panel/SafeAreaContainer/VBox/TabContainer/RightSide" unique_id=56569965 instance=ExtResource("4_iro6b")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ServerDetailForm" parent="Panel/MarginContainer/VBox/TabContainer/RightSide" index="2" unique_id=1912633500 instance=ExtResource("5_psehr")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="TagDetailForm" parent="Panel/MarginContainer/VBox/TabContainer/RightSide" index="3" unique_id=1142122031 instance=ExtResource("6_psehr")]
+[node name="ServerDetailForm" parent="Panel/SafeAreaContainer/VBox/TabContainer/RightSide" unique_id=1912633500 instance=ExtResource("5_psehr")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Footer" type="HBoxContainer" parent="Panel/MarginContainer/VBox" index="2" unique_id=480038713]
+[node name="TagDetailForm" parent="Panel/SafeAreaContainer/VBox/TabContainer/RightSide" unique_id=1142122031 instance=ExtResource("6_psehr")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="Panel/SafeAreaContainer/VBox" unique_id=480038713]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TestButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="0" unique_id=2068215555]
+[node name="TestButton" type="Button" parent="Panel/SafeAreaContainer/VBox/Footer" unique_id=2068215555]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Test Connection"
 
-[node name="BrowseButton" type="Button" parent="Panel/MarginContainer/VBox/Footer" index="1" unique_id=1421176533]
+[node name="BrowseButton" type="Button" parent="Panel/SafeAreaContainer/VBox/Footer" unique_id=1421176533]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Browse Nodes"
-
-[node name="ServerStatusTimer" type="Timer" parent="." index="1" unique_id=601891649]
-unique_name_in_owner = true
-wait_time = 2.0
-autostart = true

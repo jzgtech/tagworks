@@ -3,7 +3,6 @@ extends Control
 @onready var _menu_bar :  MenuBarMobile   = %MenuBar
 
 @onready var page_container :            VSplitContainer       = %PageContainer
-@onready var canvas_container :          PageTabContainer      = %CanvasContainer
 @onready var inspector_container :       VSplitContainer       = %InspectorContainer
 
 var active_theme : Theme
@@ -70,7 +69,6 @@ func _update_ui_visibility(_origin: Reactive = null) -> void:
 
 	inspector_container.visible = is_loaded and not runtime_only
 	page_container.visible = is_loaded
-	canvas_container.visible = is_loaded
 
 # ── System ────────────────────────────────────────────────────────────────────
 func _on_os_theme_changed() -> void:
